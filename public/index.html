@@ -1,70 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>AproveitAI – versão funcional</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Teste Vercel</title>
 </head>
-
 <body>
-
-<h1>AproveitAI</h1>
-<p>Versão mínima funcional (teste)</p>
-
-<hr>
-
-<h2>Parceiros</h2>
-<div id="parceiros">Carregando parceiros…</div>
-
-<hr>
-
-<h2>Benefícios</h2>
-<div id="beneficios">Carregando benefícios…</div>
-
-<script>
-/* ===== CONFIGURAÇÃO ===== */
-const API_BASE = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
-
-/* ===== PARCEIROS ===== */
-fetch(API_BASE + "?aba=parceiros")
-  .then(r => r.json())
-  .then(dados => {
-    const div = document.getElementById("parceiros");
-    div.innerHTML = "";
-
-    dados
-      .filter(p => p.ativo === true || p.ativo === "TRUE")
-      .forEach(p => {
-        const el = document.createElement("div");
-        el.textContent = p.nome + " – " + p.cidade;
-        div.appendChild(el);
-      });
-  })
-  .catch(() => {
-    document.getElementById("parceiros").innerText =
-      "Erro ao carregar parceiros.";
-  });
-
-/* ===== BENEFÍCIOS ===== */
-fetch(API_BASE + "?aba=beneficios")
-  .then(r => r.json())
-  .then(dados => {
-    const div = document.getElementById("beneficios");
-    div.innerHTML = "";
-
-    dados
-      .filter(b => b.ativo === true || b.ativo === "TRUE")
-      .forEach(b => {
-        const el = document.createElement("div");
-        el.textContent = b.titulo;
-        div.appendChild(el);
-      });
-  })
-  .catch(() => {
-    document.getElementById("beneficios").innerText =
-      "Erro ao carregar benefícios.";
-  });
-</script>
-
+  <h1>FUNCIONOU</h1>
+  <p>Se você está vendo isso, a Vercel está OK.</p>
 </body>
 </html>

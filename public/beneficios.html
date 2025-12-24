@@ -63,34 +63,25 @@ header {
 </div>
 
 <script>
-const API_BASE = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
-const TOKEN = "APROVEITAI2025";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
 
-fetch(`${API_BASE}?aba=beneficios&token=${TOKEN}`)
-  .then(res => res.json())
+fetch(`${SCRIPT_URL}?aba=beneficios`)
+  .then(r => r.json())
   .then(dados => {
-    const container = document.getElementById("beneficios");
-    container.innerHTML = "";
+    const ativos = dados.filter(b => String(b.ativo).toLowerCase() === "sim");
+    const div = document.getElementById("beneficios");
 
-    const ativos = dados.filter(b => b.ativo === true || b.ativo === "TRUE");
-
-    if (ativos.length === 0) {
-      container.innerHTML = "<p>Nenhum benefício disponível no momento.</p>";
+    if (!ativos.length) {
+      div.innerHTML = "Nenhum benefício disponível.";
       return;
     }
 
-    ativos.forEach(b => {
-      container.innerHTML += `
-        <div class="card">
-          <h3>${b.titulo}</h3>
-          <p>${b.grupo || ""}</p>
-        </div>
-      `;
-    });
-  })
-  .catch(err => {
-    document.getElementById("beneficios").innerHTML = "Erro ao carregar benefícios.";
-    console.error(err);
+    div.innerHTML = ativos.map(b => `
+      <div class="card">
+        <h3>${b.titulo || b.nome}</h3>
+        <p>${b.descricao || ""}</p>
+      </div>
+    `).join("");
   });
 </script>
 

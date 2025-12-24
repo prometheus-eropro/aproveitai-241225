@@ -108,123 +108,71 @@ html,body{
 </footer>
 
 <script>
-/* ===============================
-   CONFIGURAÇÃO
-================================ */
-const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+const LOGO_PADRAO = "logo-aproveitai.png";
 
-const LOGO_PADRAO = "logo/logo-aproveitai.png";
+const grid = document.getElementById("grid");
+const estado = document.getElementById("estado");
 
-/* ===============================
-   ELEMENTOS
-================================ */
-const elEstado = document.getElementById("estado");
-const elGrid = document.getElementById("grid");
-const elBusca = document.getElementById("busca");
-const elCidade = document.getElementById("cidade");
-const elRamo = document.getElementById("ramo");
-const elFiltrar = document.getElementById("btnFiltrar");
+const busca = document.getElementById("busca");
+const cidadeSelect = document.getElementById("cidade");
+const ramoSelect = document.getElementById("ramo");
+const btnFiltrar = document.getElementById("btnFiltrar");
 
 let parceiros = [];
 
-/* ===============================
-   CARREGAR PARCEIROS
-================================ */
-async function carregarParceiros() {
-  try {
-    const res = await fetch(`${SCRIPT_URL}?aba=parceiros`);
-    if (!res.ok) throw new Error("Falha ao acessar Apps Script");
+fetch(`${SCRIPT_URL}?aba=parceiros`)
+  .then(r => r.json())
+  .then(dados => {
+    parceiros = dados
+      .filter(p => p.nomeFantasia && p.nomeFantasia.trim() !== "")
+      .filter(p => String(p.ativo).toLowerCase().trim() === "sim");
 
-    const dados = await res.json();
-    if (!Array.isArray(dados)) throw new Error("JSON inválido");
+    if (!parceiros.length) {
+      estado.innerText = "Nenhum parceiro ativo encontrado.";
+      return;
+    }
 
-    // remove linha vazia (primeira linha fantasma)
-    parceiros = dados.filter(p =>
-      p.nomeFantasia && p.nomeFantasia.trim() !== ""
-    );
-
-    // somente parceiros ativos
-    parceiros = parceiros.filter(p =>
-      String(p.ativo).toLowerCase().trim() === "sim"
-    );
-
-    popularFiltros(parceiros);
+    popularFiltros();
     renderizar(parceiros);
+  })
+  .catch(err => {
+    console.error(err);
+    estado.innerText = "Erro ao carregar parceiros.";
+  });
 
-  } catch (err) {
-    console.error("ERRO REAL:", err);
-    elEstado.innerHTML =
-      "<b>Erro ao carregar parceiros</b><br>Verifique a planilha.";
-    elEstado.hidden = false;
-  }
-}
+function popularFiltros() {
+  const cidades = [...new Set(parceiros.map(p => p.cidade).filter(Boolean))];
+  const ramos = [...new Set(parceiros.map(p => p.ramo).filter(Boolean))];
 
-/* ===============================
-   RENDERIZAÇÃO
-================================ */
-function renderizar(lista) {
-  if (!lista.length) {
-    elEstado.innerText = "Nenhum parceiro ativo encontrado.";
-    elEstado.hidden = false;
-    return;
-  }
-
-  elEstado.hidden = true;
-  elGrid.hidden = false;
-
-  elGrid.innerHTML = lista.map(cardHtml).join("");
-}
-
-function cardHtml(p) {
-  const logo =
-    p.logoURL && p.logoURL.trim() !== ""
-      ? p.logoURL
-      : LOGO_PADRAO;
-
-  const whatsappLink = p.whatsapp
-    ? `https://wa.me/55${p.whatsapp.replace(/\D/g, "")}`
-    : null;
-
-  return `
-    <article style="background:#fff;border:1px solid #ddd;border-radius:16px;padding:12px">
-      <div style="height:120px;display:flex;align-items:center;justify-content:center">
-        <img src="${logo}" style="max-width:80%;max-height:100px">
-      </div>
-
-      <h3>${p.nomeFantasia}</h3>
-      <p>${p.ramo || ""} ${p.cidade ? "• " + p.cidade : ""}</p>
-      <p><b>${p.tipoDesconto || ""}</b></p>
-
-      ${
-        whatsappLink
-          ? `<a href="${whatsappLink}" target="_blank">WhatsApp</a>`
-          : ""
-      }
-    </article>
-  `;
-}
-
-/* ===============================
-   FILTROS
-================================ */
-function popularFiltros(lista) {
-  const cidades = [...new Set(lista.map(p => p.cidade).filter(Boolean))];
-  const ramos = [...new Set(lista.map(p => p.ramo).filter(Boolean))];
-
-  elCidade.innerHTML =
-    '<option value="">Todas as cidades</option>' +
+  cidadeSelect.innerHTML = `<option value="">Todas as cidades</option>` +
     cidades.map(c => `<option value="${c}">${c}</option>`).join("");
 
-  elRamo.innerHTML =
-    '<option value="">Todos os ramos</option>' +
+  ramoSelect.innerHTML = `<option value="">Todos os ramos</option>` +
     ramos.map(r => `<option value="${r}">${r}</option>`).join("");
 }
 
-elFiltrar.onclick = () => {
-  const termo = elBusca.value.toLowerCase();
-  const cidade = elCidade.value;
-  const ramo = elRamo.value;
+function renderizar(lista) {
+  grid.innerHTML = lista.map(p => {
+    const logo = p.logoURL && p.logoURL.trim() !== "" ? p.logoURL : LOGO_PADRAO;
+    const whatsapp = p.whatsapp ? `https://wa.me/55${p.whatsapp.replace(/\D/g,"")}` : "";
+
+    return `
+      <div class="card">
+        <img src="${logo}" onerror="this.src='${LOGO_PADRAO}'">
+        <h3>${p.nomeFantasia}</h3>
+        <p>${p.ramo} • ${p.cidade}</p>
+        <strong>${p.tipoDesconto || ""}</strong><br>
+        ${whatsapp ? `<a href="${whatsapp}" target="_blank">WhatsApp</a>` : ""}
+      </div>
+    `;
+  }).join("");
+}
+
+btnFiltrar.onclick = () => {
+  const termo = busca.value.toLowerCase();
+  const cidade = cidadeSelect.value;
+  const ramo = ramoSelect.value;
 
   const filtrados = parceiros.filter(p =>
     (!termo || p.nomeFantasia.toLowerCase().includes(termo)) &&
@@ -234,11 +182,6 @@ elFiltrar.onclick = () => {
 
   renderizar(filtrados);
 };
-
-/* ===============================
-   START
-================================ */
-carregarParceiros();
 </script>
 
 </body>

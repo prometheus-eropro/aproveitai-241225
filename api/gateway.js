@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 export default async function handler(req, res) {
   try {
     const { tabela } = req.query;
@@ -12,7 +10,9 @@ export default async function handler(req, res) {
     const API_KEY = process.env.AIRTABLE_API_KEY;
 
     if (!BASE_ID || !API_KEY) {
-      return res.status(500).json({ error: "Variáveis do Airtable não configuradas" });
+      return res.status(500).json({
+        error: "Variáveis do Airtable não configuradas",
+      });
     }
 
     const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(
@@ -22,20 +22,20 @@ export default async function handler(req, res) {
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${API_KEY}`,
+        "Content-Type": "application/json",
       },
     });
 
     if (!response.ok) {
-      const txt = await response.text();
+      const erro = await response.text();
       return res.status(500).json({
         error: "Erro ao acessar Airtable",
-        detalhe: txt,
+        detalhe: erro,
       });
     }
 
     const data = await response.json();
 
-    // Retorna somente os campos (mais limpo pro front)
     const registros = data.records.map((r) => ({
       id: r.id,
       ...r.fields,
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
     return res.status(200).json(registros);
   } catch (err) {
     return res.status(500).json({
-      error: "Erro interno no gateway",
+      error: "Erro interno na API",
       detalhe: err.message,
     });
   }

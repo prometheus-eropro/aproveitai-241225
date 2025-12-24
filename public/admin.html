@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin • Cartão AproveitAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --verde:#0a7f2e; --azul:#3e6bee; --bg:#f4f6f8;
+      --card:#fff; --ink:#232630;
+    }
+    body {
+      margin:0; font-family:system-ui,Arial,sans-serif;
+      background:var(--bg); color:var(--ink);
+    }
+    header {
+      background:var(--verde); color:#fff; padding:16px; text-align:center;
+    }
+    header h1 { margin:0; font-size:1.6rem; }
+    .container { padding:20px; max-width:1200px; margin:auto; }
+    .card {
+      background:var(--card); border-radius:12px;
+      padding:16px; margin-bottom:20px;
+      box-shadow:0 2px 6px #0001;
+    }
+    h2 { margin-top:0; color:var(--verde); }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    th, td { border:1px solid #ddd; padding:8px; text-align:left; }
+    th { background:#eee; }
+    #negado {
+      text-align:center; padding:50px; color:#900; font-size:1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Painel Administrativo – Cartão AproveitAI</h1>
+  </header>
+
+  <div id="negado" hidden>
+    ❌ Acesso negado.<br><br>
+    Use a URL com token válido.<br>
+    <code>admin.html?token=EROMASTER</code>
+  </div>
+
+  <div id="conteudo" class="container" hidden>
+    <div class="card">
+      <h2>Resumo</h2>
+      <p><b>Total de Clientes:</b> <span id="qtdClientes">0</span></p>
+      <p><b>Total de Parceiros:</b> <span id="qtdParceiros">0</span></p>
+      <p><b>Promoções Ativas:</b> <span id="qtdPromos">0</span></p>
+    </div>
+
+    <div class="card">
+      <h2>Clientes</h2>
+      <table id="tblClientes">
+        <thead><tr><th>Nome</th><th>ID Público</th><th>Cidade</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Parceiros</h2>
+      <table id="tblParceiros">
+        <thead><tr><th>Nome</th><th>CNPJ</th><th>Cidade</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Promoções</h2>
+      <table id="tblPromos">
+        <thead><tr><th>Título</th><th>Parceiro</th><th>Validade</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // 🔑 Token obrigatório
+    const urlToken = new URLSearchParams(location.search).get("token");
+    if (urlToken !== "EROMASTER") {
+      document.getElementById("negado").hidden = false;
+    } else {
+      document.getElementById("conteudo").hidden = false;
+      carregarDados();
+    }
+
+    async function carregarDados() {
+      try {
+        // Clientes
+        const cRes = await fetch("/api/consulta?tipo=clientes");
+        const clientes = await cRes.json();
+        document.getElementById("qtdClientes").textContent = clientes.length;
+        const cBody = document.querySelector("#tblClientes tbody");
+        clientes.forEach(c => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${c.nome||"-"}</td><td>${c.idPublico||"-"}</td><td>${c.cidade||"-"}</td><td>${c.ativo||"?"}</td>`;
+          cBody.appendChild(tr);
+        });
+
+        // Parceiros
+        const pRes = await fetch("/api/consulta?tipo=parceiros");
+        const parceiros = await pRes.json();
+        document.getElementById("qtdParceiros").textContent = parceiros.length;
+        const pBody = document.querySelector("#tblParceiros tbody");
+        parceiros.forEach(p => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${p.nome||"-"}</td><td>${p.cnpj||"-"}</td><td>${p.cidade||"-"}</td><td>${p.ativo||"?"}</td>`;
+          pBody.appendChild(tr);
+        });
+
+        // Promoções
+        const prRes = await fetch("/api/consulta?tipo=promocoes");
+        const promos = await prRes.json();
+        document.getElementById("qtdPromos").textContent = promos.length;
+        const prBody = document.querySelector("#tblPromos tbody");
+        promos.forEach(pr => {
+          const tr = document.createElement("tr");
+          const validade = [pr.dataInicio, pr.dataFim].filter(Boolean).join(" → ");
+          tr.innerHTML = `<td>${pr.titulo||"-"}</td><td>${pr.parceiro||"-"}</td><td>${validade||"-"}</td>`;
+          prBody.appendChild(tr);
+        });
+
+      } catch(e) {
+        console.error("Erro ao carregar dados:", e);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -2,189 +2,165 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Painel do Cliente • Cartão AproveitAI</title>
+<title>Painel do Cliente | AproveitAI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
-  background: linear-gradient(to bottom, #cceeff, #a3d8ff);
   font-family: Arial, sans-serif;
+  background: #f5f7fa;
   margin: 0;
 }
 header {
-  margin: 20px;
+  background: #0a7f2e;
+  color: white;
+  padding: 20px;
   text-align: center;
 }
-header img {
-  height: 80px;
-  margin: 0 10px;
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
 }
-header h1 {
-  background-color: #dfffe8;
-  color: #007a33;
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: 20px;
-}
-.box {
+.card {
   background: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  width: 95%;
-  max-width: 900px;
-  margin: 20px auto;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
 }
-input {
+input, button {
   width: 100%;
   padding: 12px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
+  margin-top: 10px;
 }
 button {
-  background-color: #007a33;
+  background: #0a7f2e;
   color: white;
-  font-weight: bold;
-  padding: 10px 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
 }
-h2 { text-align:center; }
+.status {
+  margin-top: 15px;
+  font-weight: bold;
+}
+.lista {
+  margin-top: 15px;
+}
+.item {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+.voltar {
+  text-align: center;
+  margin-top: 20px;
+}
+.voltar a {
+  color: #0a7f2e;
+  text-decoration: none;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <img src="logo-prometheus.png">
-  <h1>Cartão AproveitAI</h1>
-  <img src="logo-aproveitai.png">
+  <h2>Painel do Cliente</h2>
 </header>
 
-<!-- 🔐 LOGIN -->
-<div class="box" id="loginBox">
-  <h2>Acesso do Cliente</h2>
-  <p>Digite seu <b>ID Público</b>:</p>
-  <input id="idPublico" placeholder="APV-XXXXX">
-  <br><br>
-  <button onclick="login()">Acessar</button>
-  <div id="erro" style="color:red;margin-top:10px"></div>
-</div>
+<div class="container">
 
-<!-- 👤 PAINEL -->
-<div class="box" id="painelBox" style="display:none">
+  <div class="card">
+    <h3>Consultar meu cartão</h3>
 
-  <h2>Seus Dados</h2>
-  <p><b>Nome:</b> <span id="nome"></span></p>
-  <p><b>Cidade:</b> <span id="cidade"></span></p>
-  <p><b>Grupo:</b> <span id="grupo"></span></p>
-  <p><b>ID Público:</b> <span id="id"></span></p>
+    <input type="text" id="cartao" placeholder="Digite seu número do cartão (APV000123)">
+    <button onclick="consultarCliente()">Consultar</button>
 
-  <hr>
+    <div id="status" class="status"></div>
+  </div>
 
-  <h2>Benefícios</h2>
-  <ul id="beneficios"></ul>
+  <div id="beneficiosCard" class="card" style="display:none;">
+    <h3>Benefícios disponíveis</h3>
+    <div id="beneficios" class="lista"></div>
+  </div>
 
-  <hr>
+  <div class="voltar">
+    <a href="/">← Voltar ao site</a>
+  </div>
 
-  <h2>Promoções</h2>
-  <ul id="promocoes"></ul>
-
-  <br>
-  <button onclick="logout()">Sair</button>
 </div>
 
 <script>
-const clienteSalvo = JSON.parse(localStorage.getItem("cliente"));
-if (clienteSalvo) abrirPainel(clienteSalvo);
+const API_BASE = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+const TOKEN = "APROVEITAI2025";
 
-/* LOGIN */
-async function login() {
-  const id = document.getElementById("idPublico").value.trim().toUpperCase();
-  const erro = document.getElementById("erro");
-  erro.textContent = "";
+function consultarCliente() {
+  const cartao = document.getElementById("cartao").value.trim();
+  const status = document.getElementById("status");
+  const beneficiosCard = document.getElementById("beneficiosCard");
+  const beneficiosDiv = document.getElementById("beneficios");
 
-  const res = await fetch(`/api/clientes?idPublico=${encodeURIComponent(id)}`);
-  if (!res.ok) {
-    erro.textContent = "ID inválido.";
+  status.innerText = "";
+  beneficiosDiv.innerHTML = "";
+  beneficiosCard.style.display = "none";
+
+  if (!cartao) {
+    status.innerText = "Informe o número do cartão.";
     return;
   }
 
-  const data = await res.json();
-  const cliente = data[0];
+  fetch(`${API_BASE}?aba=clientes&token=${TOKEN}`)
+    .then(res => res.json())
+    .then(clientes => {
+      const cliente = clientes.find(c => c.idPublico === cartao);
 
-  if (!cliente || !cliente.ativo) {
-    erro.textContent = "Acesso não autorizado.";
-    return;
-  }
+      if (!cliente) {
+        status.innerText = "❌ Cartão não encontrado.";
+        return;
+      }
 
-  localStorage.setItem("cliente", JSON.stringify(cliente));
-  abrirPainel(cliente);
+      if (!(cliente.ativo === true || cliente.ativo === "TRUE")) {
+        status.innerText = "❌ Cartão INATIVO.";
+        return;
+      }
+
+      status.innerText = "✅ Cartão ATIVO. Aproveite seus benefícios!";
+      carregarBeneficios();
+    })
+    .catch(err => {
+      status.innerText = "Erro ao consultar cartão.";
+      console.error(err);
+    });
 }
 
-/* ABRIR PAINEL */
-function abrirPainel(c) {
-  document.getElementById("loginBox").style.display = "none";
-  document.getElementById("painelBox").style.display = "block";
+function carregarBeneficios() {
+  fetch(`${API_BASE}?aba=beneficios&token=${TOKEN}`)
+    .then(res => res.json())
+    .then(beneficios => {
+      const ativos = beneficios.filter(b => b.ativo === true || b.ativo === "TRUE");
 
-  document.getElementById("nome").textContent = c.nome || "";
-  document.getElementById("cidade").textContent = c.cidade || "";
-  document.getElementById("grupo").textContent = c.grupo || "";
-  document.getElementById("id").textContent = c.idPublico || "";
+      if (ativos.length === 0) {
+        beneficiosDiv.innerHTML = "<p>Nenhum benefício disponível no momento.</p>";
+      } else {
+        ativos.forEach(b => {
+          beneficiosDiv.innerHTML += `
+            <div class="item">
+              <strong>${b.titulo}</strong><br>
+              <small>${b.grupo || ""}</small>
+            </div>
+          `;
+        });
+      }
 
-  carregarExtras(c.grupo);
-}
-
-/* BENEFÍCIOS E PROMOÇÕES */
-async function carregarExtras(grupo) {
-  const [b,p] = await Promise.all([
-    fetch("/api/gateway?tabela=beneficios"),
-    fetch("/api/gateway?tabela=promocoes")
-  ]);
-
-  const beneficios = (await b.json()).records || [];
-  const promocoes = (await p.json()).records || [];
-
-  const ulB = document.getElementById("beneficios");
-  const ulP = document.getElementById("promocoes");
-
-  beneficios.forEach(r => {
-    const g = (r.fields.grupo||"").toLowerCase();
-    if (!g || g === grupo.toLowerCase()) {
-      ulB.innerHTML += `<li>${r.fields.descricao}</li>`;
-    }
-  });
-
-  promocoes.forEach(r => {
-    const g = (r.fields.grupo||"").toLowerCase();
-    if (!g || g === grupo.toLowerCase()) {
-      ulP.innerHTML += `<li>${r.fields.descricao}</li>`;
-    }
-  });
-}
-
-/* LOGOUT */
-function logout() {
-  localStorage.removeItem("cliente");
-  location.reload();
+      beneficiosCard.style.display = "block";
+    })
+    .catch(err => {
+      beneficiosDiv.innerHTML = "Erro ao carregar benefícios.";
+      console.error(err);
+    });
 }
 </script>
-<button
-  onclick="window.location.href='index.html'"
-  style="
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #0a7c2f;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  "
->
-  ← Voltar
-</button>
 
 </body>
 </html>

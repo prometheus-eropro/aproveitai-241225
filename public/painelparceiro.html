@@ -2,6 +2,124 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<title>Painel do Parceiro | AproveitAI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
+  margin: 0;
+}
+header {
+  background: #0a7f2e;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+}
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+input, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+}
+button {
+  background: #0a7f2e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.result {
+  margin-top: 15px;
+  font-weight: bold;
+}
+.voltar {
+  margin-top: 20px;
+  text-align: center;
+}
+.voltar a {
+  color: #0a7f2e;
+  text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>Painel do Parceiro</h2>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h3>Consultar Cliente</h3>
+
+    <input type="text" id="cartao" placeholder="Número do cartão (APV000123)">
+    <button onclick="consultar()">Consultar</button>
+
+    <div id="resultado" class="result"></div>
+  </div>
+
+  <div class="voltar">
+    <a href="/">← Voltar ao site</a>
+  </div>
+
+</div>
+
+<script>
+const API_BASE = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+const TOKEN = "APROVEITAI2025";
+
+function consultar() {
+  const cartao = document.getElementById("cartao").value.trim();
+  const resultado = document.getElementById("resultado");
+
+  if (!cartao) {
+    resultado.innerText = "Informe o número do cartão.";
+    return;
+  }
+
+  fetch(`${API_BASE}?aba=clientes&token=${TOKEN}`)
+    .then(res => res.json())
+    .then(dados => {
+      const cliente = dados.find(c => c.idPublico === cartao);
+
+      if (!cliente) {
+        resultado.innerText = "Cliente não encontrado.";
+        return;
+      }
+
+      if (cliente.ativo === true || cliente.ativo === "TRUE") {
+        resultado.innerText = "✅ Cliente ATIVO – Desconto autorizado";
+      } else {
+        resultado.innerText = "❌ Cliente INATIVO – Desconto não autorizado";
+      }
+    })
+    .catch(err => {
+      resultado.innerText = "Erro na consulta.";
+      console.error(err);
+    });
+}
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
 <title>Painel do Parceiro • AproveitAI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

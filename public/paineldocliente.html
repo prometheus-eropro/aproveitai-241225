@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Painel do Cliente • Cartão AproveitAI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  background: linear-gradient(to bottom, #cceeff, #a3d8ff);
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+header {
+  margin: 20px;
+  text-align: center;
+}
+header img {
+  height: 80px;
+  margin: 0 10px;
+}
+header h1 {
+  background-color: #dfffe8;
+  color: #007a33;
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 20px;
+}
+.box {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  width: 95%;
+  max-width: 900px;
+  margin: 20px auto;
+}
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+button {
+  background-color: #007a33;
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+h2 { text-align:center; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo-prometheus.png">
+  <h1>Cartão AproveitAI</h1>
+  <img src="logo-aproveitai.png">
+</header>
+
+<!-- 🔐 LOGIN -->
+<div class="box" id="loginBox">
+  <h2>Acesso do Cliente</h2>
+  <p>Digite seu <b>ID Público</b>:</p>
+  <input id="idPublico" placeholder="APV-XXXXX">
+  <br><br>
+  <button onclick="login()">Acessar</button>
+  <div id="erro" style="color:red;margin-top:10px"></div>
+</div>
+
+<!-- 👤 PAINEL -->
+<div class="box" id="painelBox" style="display:none">
+
+  <h2>Seus Dados</h2>
+  <p><b>Nome:</b> <span id="nome"></span></p>
+  <p><b>Cidade:</b> <span id="cidade"></span></p>
+  <p><b>Grupo:</b> <span id="grupo"></span></p>
+  <p><b>ID Público:</b> <span id="id"></span></p>
+
+  <hr>
+
+  <h2>Benefícios</h2>
+  <ul id="beneficios"></ul>
+
+  <hr>
+
+  <h2>Promoções</h2>
+  <ul id="promocoes"></ul>
+
+  <br>
+  <button onclick="logout()">Sair</button>
+</div>
+
+<script>
+const clienteSalvo = JSON.parse(localStorage.getItem("cliente"));
+if (clienteSalvo) abrirPainel(clienteSalvo);
+
+/* LOGIN */
+async function login() {
+  const id = document.getElementById("idPublico").value.trim().toUpperCase();
+  const erro = document.getElementById("erro");
+  erro.textContent = "";
+
+  const res = await fetch(`/api/clientes?idPublico=${encodeURIComponent(id)}`);
+  if (!res.ok) {
+    erro.textContent = "ID inválido.";
+    return;
+  }
+
+  const data = await res.json();
+  const cliente = data[0];
+
+  if (!cliente || !cliente.ativo) {
+    erro.textContent = "Acesso não autorizado.";
+    return;
+  }
+
+  localStorage.setItem("cliente", JSON.stringify(cliente));
+  abrirPainel(cliente);
+}
+
+/* ABRIR PAINEL */
+function abrirPainel(c) {
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("painelBox").style.display = "block";
+
+  document.getElementById("nome").textContent = c.nome || "";
+  document.getElementById("cidade").textContent = c.cidade || "";
+  document.getElementById("grupo").textContent = c.grupo || "";
+  document.getElementById("id").textContent = c.idPublico || "";
+
+  carregarExtras(c.grupo);
+}
+
+/* BENEFÍCIOS E PROMOÇÕES */
+async function carregarExtras(grupo) {
+  const [b,p] = await Promise.all([
+    fetch("/api/gateway?tabela=beneficios"),
+    fetch("/api/gateway?tabela=promocoes")
+  ]);
+
+  const beneficios = (await b.json()).records || [];
+  const promocoes = (await p.json()).records || [];
+
+  const ulB = document.getElementById("beneficios");
+  const ulP = document.getElementById("promocoes");
+
+  beneficios.forEach(r => {
+    const g = (r.fields.grupo||"").toLowerCase();
+    if (!g || g === grupo.toLowerCase()) {
+      ulB.innerHTML += `<li>${r.fields.descricao}</li>`;
+    }
+  });
+
+  promocoes.forEach(r => {
+    const g = (r.fields.grupo||"").toLowerCase();
+    if (!g || g === grupo.toLowerCase()) {
+      ulP.innerHTML += `<li>${r.fields.descricao}</li>`;
+    }
+  });
+}
+
+/* LOGOUT */
+function logout() {
+  localStorage.removeItem("cliente");
+  location.reload();
+}
+</script>
+
+</body>
+</html>

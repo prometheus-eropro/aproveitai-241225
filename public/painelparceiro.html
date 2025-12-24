@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Painel do Parceiro • AproveitAI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ====== ESTILO ORIGINAL (MANTIDO) ====== */
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  background: linear-gradient(135deg, #bdeeff, #81d4fa);
+  color: #232630;
+}
+.brandline {
+  display: grid;
+  grid-template-columns: 140px 1fr 140px;
+  gap: 12px;
+  align-items: center;
+  justify-items: center;
+  margin: 18px auto 0;
+  max-width: 600px;
+}
+.brandline img { height: 100px; object-fit: contain; }
+.pill {
+  background: #e9fff1;
+  border: 1px solid #b7efc2;
+  color: #0a4c1a;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 900;
+  font-size: 1.6rem;
+  text-align: center;
+}
+.wrap { max-width: 600px; margin: auto; padding: 16px; }
+.card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 22px #0001;
+  padding: 20px;
+  margin: 18px auto;
+}
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+button {
+  margin-top: 16px;
+  padding: 12px 18px;
+  font-weight: 700;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.verde { background:#0a7f2e; }
+.vermelho { background:#d10000; }
+</style>
+</head>
+
+<body>
+
+<!-- LOGOS -->
+<div class="brandline">
+  <img src="logo-prometheus.png">
+  <div class="pill">Cartão AproveitAI</div>
+  <img src="logo-aproveitai.png">
+</div>
+
+<div class="wrap">
+
+<!-- 🔐 LOGIN -->
+<div class="card" id="loginBox">
+  <h2>Acesso do Parceiro</h2>
+  <label>CNPJ</label>
+  <input id="cnpj" placeholder="Digite seu CNPJ">
+
+  <label>Token</label>
+  <input id="token" type="password" placeholder="Digite seu token">
+
+  <button class="verde" onclick="login()">Entrar</button>
+  <div id="erroLogin" style="color:red;margin-top:10px"></div>
+</div>
+
+<!-- 🧑‍💼 PAINEL -->
+<div class="card" id="painelBox" style="display:none">
+  <h2>Bem-vindo, <span id="nomeParceiro"></span></h2>
+
+  <label>CPF ou ID do Cliente</label>
+  <input id="cpf">
+
+  <button class="verde" onclick="validar()">Validar Cliente</button>
+  <pre id="resultado"></pre>
+
+  <button class="vermelho" onclick="logout()">Sair</button>
+</div>
+
+</div>
+
+<script>
+/* ====== CONTROLE DE SESSÃO ====== */
+const parceiro = JSON.parse(localStorage.getItem("parceiro"));
+
+if (parceiro) abrirPainel(parceiro);
+
+/* ====== LOGIN ====== */
+async function login() {
+  const cnpj = document.getElementById("cnpj").value.replace(/\D/g,'');
+  const token = document.getElementById("token").value.trim();
+  const erro = document.getElementById("erroLogin");
+
+  erro.textContent = "";
+
+  if (!cnpj || !token) {
+    erro.textContent = "Preencha CNPJ e token.";
+    return;
+  }
+
+  const res = await fetch("/api/consulta", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({ tipo:"parceirosLogin", cnpj, token })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok || !data.valido) {
+    erro.textContent = data.erro || "Acesso negado.";
+    return;
+  }
+
+  localStorage.setItem("parceiro", JSON.stringify(data.parceiro));
+  abrirPainel(data.parceiro);
+}
+
+/* ====== ABRIR PAINEL ====== */
+function abrirPainel(p) {
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("painelBox").style.display="block";
+  document.getElementById("nomeParceiro").textContent = p.nome || "Parceiro";
+}
+
+/* ====== LOGOUT ====== */
+function logout() {
+  localStorage.removeItem("parceiro");
+  location.reload();
+}
+
+/* ====== VALIDAR CLIENTE ====== */
+async function validar() {
+  const cpf = document.getElementById("cpf").value.trim();
+  const parceiro = JSON.parse(localStorage.getItem("parceiro"));
+  const r = await fetch("/api/consulta", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({
+      tipo:"clientesValidar",
+      cpf,
+      cnpj: parceiro.cnpj,
+      nomeParceiro: parceiro.nome
+    })
+  });
+  document.getElementById("resultado").textContent =
+    JSON.stringify(await r.json(), null, 2);
+}
+</script>
+
+</body>
+</html>

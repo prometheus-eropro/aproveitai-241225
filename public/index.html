@@ -47,9 +47,9 @@ html,body{
 
 <div class="topo">
   <div class="logo-line">
-    <img src="/logo/logo-prometheus.png">
+    <img src="/logo-prometheus.png">
     <span class="brand-name">Cartão AproveitAI</span>
-    <img src="/logo/logo-aproveitai.png">
+    <img src="/logo-aproveitai.png">
   </div>
   <div class="slogan">Tecnologia com ConsciêncIA gera Resultado.</div>
 
@@ -79,13 +79,42 @@ html,body{
 </main>
 
 <footer class="site-footer">
-  <div>
-    <strong>Cartão AproveitAI</strong><br>
-    PROMETHEUS EROPRO Soluções Inteligentes LTDA<br>
-    CNPJ 58.584.332/0001-40<br>
-    WhatsApp (28) 99969-2303
+
+  <div style="flex:1;min-width:250px">
+    <strong style="font-size:18px;color:#00ff88">Cartão AproveitAI</strong><br>
+    <div>PROMETHEUS EROPRO Soluções Inteligentes LTDA</div>
+    <div>CNPJ: 58.584.332/0001-40</div>
+    <div>📧 cartao.aproveitai@gmail.com</div>
+    <div>📱 WhatsApp: (28) 99969-2303</div>
+    <div>📸 Instagram: @cartao.aproveitai</div>
+    <div style="margin-top:6px;opacity:.7">
+      © <span id="ano"></span> AproveitAI. Todos os direitos reservados.
+    </div>
   </div>
+
+  <div style="flex:1;min-width:200px">
+    <strong style="font-size:16px;color:#00ff88">Links Rápidos</strong>
+    <ul>
+      <li><a href="beneficios.html">Benefícios</a></li>
+      <li><a href="promocoes.html">Promoções</a></li>
+      <li><a href="depoimentos.html">Depoimentos</a></li>
+      <li><a href="faq.html">Dúvidas</a></li>
+      <li><a href="privacidade.html">Privacidade</a></li>
+      <li><a href="termos.html">Termos</a></li>
+      <li><a href="excluir.html">Excluir Dados</a></li>
+    </ul>
+  </div>
+
 </footer>
+
+<script>
+  document.getElementById('ano').textContent = new Date().getFullYear();
+</script>
+
+<script>
+  document.getElementById('ano').innerText = new Date().getFullYear();
+</script>
+
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
@@ -103,7 +132,10 @@ async function carregarParceiros(){
   try{
     const res = await fetch(`${SCRIPT_URL}?aba=parceiros`);
     parceiros = await res.json();
-    parceiros = parceiros.filter(p => p.ativo !== "NAO");
+    parceiros = parceiros.filter(p =>
+  String(p.ativo).toLowerCase() === "sim"
+);
+
     popularFiltros(parceiros);
     renderizar(parceiros);
   }catch(e){
@@ -123,7 +155,7 @@ function renderizar(lista){
       <div style="height:120px;display:flex;align-items:center;justify-content:center">
         <img src="${p.logoUrl || 'logo/logo-aproveitai.png'}" style="max-width:80%;max-height:100px">
       </div>
-      <h3>${p.nome||'Parceiro'}</h3>
+      <h3>${item.nomeFantasia || 'Parceiro'}</h3>
       <p>${p.ramo||''} ${p.cidade?'• '+p.cidade:''}</p>
       ${p.whatsapp?`<a href="${p.whatsapp}" target="_blank">WhatsApp</a>`:''}
     </article>

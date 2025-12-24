@@ -1,11 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Teste Vercel</title>
+  <meta charset="UTF-8" />
+  <title>AproveitAI - Teste Vivo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
-  <h1>FUNCIONOU</h1>
-  <p>Se você está vendo isso, a Vercel está OK.</p>
+
+  <h1>AproveitAI</h1>
+  <p>Teste de conexão com Google Planilhas</p>
+
+  <hr>
+
+  <h2>Benefícios</h2>
+  <pre id="resultado">Carregando...</pre>
+
+  <script>
+    const URL_API = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec?aba=beneficios";
+
+    fetch(URL_API)
+      .then(res => res.json())
+      .then(dados => {
+        document.getElementById("resultado").textContent =
+          JSON.stringify(dados, null, 2);
+      })
+      .catch(err => {
+        document.getElementById("resultado").textContent =
+          "ERRO: " + err.message;
+      });
+  </script>
+
 </body>
 </html>

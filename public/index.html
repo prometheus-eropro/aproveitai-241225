@@ -1,34 +1,153 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>AproveitAI - Teste Vivo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Cartão AproveitAI – os benefícios</title>
+  <meta name="theme-color" content="#0a7f2e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="icon" href="logo-192.png">
+  <link rel="apple-touch-icon" href="logo-aproveitai.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root {
+  --verde:#0a7f2e;
+  --verde-esc:#065e1f;
+  --cinza:#f3f4f6;
+  --cinza2:#e5e7eb;
+  --azul:#3e6bee;
+  --bg1:#bdeeff;
+  --bg2:#81d4fa;
+}
+*{box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+html,body{
+  margin:0;padding:0;min-height:100vh;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  display:flex;flex-direction:column
+}
+.topo{background:#fff;text-align:center;padding:20px 10px;box-shadow:0 2px 6px #0002}
+.logo-line{display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.logo-line img{max-height:200px;max-width:45%}
+.brand-name{font-size:2.2rem;font-weight:bold;color:var(--verde);background:#eaffeb;padding:8px 20px;border-radius:20px}
+.slogan{font-size:1.2rem;font-weight:500;color:var(--verde-esc);margin-top:6px}
+.welcome-box{background:#ffffffcc;border-radius:16px;margin:20px auto;max-width:800px;padding:16px;box-shadow:0 2px 10px #0002}
+.cta-row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:16px 0}
+.cta-row a{text-decoration:none;background:var(--verde);color:#fff;padding:10px 16px;border-radius:10px;font-weight:bold}
+.filters{background:#fff;border:1px solid var(--cinza2);border-radius:14px;padding:12px;display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;margin-bottom:20px}
+@media(max-width:768px){.filters{grid-template-columns:1fr}}
+.site-footer{background:#052b15;color:#fff;padding:20px 10px;display:flex;flex-wrap:wrap;gap:20px;border-top:4px solid #0a7f2e}
+.site-footer ul{list-style:none;padding:0;margin:10px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
+.site-footer a{color:#fff;text-decoration:none}
+</style>
 </head>
+
 <body>
 
-  <h1>AproveitAI</h1>
-  <p>Teste de conexão com Google Planilhas</p>
+<div class="topo">
+  <div class="logo-line">
+    <img src="/logo/logo-prometheus.png">
+    <span class="brand-name">Cartão AproveitAI</span>
+    <img src="/logo/logo-aproveitai.png">
+  </div>
+  <div class="slogan">Tecnologia com ConsciêncIA gera Resultado.</div>
 
-  <hr>
+  <div class="welcome-box">
+    <b>Bem-vindo à PROMETHEUS EROPRO Soluções Inteligentes!</b><br>
+    Assine e experimente o <b>Cartão AproveitAI</b> e comece a economizar de verdade.
+  </div>
 
-  <h2>Benefícios</h2>
-  <pre id="resultado">Carregando...</pre>
+  <div class="cta-row">
+    <a href="https://wa.me/5528999692303?text=Olá,%20quero%20ser%20cliente%20do%20Cartão%20AproveitAI." target="_blank">Quero ser Cliente</a>
+    <a href="areadocliente.html">Área do Cliente</a>
+    <a href="areadoparceiro.html">Área do Parceiro</a>
+    <a href="https://wa.me/5528999692303?text=Olá,%20sou%20comerciante%20e%20quero%20ser%20parceiro." target="_blank">Quero ser Parceiro</a>
+  </div>
+</div>
 
-  <script>
-    const URL_API = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec?aba=beneficios";
+<main style="padding:16px;flex:1">
+  <section class="filters">
+    <input id="busca" placeholder="Buscar por nome...">
+    <select id="cidade"><option value="">Todas as cidades</option></select>
+    <select id="ramo"><option value="">Todos os ramos</option></select>
+    <button id="btnFiltrar">Filtrar</button>
+  </section>
 
-    fetch(URL_API)
-      .then(res => res.json())
-      .then(dados => {
-        document.getElementById("resultado").textContent =
-          JSON.stringify(dados, null, 2);
-      })
-      .catch(err => {
-        document.getElementById("resultado").textContent =
-          "ERRO: " + err.message;
-      });
-  </script>
+  <div id="estado" style="text-align:center;margin:20px">Carregando parceiros...</div>
+  <section id="grid" hidden style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px"></section>
+</main>
+
+<footer class="site-footer">
+  <div>
+    <strong>Cartão AproveitAI</strong><br>
+    PROMETHEUS EROPRO Soluções Inteligentes LTDA<br>
+    CNPJ 58.584.332/0001-40<br>
+    WhatsApp (28) 99969-2303
+  </div>
+</footer>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+
+const elEstado = document.getElementById('estado');
+const elGrid = document.getElementById('grid');
+const elBusca = document.getElementById('busca');
+const elCidade = document.getElementById('cidade');
+const elRamo = document.getElementById('ramo');
+const elFiltrar = document.getElementById('btnFiltrar');
+
+let parceiros = [];
+
+async function carregarParceiros(){
+  try{
+    const res = await fetch(`${SCRIPT_URL}?aba=parceiros`);
+    parceiros = await res.json();
+    parceiros = parceiros.filter(p => p.ativo !== "NAO");
+    popularFiltros(parceiros);
+    renderizar(parceiros);
+  }catch(e){
+    elEstado.innerHTML="Parceiros em atualização.";
+  }
+}
+
+function renderizar(lista){
+  if(!lista.length){
+    elEstado.innerText="Nenhum parceiro encontrado.";
+    return;
+  }
+  elEstado.hidden=true;
+  elGrid.hidden=false;
+  elGrid.innerHTML = lista.map(p=>`
+    <article style="background:#fff;border:1px solid #ddd;border-radius:16px;padding:12px">
+      <div style="height:120px;display:flex;align-items:center;justify-content:center">
+        <img src="${p.logoUrl || 'logo/logo-aproveitai.png'}" style="max-width:80%;max-height:100px">
+      </div>
+      <h3>${p.nome||'Parceiro'}</h3>
+      <p>${p.ramo||''} ${p.cidade?'• '+p.cidade:''}</p>
+      ${p.whatsapp?`<a href="${p.whatsapp}" target="_blank">WhatsApp</a>`:''}
+    </article>
+  `).join('');
+}
+
+function popularFiltros(lista){
+  elCidade.innerHTML='<option value="">Todas as cidades</option>'+
+    [...new Set(lista.map(p=>p.cidade).filter(Boolean))].map(c=>`<option>${c}</option>`).join('');
+  elRamo.innerHTML='<option value="">Todos os ramos</option>'+
+    [...new Set(lista.map(p=>p.ramo).filter(Boolean))].map(r=>`<option>${r}</option>`).join('');
+}
+
+elFiltrar.onclick=()=>{
+  const t=elBusca.value.toLowerCase();
+  renderizar(parceiros.filter(p=>
+    (!t||p.nome?.toLowerCase().includes(t)) &&
+    (!elCidade.value||p.cidade===elCidade.value) &&
+    (!elRamo.value||p.ramo===elRamo.value)
+  ));
+};
+
+carregarParceiros();
+</script>
 
 </body>
 </html>

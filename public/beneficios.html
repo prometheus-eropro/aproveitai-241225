@@ -115,7 +115,8 @@ body, html {
 <script>
 const hoje = new Date().toISOString().split('T')[0];
 
-fetch('/api/gateway?tabela=beneficios')
+fetch('/api/consulta?tabela=beneficios')
+
   .then(res => res.json())
   .then(data => {
     const container = document.getElementById('beneficios');

@@ -205,16 +205,6 @@ function renderBeneficio(registro, exclusivo = false) {
   });
 </script>
   <button id="voltar-fixo" onclick="window.history.back()">⬅️ Voltar</button>
-<script>
-if ('serviceWorker' in navigator) {
-window.addEventListener('load', function () {
-navigator.serviceWorker.register('/service-worker.js').then(function (registration) {
-console.log('ServiceWorker registrado com sucesso:', registration.scope);
-}, function (err) {
-console.log('Falha ao registrar ServiceWorker:', err);
-});
-});
-}
 </script>
 </body>
 </html>

@@ -60,8 +60,8 @@ html,body{
 
   <div class="cta-row">
     <a href="https://wa.me/5528999692303?text=Olá,%20quero%20ser%20cliente%20do%20Cartão%20AproveitAI." target="_blank">Quero ser Cliente</a>
-    <a href="areadocliente.html">Área do Cliente</a>
-    <a href="areadoparceiro.html">Área do Parceiro</a>
+    <a href="painelcliente.html">Área do Cliente</a>
+    <a href="painelparceiro.html">Área do Parceiro</a>
     <a href="https://wa.me/5528999692303?text=Olá,%20sou%20comerciante%20e%20quero%20ser%20parceiro." target="_blank">Quero ser Parceiro</a>
   </div>
 </div>
@@ -109,7 +109,7 @@ html,body{
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
-const LOGO_PADRAO = "logo-aproveitai.png";
+const LOGO_PADRAO = "/logo-aproveitai.png";
 
 const grid = document.getElementById("grid");
 const estado = document.getElementById("estado");
@@ -120,6 +120,8 @@ const ramoSelect = document.getElementById("ramo");
 const btnFiltrar = document.getElementById("btnFiltrar");
 
 let parceiros = [];
+
+estado.innerText = "Carregando parceiros...";
 
 fetch(`${SCRIPT_URL}?aba=parceiros`)
   .then(r => r.json())
@@ -133,6 +135,8 @@ fetch(`${SCRIPT_URL}?aba=parceiros`)
       return;
     }
 
+    estado.innerText = "";
+    grid.hidden = false;
     popularFiltros();
     renderizar(parceiros);
   })
@@ -182,6 +186,8 @@ btnFiltrar.onclick = () => {
 
   renderizar(filtrados);
 };
+
+document.getElementById("ano").innerText = new Date().getFullYear();
 </script>
 
 </body>

@@ -129,11 +129,39 @@
     </div>
   </div>
 
-  <script>
-    function voltar() {
-      window.location.href = "index.html";
-    }
-  </script>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const idPublico = urlParams.get("id");
 
+  if (!idPublico) {
+    alert("ID do cartão não informado.");
+  } else {
+    const API_URL = "SUA_URL_DO_APPS_SCRIPT_AQUI";
+
+    fetch(`${API_URL}?aba=clientes&id=${encodeURIComponent(idPublico)}`)
+      .then(res => res.json())
+      .then(dados => {
+        if (dados.erro) {
+          alert(dados.erro);
+          return;
+        }
+
+        document.getElementById("nome").textContent = dados.nome || "-";
+        document.getElementById("cpf").textContent = dados.cpf || "-";
+        document.getElementById("id").textContent = dados.idPublico || "-";
+        document.getElementById("grupo").textContent = dados.grupo || "-";
+        document.getElementById("cidade").textContent = dados.cidade || "-";
+        document.getElementById("data").textContent = dados.dataCadastro || "-";
+      })
+      .catch(err => {
+        console.error("Erro ao buscar dados:", err);
+        alert("Erro ao carregar os dados do cartão.");
+      });
+  }
+
+  function voltar() {
+    window.location.href = "index.html";
+  }
+</script>
 </body>
 </html>

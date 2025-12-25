@@ -1,137 +1,108 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
   <title>Dúvidas Frequentes | Cartão AproveitAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
-
-
-#voltar-fixo {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  padding: 12px 24px;
-  font-size: 16px;
-  background-color: #0a7f2e;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-  z-index: 999;
-}
-
-
-body, html {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.wrap {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #bdeeff, #81d4fa);
-      color: #232630;
+      font-family: Arial, sans-serif;
+      background: #f5f7f6;
     }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-      background: #fff;
-    }
-    header img {
-      height: 80px;
-    }
-    h1 {
-      text-align: center;
-      color: #0a7f2e;
-      margin-top: 20px;
-    }
-    .faq-container {
-      max-width: 800px;
+
+    .header {
+      max-width: 1100px;
       margin: 20px auto;
       background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px #0002;
+      border-radius: 14px;
+      padding: 20px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
+
+    .header img {
+      height: 90px;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: #0a7a3b;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .faq-container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 14px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
     .faq-item {
       margin-bottom: 20px;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 10px;
     }
+
     .faq-item h3 {
-      color: #3e6bee;
       margin-bottom: 6px;
+      color: #0a7a3b;
     }
-    footer {
-      background: #232323;
-      color: #eee;
-      text-align: center;
-      padding: 16px;
-      margin-top: 40px;
+
+    .btn {
+      background: #0a7a3b;
+      color: #fff;
+      border: none;
+      padding: 12px 22px;
+      font-size: 15px;
+      border-radius: 8px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <header>
-    <img src="logo-prometheus.png" alt="Logo Prometheus">
-    <h2>Cartão AproveitAI</h2>
-    <img src="logo-aproveitai.png" alt="Logo AproveitAI">
-  </header>
 
-  <h1>Dúvidas Frequentes</h1>
-  <div class="faq-container" id="faq-list">
-    <!-- Perguntas e respostas serão inseridas aqui -->
+  <div class="header">
+    <img src="logo-prometheus.png" alt="Prometheus EROPRO">
+    <h1>Cartão AproveitAI</h1>
+    <img src="logo-aproveitai.png" alt="Cartão AproveitAI">
   </div>
 
-  <footer>
-    PROMETHEUS EROPRO Soluções Inteligentes © 2025
-  </footer>
+  <div class="faq-container" id="faq">
+    <p>Carregando dúvidas...</p>
+  </div>
+
+  <div style="text-align:center; margin-bottom:40px;">
+    <button class="btn" onclick="voltar()">⬅️ Voltar ao site</button>
+  </div>
 
   <script>
-fetch('/api/gateway?tabela=faq')
+    const URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec?aba=faq";
 
+    fetch(URL)
+      .then(res => res.json())
+      .then(dados => {
+        const faq = document.getElementById("faq");
+        faq.innerHTML = "";
 
+        dados.forEach(item => {
+          faq.innerHTML += `
+            <div class="faq-item">
+              <h3>${item.pergunta}</h3>
+              <p>${item.resposta}</p>
+            </div>
+          `;
+        });
+      });
 
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById('faq-list');
-    data.records.forEach(record => {
-  const { pergunta, resposta } = record.fields || {};
-
-      if (pergunta && resposta) {
-        const div = document.createElement('div');
-        div.className = 'faq-item';
-        div.innerHTML = `<h3>${pergunta}</h3><p>${resposta}</p>`;
-        container.appendChild(div);
-      }
-    });
-  })
-  .catch(err => {
-    document.getElementById('faq-list').innerHTML = '<p>Erro ao carregar dados. Verifique a conexão com o banco.</p>';
-    console.error(err);
-  });
+    function voltar() {
+      window.location.href = "index.html";
+    }
   </script>
-<button id="voltar-fixo" onclick="window.history.back()">⬅️ Voltar</button>
+
 </body>
 </html>
-
-
-
-
-
-

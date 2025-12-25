@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Meu Cartão | Cartão AproveitAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #e8fff3;
+    }
+
+    /* ===== CABEÇALHO PADRÃO ===== */
+    .header {
+      max-width: 1100px;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .header img {
+      height: 90px;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: #0a7a3b;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    /* ===== CARTÃO ===== */
+    .card-container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 14px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .cartao {
+      border: 2px dashed #ccc;
+      padding: 25px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .cartao-esq img {
+      height: 70px;
+      margin-bottom: 15px;
+    }
+
+    .cartao-esq p {
+      margin: 6px 0;
+      font-size: 15px;
+    }
+
+    .cartao-dir {
+      text-align: right;
+      font-size: 14px;
+    }
+
+    .acoes {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    .btn {
+      background: #0a7a3b;
+      color: #fff;
+      border: none;
+      padding: 12px 22px;
+      font-size: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 8px;
+    }
+
+    .btn:hover {
+      background: #066331;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CABEÇALHO -->
+  <div class="header">
+    <img src="logo-prometheus.png" alt="Prometheus EROPRO">
+    <h1>Cartão AproveitAI</h1>
+    <img src="logo-aproveitai.png" alt="Cartão AproveitAI">
+  </div>
+
+  <!-- CARTÃO -->
+  <div class="card-container">
+    <div class="cartao">
+      <div class="cartao-esq">
+        <img src="logo-aproveitai.png" alt="Cartão AproveitAI">
+
+        <p><strong>Nome:</strong> <span id="nome">-</span></p>
+        <p><strong>CPF:</strong> <span id="cpf">-</span></p>
+        <p><strong>ID Público:</strong> <span id="id">-</span></p>
+        <p><strong>Grupo:</strong> <span id="grupo">-</span></p>
+        <p><strong>Cidade:</strong> <span id="cidade">-</span></p>
+        <p><strong>Data de Cadastro:</strong> <span id="data">-</span></p>
+      </div>
+
+      <div class="cartao-dir">
+        <strong>Validação</strong><br><br>
+        Apresente este cartão junto com documento oficial com foto.<br><br>
+        Suporte: (28) 99969-2303<br>
+        Email: cartao.aproveitai@gmail.com<br>
+        <a href="https://www.aproveitai.com.br" target="_blank">www.aproveitai.com.br</a>
+      </div>
+    </div>
+
+    <div class="acoes">
+      <button class="btn" onclick="window.print()">🖨️ Imprimir / Salvar Cartão</button>
+      <button class="btn" onclick="voltar()">⬅️ Voltar ao site</button>
+    </div>
+  </div>
+
+  <script>
+    function voltar() {
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>

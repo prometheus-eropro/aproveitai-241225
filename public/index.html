@@ -40,6 +40,17 @@ html,body{
 .site-footer{background:#052b15;color:#fff;padding:20px 10px;display:flex;flex-wrap:wrap;gap:20px;border-top:4px solid #0a7f2e}
 .site-footer ul{list-style:none;padding:0;margin:10px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
 .site-footer a{color:#fff;text-decoration:none}
+
+
+/* AJUSTE LOGOS */
+.logo-area img, .topo-logos img, .logo img, header img {
+  max-height: 140px;
+  width: auto;
+  height: auto;
+}
+@media (max-width: 768px){
+  .logo-area img, .topo-logos img, .logo img, header img { max-height: 90px; }
+}
 </style>
 </head>
 
@@ -61,7 +72,7 @@ html,body{
   <div class="cta-row">
     <a href="https://wa.me/5528999692303?text=Olá,%20quero%20ser%20cliente%20do%20Cartão%20AproveitAI." target="_blank">Quero ser Cliente</a>
     <a href="painelcliente.html">Área do Cliente</a>
-    <a href="painelparceiro.html">Área do Parceiro</a>
+    <a href="paineldoparceiro.html">Área do Parceiro</a>
     <a href="https://wa.me/5528999692303?text=Olá,%20sou%20comerciante%20e%20quero%20ser%20parceiro." target="_blank">Quero ser Parceiro</a>
   </div>
 </div>
@@ -108,8 +119,14 @@ html,body{
 </footer>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXZpsNWvfsfjoFRMhOn6SXnBEjnUcU-kcGPhGssr30Gl9TOyRUjQaz3GmVce7iGsBc/exec";
 const LOGO_PADRAO = "/logo-aproveitai.png";
+<select id="cidade"></select>
+<select id="ramo"></select>
+<button id="btnFiltrar">Filtrar</button>
+
+<div id="estado"></div>
+<div id="grid"></div>
 
 const grid = document.getElementById("grid");
 const estado = document.getElementById("estado");
@@ -120,8 +137,6 @@ const ramoSelect = document.getElementById("ramo");
 const btnFiltrar = document.getElementById("btnFiltrar");
 
 let parceiros = [];
-
-estado.innerText = "Carregando parceiros...";
 
 fetch(`${SCRIPT_URL}?aba=parceiros`)
   .then(r => r.json())
@@ -135,8 +150,6 @@ fetch(`${SCRIPT_URL}?aba=parceiros`)
       return;
     }
 
-    estado.innerText = "";
-    grid.hidden = false;
     popularFiltros();
     renderizar(parceiros);
   })
@@ -186,8 +199,37 @@ btnFiltrar.onclick = () => {
 
   renderizar(filtrados);
 };
+</script>
+<div id="cookieBanner" class="cookie-banner">
+  Usamos cookies para melhorar sua experiência. Ao continuar, você concorda com nossa
+  <a href="privacidade.html">Política de Privacidade</a>.
+  <button onclick="aceitarCookies()">OK</button>
+</div>
 
-document.getElementById("ano").innerText = new Date().getFullYear();
+<style>
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #222;
+  color: #fff;
+  padding: 15px;
+  display: none;
+  text-align: center;
+}
+.cookie-banner button {
+  margin-left: 10px;
+}
+</style>
+
+<script>
+function aceitarCookies() {
+  localStorage.setItem('cookiesAceitos', 'true');
+  document.getElementById('cookieBanner').style.display = 'none';
+}
+if (!localStorage.getItem('cookiesAceitos')) {
+  document.getElementById('cookieBanner').style.display = 'block';
+}
 </script>
 
 </body>

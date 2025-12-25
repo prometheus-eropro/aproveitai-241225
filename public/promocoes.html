@@ -2,91 +2,59 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Promoções | AproveitAI</title>
+<title>Promoções | Cartão AproveitAI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f5f7fa;
-  margin: 0;
+body{margin:0;font-family:Arial;background:#f5f6f7}
+.topo{
+  max-width:1200px;margin:20px auto 0;padding:20px 30px;
+  background:#fff;border-radius:18px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 6px 16px rgba(0,0,0,.08)
 }
-header {
-  background: #0a7f2e;
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 20px;
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-.card {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.card h3 {
-  color: #0a7f2e;
-  margin-top: 0;
-}
-.validade {
-  font-size: 0.9em;
-  color: #666;
-}
-.voltar {
-  text-align: center;
-  margin-top: 30px;
-}
-.voltar a {
-  color: #0a7f2e;
-  text-decoration: none;
-}
+.logo{height:140px}
+.titulo-topo{font-size:34px;font-weight:900;color:#0a7b34;flex:1;text-align:center}
+
+.container{max-width:1100px;margin:40px auto;padding:0 16px}
+h1{text-align:center;color:#0a7b34}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:30px}
+.card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 4px 10px rgba(0,0,0,.08)}
+.voltar{margin:40px auto 0;display:inline-block;background:#0a7b34;color:#fff;padding:10px 22px;border-radius:10px}
 </style>
 </head>
 
 <body>
 
-<header>
-  <h2>Promoções Ativas</h2>
-</header>
+<div class="topo">
+  <img src="logo-prometheus.png" class="logo">
+  <div class="titulo-topo">Cartão AproveitAI</div>
+  <img src="logo-aproveitai.png" class="logo">
+</div>
 
 <div class="container">
-  <div id="promocoes" class="grid"></div>
+  <h1>Promoções Ativas</h1>
+  <div id="lista" class="grid"></div>
 
-  <div class="voltar">
-    <a href="/">← Voltar ao site</a>
+  <div style="text-align:center">
+    <div class="voltar" onclick="location.href='index.html'">← Voltar ao site</div>
   </div>
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+const ENDPOINT="https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
 
-fetch(`${SCRIPT_URL}?aba=promocoes`)
-  .then(r => r.json())
-  .then(dados => {
-    const ativos = dados.filter(p => String(p.ativo).toLowerCase() === "sim");
-    const div = document.getElementById("promocoes");
-
-    if (!ativos.length) {
-      div.innerHTML = "Nenhuma promoção disponível.";
-      return;
-    }
-
-    div.innerHTML = ativos.map(p => `
-      <div class="card">
-        <h3>${p.titulo || p.nome}</h3>
-        <p>${p.descricao || ""}</p>
-      </div>
-    `).join("");
-  });
+fetch(ENDPOINT+"?aba=promocoes")
+.then(r=>r.json())
+.then(d=>{
+  document.getElementById("lista").innerHTML=d.map(p=>`
+    <div class="card">
+      <b>${p.titulo}</b><br>
+      ${p.descricao||""}
+    </div>
+  `).join("");
+});
 </script>
+
 </body>
 </html>

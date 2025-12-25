@@ -2,289 +2,131 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Painel do Parceiro | AproveitAI</title>
+<title>Área do Parceiro | Cartão AproveitAI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f5f7fa;
-  margin: 0;
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:#f5f6f7;
 }
-header {
-  background: #0a7f2e;
-  color: white;
-  padding: 20px;
-  text-align: center;
+
+/* CABEÇALHO PADRÃO */
+.topo{
+  max-width:1200px;
+  margin:20px auto 0;
+  padding:18px 24px;
+  background:#ffffff;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
 }
-.container {
-  max-width: 500px;
-  margin: auto;
-  padding: 20px;
+.logo{height:140px;}
+.titulo-topo{
+  font-size:30px;
+  font-weight:900;
+  color:#0a7b34;
+  text-align:center;
+  flex:1;
 }
-.card {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+/* CONTEÚDO */
+.container{
+  max-width:900px;
+  margin:40px auto;
+  padding:0 16px;
 }
-input, button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
+.card{
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+  padding:30px;
+  text-align:center;
 }
-button {
-  background: #0a7f2e;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+h1{color:#0a7b34;}
+input{
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border-radius:10px;
+  border:1px solid #d1d5db;
 }
-.result {
-  margin-top: 15px;
-  font-weight: bold;
+button{
+  margin-top:14px;
+  width:100%;
+  padding:14px;
+  background:#0a7b34;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
 }
-.voltar {
-  margin-top: 20px;
-  text-align: center;
-}
-.voltar a {
-  color: #0a7f2e;
-  text-decoration: none;
+.voltar{
+  margin-top:20px;
+  background:#0a7b34;
+  color:#fff;
+  padding:10px 20px;
+  border-radius:10px;
+  display:inline-block;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <h2>Painel do Parceiro</h2>
-</header>
+<div class="topo">
+  <img src="logo-prometheus.png" class="logo">
+  <div class="titulo-topo">Cartão AproveitAI</div>
+  <img src="logo-aproveitai.png" class="logo">
+</div>
 
 <div class="container">
-
   <div class="card">
-    <h3>Consultar Cliente</h3>
+    <h1 id="boasvindas">Bem-vindo, Parceiro</h1>
 
-    <input type="text" id="cartao" placeholder="Número do cartão (APV000123)">
-    <button onclick="consultar()">Consultar</button>
+    <input id="cnpj" placeholder="CNPJ (somente números)">
+    <input id="token" placeholder="Token">
+    <button onclick="entrar()">Entrar</button>
 
-    <div id="resultado" class="result"></div>
+    <div class="voltar" onclick="window.location.href='index.html'">
+      ← Voltar ao site
+    </div>
   </div>
-
-  <div class="voltar">
-    <a href="/">← Voltar ao site</a>
-  </div>
-
 </div>
 
 <script>
-const API_BASE = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
-const TOKEN = "APROVEITAI2025";
+const ENDPOINT="https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
 
-function consultar() {
-  const cartao = document.getElementById("cartao").value.trim();
-  const resultado = document.getElementById("resultado");
+async function entrar(){
+  const cnpj=document.getElementById("cnpj").value.replace(/\D/g,"");
+  const token=document.getElementById("token").value.trim();
+  if(!cnpj||!token){alert("Preencha os campos");return;}
 
-  if (!cartao) {
-    resultado.innerText = "Informe o número do cartão.";
-    return;
-  }
+  const res=await fetch(ENDPOINT+"?aba=parceiros");
+  const dados=await res.json();
 
-  fetch(`${API_BASE}?aba=clientes&token=${TOKEN}`)
-    .then(res => res.json())
-    .then(dados => {
-      const cliente = dados.find(c => c.idPublico === cartao);
+  const parceiro=dados.find(p=>p.cnpj===cnpj && p.token===token);
+  if(!parceiro){alert("Acesso inválido");return;}
 
-      if (!cliente) {
-        resultado.innerText = "Cliente não encontrado.";
-        return;
-      }
-
-      if (cliente.ativo === true || cliente.ativo === "TRUE") {
-        resultado.innerText = "✅ Cliente ATIVO – Desconto autorizado";
-      } else {
-        resultado.innerText = "❌ Cliente INATIVO – Desconto não autorizado";
-      }
-    })
-    .catch(err => {
-      resultado.innerText = "Erro na consulta.";
-      console.error(err);
-    });
+  document.getElementById("boasvindas").innerText =
+    "Bem-vindo, " + parceiro.nome;
 }
-</script>
+function gerarCodigoERO() {
+  const agora = new Date();
 
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<title>Painel do Parceiro • AproveitAI</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  const ano = agora.getFullYear();
+  const mes = String(agora.getMonth() + 1).padStart(2, '0');
+  const dia = String(agora.getDate()).padStart(2, '0');
+  const hora = String(agora.getHours()).padStart(2, '0');
+  const min = String(agora.getMinutes()).padStart(2, '0');
 
-<style>
-/* ====== ESTILO ORIGINAL (MANTIDO) ====== */
-body {
-  margin: 0;
-  font-family: system-ui, Arial, sans-serif;
-  background: linear-gradient(135deg, #bdeeff, #81d4fa);
-  color: #232630;
-}
-.brandline {
-  display: grid;
-  grid-template-columns: 140px 1fr 140px;
-  gap: 12px;
-  align-items: center;
-  justify-items: center;
-  margin: 18px auto 0;
-  max-width: 600px;
-}
-.brandline img { height: 100px; object-fit: contain; }
-.pill {
-  background: #e9fff1;
-  border: 1px solid #b7efc2;
-  color: #0a4c1a;
-  border-radius: 999px;
-  padding: 12px 20px;
-  font-weight: 900;
-  font-size: 1.6rem;
-  text-align: center;
-}
-.wrap { max-width: 600px; margin: auto; padding: 16px; }
-.card {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 6px 22px #0001;
-  padding: 20px;
-  margin: 18px auto;
-}
-input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-button {
-  margin-top: 16px;
-  padding: 12px 18px;
-  font-weight: 700;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-.verde { background:#0a7f2e; }
-.vermelho { background:#d10000; }
-</style>
-</head>
-
-<body>
-
-<!-- LOGOS -->
-<div class="brandline">
-  <img src="logo-prometheus.png">
-  <div class="pill">Cartão AproveitAI</div>
-  <img src="logo-aproveitai.png">
-</div>
-
-<div class="wrap">
-
-<!-- 🔐 LOGIN -->
-<div class="card" id="loginBox">
-  <h2>Acesso do Parceiro</h2>
-  <label>CNPJ</label>
-  <input id="cnpj" placeholder="Digite seu CNPJ">
-
-  <label>Token</label>
-  <input id="token" type="password" placeholder="Digite seu token">
-
-  <button class="verde" onclick="login()">Entrar</button>
-  <div id="erroLogin" style="color:red;margin-top:10px"></div>
-</div>
-
-<!-- 🧑‍💼 PAINEL -->
-<div class="card" id="painelBox" style="display:none">
-  <h2>Bem-vindo, <span id="nomeParceiro"></span></h2>
-
-  <label>CPF ou ID do Cliente</label>
-  <input id="cpf">
-
-  <button class="verde" onclick="validar()">Validar Cliente</button>
-  <pre id="resultado"></pre>
-
-  <button class="vermelho" onclick="logout()">Sair</button>
-</div>
-
-</div>
-
-<script>
-/* ====== CONTROLE DE SESSÃO ====== */
-const parceiro = JSON.parse(localStorage.getItem("parceiro"));
-
-if (parceiro) abrirPainel(parceiro);
-
-/* ====== LOGIN ====== */
-async function login() {
-  const cnpj = document.getElementById("cnpj").value.replace(/\D/g,'');
-  const token = document.getElementById("token").value.trim();
-  const erro = document.getElementById("erroLogin");
-
-  erro.textContent = "";
-
-  if (!cnpj || !token) {
-    erro.textContent = "Preencha CNPJ e token.";
-    return;
-  }
-
-  const res = await fetch("/api/consulta", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({ tipo:"parceirosLogin", cnpj, token })
-  });
-
-  const data = await res.json();
-
-  if (!res.ok || !data.valido) {
-    erro.textContent = data.erro || "Acesso negado.";
-    return;
-  }
-
-  localStorage.setItem("parceiro", JSON.stringify(data.parceiro));
-  abrirPainel(data.parceiro);
+  return `ERO-${ano}${mes}${dia}-${hora}${min}`;
 }
 
-/* ====== ABRIR PAINEL ====== */
-function abrirPainel(p) {
-  document.getElementById("loginBox").style.display="none";
-  document.getElementById("painelBox").style.display="block";
-  document.getElementById("nomeParceiro").textContent = p.nome || "Parceiro";
-}
-
-/* ====== LOGOUT ====== */
-function logout() {
-  localStorage.removeItem("parceiro");
-  location.reload();
-}
-
-/* ====== VALIDAR CLIENTE ====== */
-async function validar() {
-  const cpf = document.getElementById("cpf").value.trim();
-  const parceiro = JSON.parse(localStorage.getItem("parceiro"));
-  const r = await fetch("/api/consulta", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({
-      tipo:"clientesValidar",
-      cpf,
-      cnpj: parceiro.cnpj,
-      nomeParceiro: parceiro.nome
-    })
-  });
-  document.getElementById("resultado").textContent =
-    JSON.stringify(await r.json(), null, 2);
-}
 </script>
 
 </body>

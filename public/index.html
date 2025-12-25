@@ -1,198 +1,239 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cartão AproveitAI</title>
   <style>
-    body{font-family:Arial,sans-serif;margin:0;min-height:100vh;display:flex;flex-direction:column;background:#fff}
-    header{text-align:center;padding:20px}
-    .brandline{display:grid;grid-template-columns:140px 1fr 140px;gap:12px;align-items:center;justify-items:center;max-width:1000px;margin:18px auto 0;padding:0 12px}
-    .brandline img{height:130px;object-fit:contain}
-    .pill{background:#e9fff1;border:1px solid #b7efc2;color:#0a4c1a;border-radius:999px;padding:14px 24px;font-weight:900;font-size:2rem;text-align:center}
-    .slogan{text-align:center;color:#0a7f2e;font-weight:700;margin:6px 0 18px}
-    .hero{max-width:980px;margin:0 auto;padding:0 12px}
-    .cta{background:#fff;border-radius:14px;box-shadow:0 6px 22px #0001;padding:18px 16px;margin:14px auto}
-    .cta h3{margin:0 0 6px;text-align:center}
-    .cta p{margin:0;text-align:center;color:#333}
-    .btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:14px 0 0}
-    .btn{background:#0a7f2e;color:#fff;border:none;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block}
-    .filters{background:linear-gradient(135deg,#bdeeff,#81d4fa);padding:14px 12px;margin-top:10px}
-    .filters .row{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1fr 220px 220px 120px;gap:10px}
-    input,select{padding:10px;border-radius:8px;border:1px solid #cfd6dd}
-    .grid{max-width:980px;margin:0 auto;padding:16px 12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-    .card{background:#fff;border-radius:14px;box-shadow:0 6px 22px #0001;padding:14px;display:grid;grid-template-columns:62px 1fr;gap:12px;align-items:center}
-    .logo{width:62px;height:62px;border-radius:12px;object-fit:contain;background:#f4f7f9;border:1px solid #e5eaee}
-    .nome{font-weight:900;color:#0a4c1a;margin:0}
-    .meta{margin:4px 0 0;color:#333;font-size:.95rem}
-    .tag{display:inline-block;margin-top:8px;background:#e9fff1;border:1px solid #b7efc2;color:#0a4c1a;border-radius:999px;padding:5px 10px;font-weight:800;font-size:.85rem}
-    .foot{background:#063d1b;color:#fff;margin-top:auto}
-    .foot .wrap{max-width:980px;margin:0 auto;padding:18px 12px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:18px}
-    .foot a{color:#bff7cc;text-decoration:none}
-    @media (max-width:920px){
-      .filters .row{grid-template-columns:1fr 1fr;}
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f0fdf4;
+    }
+
+    header {
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    header img {
+      height: 60px;
+    }
+
+    .titulo {
+      font-size: 28px;
+      color: #037c3c;
+      font-weight: bold;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .subtitulo {
+      text-align: center;
+      color: #037c3c;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .botoes-centro {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 10px 0;
+      gap: 10px;
+    }
+
+    .botoes-centro button {
+      padding: 10px 16px;
+      background-color: #037c3c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .filtros {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px;
+      background-color: #c3eeff;
+      flex-wrap: wrap;
+    }
+
+    .filtros input, .filtros select {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .container-parceiros {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px;
+    }
+
+    .parceiro-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 5px #ccc;
+      padding: 10px;
+      width: 250px;
+    }
+
+    .parceiro-card img {
+      width: 50px;
+    }
+
+    footer {
+      background-color: #013b1c;
+      color: white;
+      padding: 15px 20px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    footer div {
+      flex: 1;
+      margin: 10px;
+    }
+
+    footer strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    a {
+      color: white;
     }
   </style>
 </head>
 <body>
 
-  <header class="brandline">
-    <img src="logo-prometheus.png" alt="Prometheus EROPRO" />
-    <div class="pill">Cartão AproveitAI</div>
-    <img src="logo-aproveitai.png" alt="AproveitAI" />
+  <header>
+    <img src="https://aproveitai.vercel.app/logo-cons.png" alt="Logo 1">
+    <div class="titulo">Cartão AproveitAI</div>
+    <img src="https://aproveitai.vercel.app/logo-aproveitai.png" alt="Logo 2">
   </header>
 
-  <div class="slogan">Tecnologia com ConsciêncIA gera Resultado.</div>
+  <p class="subtitulo">Tecnologia com ConsciêncIA gera Resultado.</p>
 
-  <div class="hero">
-    <div class="cta">
-      <h3>Bem-vindo à PROMETHEUS EROPRO Soluções Inteligentes!</h3>
-      <p>Assine e experimente o <b>Cartão AproveitAI</b> e comece a economizar de verdade.</p>
-      <div class="btns">
-        <a class="btn" href="#" id="btnQueroCliente">Quero ser Cliente</a>
-        <a class="btn" href="painelcliente.html">Área do Cliente</a>
-        <a class="btn" href="painelparceiro.html">Área do Parceiro</a>
-        <a class="btn" href="#" id="btnQueroParceiro">Quero ser Parceiro</a>
-      </div>
-    </div>
+  <div class="botoes-centro">
+    <button onclick="location.href='cliente.html'">Quero ser Cliente</button>
+    <button onclick="location.href='painelcliente.html'">Área do Cliente</button>
+    <button onclick="location.href='painelparceiro.html'">Área do Parceiro</button>
+    <button onclick="location.href='parceiro.html'">Quero ser Parceiro</button>
   </div>
 
-  <div class="filters">
-    <div class="row">
-      <input id="buscaNome" placeholder="Buscar por nome..." />
-      <select id="filtroCidade"><option value="">Todas as cidades</option></select>
-      <select id="filtroRamo"><option value="">Todos os ramos</option></select>
-      <button class="btn" id="btnFiltrar">Filtrar</button>
-    </div>
+  <div class="filtros">
+    <input type="text" id="filtroNome" placeholder="Buscar por nome...">
+    <select id="filtroCidade">
+      <option value="">Todas as cidades</option>
+    </select>
+    <select id="filtroRamo">
+      <option value="">Todos os ramos</option>
+    </select>
+    <button onclick="filtrarParceiros()">Filtrar</button>
   </div>
 
-  <div id="status" style="text-align:center;padding:10px;color:#0a4c1a;font-weight:800;">Carregando parceiros...</div>
-  <div id="listaParceiros" class="grid"></div>
+  <div id="parceiros" class="container-parceiros">Carregando parceiros...</div>
 
-  <footer class="foot">
-    <div class="wrap">
-      <div>
-        <div style="font-weight:900;font-size:1.2rem">Cartão AproveitAI</div>
-        <div>PROMETHEUS EROPRO Soluções Inteligentes LTDA</div>
-        <div>CNPJ: 58.584.332/0001-40</div>
-        <div>📧 <a href="mailto:cartao.aproveitai@gmail.com">cartao.aproveitai@gmail.com</a></div>
-        <div>📞 WhatsApp: (28) 99969-2303</div>
-        <div>📷 Instagram: <a href="https://instagram.com/cartao.aproveitai" target="_blank">@cartao.aproveitai</a></div>
-      </div>
-      <div>
-        <div style="font-weight:900;margin-bottom:6px">Links Rápidos</div>
-        <div><a href="beneficios.html">Benefícios</a></div>
-        <div><a href="promocoes.html">Promoções</a></div>
-        <div><a href="duvidas.html">Dúvidas</a></div>
-        <div><a href="privacidade.html">Privacidade</a></div>
-        <div><a href="termos.html">Termos</a></div>
-        <div><a href="excluir.html">Excluir Dados</a></div>
-      </div>
-      <div>
-        <div style="font-weight:900;margin-bottom:6px">Depoimentos</div>
-        <div><a href="depoimentos.html">Ver depoimentos</a></div>
-      </div>
+  <footer>
+    <div>
+      <strong>Cartão AproveitAI</strong>
+      PROMETHEUS EROPRO Soluções Inteligentes LTDA<br>
+      CNPJ: 58.584.332/0001-40<br>
+      📧 cartao.aproveitai@gmail.com<br>
+      📞 WhatsApp: (28) 99969-2303<br>
+      📷 Instagram: @cartao.aproveitai
+    </div>
+    <div>
+      <strong>Links Rápidos</strong>
+      <a href="beneficios.html">Benefícios</a><br>
+      <a href="promocoes.html">Promoções</a><br>
+      <a href="duvidas.html">Dúvidas</a><br>
+      <a href="politica.html">Privacidade</a><br>
+      <a href="termos.html">Termos</a><br>
+      <a href="excluir.html">Excluir Dados</a>
+    </div>
+    <div>
+      <strong>Depoimentos</strong>
+      <a href="#">Ver depoimentos</a>
     </div>
   </footer>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbzXZlpsNhWfsfiofRhM6n5X9hEdnuC_zRZYWITQOmZdcyrK/exec"; // seu endpoint
 
-    const elLista = document.getElementById("listaParceiros");
-    const elStatus = document.getElementById("status");
+    let dadosParceiros = [];
 
-    const elBusca = document.getElementById("buscaNome");
-    const elCidade = document.getElementById("filtroCidade");
-    const elRamo = document.getElementById("filtroRamo");
-
-    let parceiros = [];
-
-    function norm(v){ return String(v || "").toLowerCase().trim(); }
-    function isAtivo(v){ return ["sim","true","1","ativo"].includes(norm(v)); }
-    function wa(v){
-      const d = String(v || "").replace(/\D/g, "");
-      return d ? "https://wa.me/55" + d : "";
-    }
-
-    function popularFiltros(lista){
-      const cidades = [...new Set(lista.map(p => p.cidade || p.Cidade || "").filter(Boolean))].sort();
-      const ramos = [...new Set(lista.map(p => p.ramo || p.Ramo || p.segmento || "").filter(Boolean))].sort();
-      elCidade.innerHTML = `<option value="">Todas as cidades</option>` + cidades.map(c => `<option>${c}</option>`).join("");
-      elRamo.innerHTML = `<option value="">Todos os ramos</option>` + ramos.map(r => `<option>${r}</option>`).join("");
-    }
-
-    function render(lista){
-      if(!lista.length){
-        elStatus.textContent = "Nenhum parceiro encontrado.";
-        elLista.innerHTML = "";
-        return;
-      }
-      elStatus.textContent = "";
-      elLista.innerHTML = lista.map(p => {
-        const nome = p.nomeFantasia || p.nome || "Parceiro";
-        const cidade = p.cidade || "-";
-        const ramo = p.ramo || "-";
-        const desc = p.desconto || p.beneficio || "";
-        const logo = p.logoURL || "logo-aproveitai.png";
-        const zap = wa(p.whatsapp || p.celular);
-        const insta = p.instagram || "";
-
-        return `
-          <div class="card">
-            <img class="logo" src="${logo}" onerror="this.src='logo-aproveitai.png'" />
-            <div>
-              <p class="nome">${nome}</p>
-              <div class="meta"><b>Cidade:</b> ${cidade}</div>
-              <div class="meta"><b>Ramo:</b> ${ramo}</div>
-              ${desc ? `<div class="meta"><b>Desconto:</b> ${desc}</div>` : ""}
-              <div class="tag">
-                ${zap ? `<a href="${zap}" target="_blank">WhatsApp</a>` : ""}
-                ${insta ? ` • <a href="https://instagram.com/${insta.replace('@','')}" target="_blank">${insta}</a>` : ""}
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function aplicarFiltro(){
-      const q = norm(elBusca.value);
-      const c = norm(elCidade.value);
-      const r = norm(elRamo.value);
-
-      const lista = parceiros.filter(p => {
-        const nome = norm(p.nomeFantasia || p.nome || "");
-        const cidade = norm(p.cidade || "");
-        const ramo = norm(p.ramo || "");
-        return (!q || nome.includes(q)) && (!c || cidade === c) && (!r || ramo === r);
+    fetch(API_URL + "?aba=parceiros")
+      .then(res => res.json())
+      .then(data => {
+        dadosParceiros = data.filter(p => p.ativo === 'sim');
+        carregarFiltros(dadosParceiros);
+        exibirParceiros(dadosParceiros);
+      })
+      .catch(err => {
+        document.getElementById("parceiros").innerHTML = "Erro ao carregar parceiros.";
+        console.error(err);
       });
 
-      render(lista);
+    function carregarFiltros(dados) {
+      const cidades = [...new Set(dados.map(p => p.cidade))];
+      const ramos = [...new Set(dados.map(p => p.ramo))];
+
+      const selCidade = document.getElementById("filtroCidade");
+      cidades.forEach(c => selCidade.innerHTML += `<option value="${c.toLowerCase()}">${c}</option>`);
+
+      const selRamo = document.getElementById("filtroRamo");
+      ramos.forEach(r => selRamo.innerHTML += `<option value="${r.toLowerCase()}">${r}</option>`);
     }
 
-    async function carregarParceiros(){
-      try{
-        elStatus.textContent = "Carregando parceiros...";
-        const res = await fetch(API_URL + "?aba=parceiros");
-        const data = await res.json();
-        const lista = Array.isArray(data) ? data : data.data || [];
-        parceiros = lista.filter(p => isAtivo(p.ativo || p.Ativo));
-        popularFiltros(parceiros);
-        render(parceiros);
-      }catch(e){
-        console.error(e);
-        elStatus.textContent = "Erro ao carregar parceiros.";
-        elLista.innerHTML = "";
+    function filtrarParceiros() {
+      const nome = document.getElementById("filtroNome").value.toLowerCase();
+      const cidade = document.getElementById("filtroCidade").value;
+      const ramo = document.getElementById("filtroRamo").value;
+
+      const filtrado = dadosParceiros.filter(p =>
+        p.nome.toLowerCase().includes(nome) &&
+        (cidade === "" || p.cidade.toLowerCase() === cidade) &&
+        (ramo === "" || p.ramo.toLowerCase() === ramo)
+      );
+
+      exibirParceiros(filtrado);
+    }
+
+    function exibirParceiros(lista) {
+      const container = document.getElementById("parceiros");
+      container.innerHTML = "";
+
+      if (lista.length === 0) {
+        container.innerHTML = "<p>Nenhum parceiro encontrado.</p>";
+        return;
       }
+
+      lista.forEach(p => {
+        container.innerHTML += `
+          <div class="parceiro-card">
+            <img src="${p.logoURL || 'https://aproveitai.vercel.app/logo-aproveitai.png'}" alt="Logo">
+            <p><strong>${p.nome}</strong></p>
+            <p><strong>Cidade:</strong> ${p.cidade}</p>
+            <p><strong>Ramo:</strong> ${p.ramo}</p>
+            <p><a href="https://wa.me/${p.whatsapp}" target="_blank">WhatsApp</a></p>
+          </div>
+        `;
+      });
     }
-
-    document.getElementById("btnFiltrar").addEventListener("click", aplicarFiltro);
-    elBusca.addEventListener("input", aplicarFiltro);
-    document.getElementById("btnQueroCliente").onclick = () => window.open("https://wa.me/5528999692303?text=" + encodeURIComponent("Olá! Quero ser cliente do Cartão AproveitAI."), "_blank");
-    document.getElementById("btnQueroParceiro").onclick = () => window.open("https://wa.me/5528999692303?text=" + encodeURIComponent("Olá! Quero ser parceiro do Cartão AproveitAI."), "_blank");
-
-    carregarParceiros();
   </script>
 </body>
 </html>

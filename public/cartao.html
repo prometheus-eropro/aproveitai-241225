@@ -1,166 +1,149 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Meu Cartão | Cartão AproveitAI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #e8fff3;
-    }
-
-    /* ===== CABEÇALHO PADRÃO ===== */
-    .header {
-      max-width: 1100px;
-      margin: 20px auto;
-      background: #fff;
-      border-radius: 14px;
-      padding: 20px 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .header img {
-      height: 90px;
-    }
-
-    .header h1 {
-      margin: 0;
-      color: #0a7a3b;
-      font-size: 28px;
-      font-weight: bold;
-    }
-
-    /* ===== CARTÃO ===== */
-    .card-container {
-      max-width: 900px;
-      margin: 40px auto;
-      background: #fff;
-      border-radius: 14px;
-      padding: 30px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .cartao {
-      border: 2px dashed #ccc;
-      padding: 25px;
-      border-radius: 12px;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-
-    .cartao-esq img {
-      height: 70px;
-      margin-bottom: 15px;
-    }
-
-    .cartao-esq p {
-      margin: 6px 0;
-      font-size: 15px;
-    }
-
-    .cartao-dir {
-      text-align: right;
-      font-size: 14px;
-    }
-
-    .acoes {
-      text-align: center;
-      margin-top: 25px;
-    }
-
-    .btn {
-      background: #0a7a3b;
-      color: #fff;
-      border: none;
-      padding: 12px 22px;
-      font-size: 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin: 8px;
-    }
-
-    .btn:hover {
-      background: #066331;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Meu Cartão | Cartão AproveitAI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{margin:0;font-family:system-ui,Arial,sans-serif;background:linear-gradient(135deg,#e7fff0,#d7f8ff);color:#232630}
+.brandline{display:grid;grid-template-columns:140px 1fr 140px;gap:12px;align-items:center;justify-items:center;margin:18px auto 0;max-width:900px;padding:0 12px}
+.brandline img{height:90px;object-fit:contain}
+.pill{background:#e9fff1;border:1px solid #b7efc2;color:#0a4c1a;border-radius:999px;padding:10px 18px;font-weight:900;font-size:1.6rem;text-align:center}
+.wrap{max-width:900px;margin:auto;padding:16px}
+.card{background:#fff;border-radius:14px;box-shadow:0 6px 22px #0001;padding:18px;margin:18px auto}
+.box{border-radius:14px;padding:16px;border:2px dashed #b8c2cc;background:#f7fbff;display:grid;grid-template-columns:1fr 220px;gap:16px;align-items:center}
+.box.ativo{background:#e9fbe9;border-color:#1e8e3e}
+.box.inativo{background:#fdeaea;border-color:#d93025}
+h2{margin:0 0 8px;color:#0a4c1a}
+.kv{line-height:1.65}
+.kv b{display:inline-block;min-width:110px}
+.qr{display:flex;flex-direction:column;align-items:center;gap:10px}
+.qr img{width:180px;height:180px;border-radius:12px;border:1px solid #e5eaee;background:#fff}
+.actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.btn{background:#0a7f2e;color:#fff;border:none;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer;min-width:220px}
+.btn2{background:#0a7f2e}
+.small{font-size:.9rem;color:#333;text-align:center;margin-top:10px}
+@media(max-width:820px){ .box{grid-template-columns:1fr} }
+</style>
 </head>
+
 <body>
 
-  <!-- CABEÇALHO -->
-  <div class="header">
-    <img src="logo-prometheus.png" alt="Prometheus EROPRO">
-    <h1>Cartão AproveitAI</h1>
-    <img src="logo-aproveitai.png" alt="Cartão AproveitAI">
-  </div>
+<div class="brandline">
+  <img src="logo-prometheus.png">
+  <div class="pill">Cartão AproveitAI</div>
+  <img src="logo-aproveitai.png">
+</div>
 
-  <!-- CARTÃO -->
-  <div class="card-container">
-    <div class="cartao">
-      <div class="cartao-esq">
-        <img src="logo-aproveitai.png" alt="Cartão AproveitAI">
+<div class="wrap">
+  <div class="card">
+    <div id="status" class="small">Carregando dados do cartão...</div>
 
-        <p><strong>Nome:</strong> <span id="nome">-</span></p>
-        <p><strong>CPF:</strong> <span id="cpf">-</span></p>
-        <p><strong>ID Público:</strong> <span id="id">-</span></p>
-        <p><strong>Grupo:</strong> <span id="grupo">-</span></p>
-        <p><strong>Cidade:</strong> <span id="cidade">-</span></p>
-        <p><strong>Data de Cadastro:</strong> <span id="data">-</span></p>
+    <div id="cartaoBox" class="box" style="display:none">
+      <div class="kv">
+        <h2>Validação</h2>
+        <div class="small" style="text-align:left;margin:0 0 10px">
+          Apresente este cartão junto com documento oficial com foto.
+        </div>
+
+        <div><b>Nome:</b> <span id="nome">-</span></div>
+        <div><b>CPF:</b> <span id="cpf">-</span></div>
+        <div><b>ID Público:</b> <span id="idPublico">-</span></div>
+        <div><b>Grupo:</b> <span id="grupo">-</span></div>
+        <div><b>Cidade:</b> <span id="cidade">-</span></div>
+        <div><b>Cadastro:</b> <span id="dataCadastro">-</span></div>
+        <div><b>Status:</b> <span id="statusCliente">-</span></div>
+
+        <div class="small" style="text-align:left;margin-top:10px">
+          Suporte: (28) 99969-2303 • Email: cartao.aproveitai@gmail.com • www.aproveitai.com.br
+        </div>
       </div>
 
-      <div class="cartao-dir">
-        <strong>Validação</strong><br><br>
-        Apresente este cartão junto com documento oficial com foto.<br><br>
-        Suporte: (28) 99969-2303<br>
-        Email: cartao.aproveitai@gmail.com<br>
-        <a href="https://www.aproveitai.com.br" target="_blank">www.aproveitai.com.br</a>
+      <div class="qr">
+        <div style="font-weight:900;color:#0a4c1a">QR Code</div>
+        <img id="qrImg" alt="QR Code">
+        <div class="small" id="qrHint">Aponte a câmera para validar.</div>
       </div>
     </div>
 
-    <div class="acoes">
+    <div class="actions">
       <button class="btn" onclick="window.print()">🖨️ Imprimir / Salvar Cartão</button>
-      <button class="btn" onclick="voltar()">⬅️ Voltar ao site</button>
+      <button class="btn btn2" onclick="voltar()">⬅ Voltar ao site</button>
     </div>
   </div>
+</div>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
+const API_URL = "https://script.google.com/macros/s/AKfycbzXZpsNWvfsfjoFRMhOn6SXnBEjnUcU-kcGPhGssr30Gl9TOyRUjQaz3GmVce7iGsBc/exec";
 
-if (!id) {
-  alert("ID do cartão não informado.");
+function norm(v){ return String(v ?? "").toLowerCase().trim(); }
+function isAtivo(v){
+  const s = norm(v);
+  return ["sim","true","1","ativo","yes"].includes(s);
 }
 
-https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec;
+function voltar(){
+  window.location.href = "index.html";
+}
 
+function qs(name){
+  return new URLSearchParams(window.location.search).get(name) || "";
+}
 
+(async function carregar(){
+  const id = qs("id");
+  const elStatus = document.getElementById("status");
+  const box = document.getElementById("cartaoBox");
 
-fetch(`${API_URL}&aba=clientes&idPublico=${id}`)
-  .then(res => res.json())
-  .then(data => {
-    if (!data || data.erro) {
-      alert("Erro ao carregar os dados do cartão.");
+  if(!id){
+    elStatus.textContent = "ID do cartão não informado.";
+    return;
+  }
+
+  try{
+    // tenta buscar direto por idPublico
+    const res = await fetch(`${API_URL}?aba=clientes&idPublico=${encodeURIComponent(id)}`);
+    const data = await res.json();
+
+    let c = null;
+    if(Array.isArray(data)){
+      c = data.find(x => String(x.idPublico).trim() === id);
+    }else{
+      c = data;
+    }
+
+    if(!c || !c.cpf){
+      elStatus.textContent = "Dados do cartão não encontrados.";
       return;
     }
 
-    document.getElementById("nome").innerText = data.nome;
-    document.getElementById("cpf").innerText = data.cpf;
-    document.getElementById("idPublico").innerText = data.idPublico;
-    document.getElementById("grupo").innerText = data.grupo;
-    document.getElementById("cidade").innerText = data.cidade;
-    document.getElementById("dataCadastro").innerText = data.dataCadastro;
+    const ativo = isAtivo(c.ativo);
+    box.classList.add(ativo ? "ativo" : "inativo");
 
-  })
-  .catch(err => {
-    console.error(err);
-    alert("Erro ao carregar os dados do cartão.");
-  });
+    document.getElementById("nome").textContent = c.nome || "-";
+    document.getElementById("cpf").textContent = c.cpf || "-";
+    document.getElementById("idPublico").textContent = c.idPublico || id;
+    document.getElementById("grupo").textContent = c.grupo || "-";
+    document.getElementById("cidade").textContent = c.cidade || "-";
+    document.getElementById("dataCadastro").textContent = c.dataCadastro || "-";
+    document.getElementById("statusCliente").textContent = ativo ? "ATIVO" : "INATIVO";
+
+    // QR aponta para validar (se você tiver validar.html). Se não tiver, ele abre o próprio cartão.
+    const urlValidacao = (window.location.origin + "/validar.html?id=" + encodeURIComponent(c.idPublico || id));
+    const urlFallback = (window.location.origin + "/cartao.html?id=" + encodeURIComponent(c.idPublico || id));
+    const finalUrl = urlValidacao; // troque para urlFallback se ainda não existir validar.html
+
+    document.getElementById("qrImg").src =
+      "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(finalUrl);
+
+    elStatus.style.display = "none";
+    box.style.display = "grid";
+  }catch(e){
+    console.error(e);
+    elStatus.textContent = "Erro ao carregar os dados do cartão.";
+  }
+})();
 </script>
+
 </body>
 </html>

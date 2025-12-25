@@ -2,131 +2,185 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Área do Parceiro | Cartão AproveitAI</title>
+<title>Área do Parceiro • Cartão AproveitAI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
-  margin:0;
-  font-family:Arial, Helvetica, sans-serif;
-  background:#f5f6f7;
-}
-
-/* CABEÇALHO PADRÃO */
-.topo{
-  max-width:1200px;
-  margin:20px auto 0;
-  padding:18px 24px;
-  background:#ffffff;
-  border-radius:18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
-}
-.logo{height:140px;}
-.titulo-topo{
-  font-size:30px;
-  font-weight:900;
-  color:#0a7b34;
-  text-align:center;
-  flex:1;
-}
-
-/* CONTEÚDO */
-.container{
-  max-width:900px;
-  margin:40px auto;
-  padding:0 16px;
-}
-.card{
-  background:#fff;
-  border-radius:16px;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
-  padding:30px;
-  text-align:center;
-}
-h1{color:#0a7b34;}
-input{
-  width:100%;
-  padding:14px;
-  margin-top:10px;
-  border-radius:10px;
-  border:1px solid #d1d5db;
-}
-button{
-  margin-top:14px;
-  width:100%;
-  padding:14px;
-  background:#0a7b34;
-  color:#fff;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
-}
-.voltar{
-  margin-top:20px;
-  background:#0a7b34;
-  color:#fff;
-  padding:10px 20px;
-  border-radius:10px;
-  display:inline-block;
-  cursor:pointer;
-}
+body{margin:0;font-family:system-ui,Arial,sans-serif;background:linear-gradient(135deg,#bdeeff,#81d4fa);color:#232630}
+.brandline{display:grid;grid-template-columns:140px 1fr 140px;gap:12px;align-items:center;justify-items:center;margin:18px auto 0;max-width:600px}
+.brandline img{height:100px;object-fit:contain}
+.pill{background:#e9fff1;border:1px solid #b7efc2;color:#0a4c1a;border-radius:999px;padding:12px 20px;font-weight:900;font-size:1.6rem;text-align:center}
+.wrap{max-width:600px;margin:auto;padding:16px}
+.card{background:#fff;border-radius:14px;box-shadow:0 6px 22px #0001;padding:20px;margin:18px auto}
+input{width:100%;padding:10px;margin-top:6px;border-radius:6px;border:1px solid #ccc}
+button{margin-top:16px;padding:12px 18px;font-weight:800;color:#fff;border:none;border-radius:10px;cursor:pointer;width:100%}
+.verde{background:#0a7f2e}
+.vermelho{background:#d10000}
+#resultado{margin-top:14px;border-radius:12px;padding:14px;border:1px solid #e5eaee;background:#f7fbff}
+#resultado.ativo{background:#e9fbe9;border:2px solid #1e8e3e}
+#resultado.inativo{background:#fdeaea;border:2px solid #d93025}
+.voltar{display:inline-block;margin-top:14px;padding:10px 14px;background:#0a7f2e;color:#fff;border-radius:10px;text-decoration:none;font-weight:800}
+.small{font-size:.9rem;color:#444;margin-top:6px}
 </style>
 </head>
 
 <body>
 
-<div class="topo">
-  <img src="logo-prometheus.png" class="logo">
-  <div class="titulo-topo">Cartão AproveitAI</div>
-  <img src="logo-aproveitai.png" class="logo">
+<div class="brandline">
+  <img src="logo-prometheus.png">
+  <div class="pill">Cartão AproveitAI</div>
+  <img src="logo-aproveitai.png">
 </div>
 
-<div class="container">
-  <div class="card">
-    <h1 id="boasvindas">Bem-vindo, Parceiro</h1>
+<div class="wrap">
 
-    <input id="cnpj" placeholder="CNPJ (somente números)">
-    <input id="token" placeholder="Token">
-    <button onclick="entrar()">Entrar</button>
+  <div class="card" id="loginBox">
+    <h2 style="margin:0;color:#0a4c1a;text-align:center">Acesso do Parceiro</h2>
+    <div class="small">Use seu CNPJ e token cadastrado na planilha <b>parceiros</b>.</div>
 
-    <div class="voltar" onclick="window.location.href='index.html'">
-      ← Voltar ao site
-    </div>
+    <label style="font-weight:800;margin-top:10px;display:block">CNPJ</label>
+    <input id="cnpj" placeholder="Digite seu CNPJ">
+
+    <label style="font-weight:800;margin-top:10px;display:block">Token</label>
+    <input id="token" type="password" placeholder="Digite seu token">
+
+    <button class="verde" onclick="login()">Entrar</button>
+    <div id="erroLogin" style="color:#d10000;font-weight:800;margin-top:10px"></div>
+
+    <div style="text-align:center"><a class="voltar" href="index.html">← Voltar ao site</a></div>
   </div>
+
+  <div class="card" id="painelBox" style="display:none">
+    <h2 style="margin:0;color:#0a4c1a;text-align:center">Bem-vindo, <span id="nomeParceiro"></span></h2>
+
+    <label style="font-weight:800;margin-top:14px;display:block">CPF ou ID Público do Cliente</label>
+    <input id="chaveCliente" placeholder="CPF (11 dígitos) ou APV-XXXX">
+
+    <button class="verde" onclick="validar()">Validar Cliente</button>
+
+    <div id="resultado"></div>
+
+    <button class="vermelho" onclick="logout()">Sair</button>
+  </div>
+
 </div>
 
 <script>
-const ENDPOINT="https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzXZpsNWvfsfjoFRMhOn6SXnBEjnUcU-kcGPhGssr30Gl9TOyRUjQaz3GmVce7iGsBc/exec";
 
-async function entrar(){
-  const cnpj=document.getElementById("cnpj").value.replace(/\D/g,"");
-  const token=document.getElementById("token").value.trim();
-  if(!cnpj||!token){alert("Preencha os campos");return;}
-
-  const res=await fetch(ENDPOINT+"?aba=parceiros");
-  const dados=await res.json();
-
-  const parceiro=dados.find(p=>p.cnpj===cnpj && p.token===token);
-  if(!parceiro){alert("Acesso inválido");return;}
-
-  document.getElementById("boasvindas").innerText =
-    "Bem-vindo, " + parceiro.nome;
-}
-function gerarCodigoERO() {
-  const agora = new Date();
-
-  const ano = agora.getFullYear();
-  const mes = String(agora.getMonth() + 1).padStart(2, '0');
-  const dia = String(agora.getDate()).padStart(2, '0');
-  const hora = String(agora.getHours()).padStart(2, '0');
-  const min = String(agora.getMinutes()).padStart(2, '0');
-
-  return `ERO-${ano}${mes}${dia}-${hora}${min}`;
+function norm(v){ return String(v ?? "").toLowerCase().trim(); }
+function onlyDigits(v){ return String(v ?? "").replace(/\D/g,""); }
+function isAtivo(v){
+  const s = norm(v);
+  return ["sim","true","1","ativo","yes"].includes(s);
 }
 
+function abrirPainel(p){
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("painelBox").style.display = "block";
+  document.getElementById("nomeParceiro").textContent = p.nome || "Parceiro";
+}
+
+const sess = JSON.parse(localStorage.getItem("parceiro_sess") || "null");
+if(sess) abrirPainel(sess);
+
+async function login(){
+  const cnpj = onlyDigits(document.getElementById("cnpj").value);
+  const token = document.getElementById("token").value.trim();
+  const erro = document.getElementById("erroLogin");
+  erro.textContent = "";
+
+  if(!cnpj || !token){
+    erro.textContent = "Preencha CNPJ e token.";
+    return;
+  }
+
+  try{
+    const res = await fetch(`${API_URL}?aba=parceiros`);
+    const data = await res.json();
+    const lista = Array.isArray(data) ? data : (data.data || []);
+
+    const achado = lista.find(p => {
+      const pc = onlyDigits(p.cnpj || p.CNPJ || "");
+      const pt = String(p.token || p.Token || p.tokenAcesso || "").trim();
+      return pc === cnpj && pt === token;
+    });
+
+    if(!achado){
+      erro.textContent = "CNPJ ou token inválidos.";
+      return;
+    }
+
+    if(!isAtivo(achado.ativo ?? achado.Ativo ?? achado.status)){
+      erro.textContent = "Parceiro INATIVO. Contate o suporte.";
+      return;
+    }
+
+    const nome = achado.nomeFantasia || achado.nome || achado.razaoSocial || "Parceiro";
+    const sessObj = { cnpj, nome };
+
+    localStorage.setItem("parceiro_sess", JSON.stringify(sessObj));
+    abrirPainel(sessObj);
+  }catch(e){
+    console.error(e);
+    erro.textContent = "Erro ao acessar a base do parceiro.";
+  }
+}
+
+async function validar(){
+  const v = document.getElementById("chaveCliente").value.trim();
+  const box = document.getElementById("resultado");
+
+  box.classList.remove("ativo","inativo");
+  box.textContent = "Consultando...";
+
+  if(!v){
+    box.textContent = "Informe CPF ou ID Público.";
+    return;
+  }
+
+  const dig = onlyDigits(v);
+  const isCpf = dig.length === 11;
+
+  try{
+    const url = isCpf
+      ? `${API_URL}?aba=clientes&cpf=${encodeURIComponent(dig)}`
+      : `${API_URL}?aba=clientes&idPublico=${encodeURIComponent(v)}`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    let c = null;
+    if(Array.isArray(data)){
+      c = isCpf
+        ? data.find(x => onlyDigits(x.cpf) === dig)
+        : data.find(x => String(x.idPublico).trim() === v);
+    }else{
+      c = data;
+    }
+
+    if(!c || !c.cpf){
+      box.textContent = "Cliente não encontrado.";
+      return;
+    }
+
+    const ativo = isAtivo(c.ativo);
+    box.classList.add(ativo ? "ativo" : "inativo");
+    box.innerHTML = `
+      <div><b>Nome:</b> ${c.nome || "-"}</div>
+      <div><b>Status:</b> <b>${ativo ? "ATIVO" : "INATIVO"}</b></div>
+      <div class="small">${ativo ? "✅ Desconto autorizado" : "❌ Desconto não autorizado"}</div>
+    `;
+  }catch(e){
+    console.error(e);
+    box.textContent = "Erro na validação.";
+  }
+}
+
+function logout(){
+  localStorage.removeItem("parceiro_sess");
+  location.reload();
+}
 </script>
 
 </body>

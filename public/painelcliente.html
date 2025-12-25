@@ -6,189 +6,128 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
-  margin:0;
-  font-family:Arial, Helvetica, sans-serif;
-  background:#f5f6f7;
-  color:#1f2937;
-}
-
-/* ===== CABEÇALHO PADRÃO CLARO ===== */
-.topo{
-  max-width:1200px;
-  margin:20px auto 0;
-  padding:18px 24px;
-  background:#ffffff;
-  border-radius:18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
-}
-
-.logo{
-  height:140px; /* LOGOS GRANDES */
-}
-
-.titulo-topo{
-  font-size:30px; /* NOME MAIOR */
-  font-weight:900;
-  color:#0a7b34;
-  text-align:center;
-  flex:1;
-}
-
-/* ===== CONTEÚDO ===== */
-.container{
-  max-width:900px;
-  margin:40px auto;
-  padding:0 16px;
-}
-.card{
-  background:#fff;
-  border-radius:16px;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
-  padding:30px;
-  text-align:center;
-}
-h1{
-  margin-top:0;
-  font-size:26px;
-  color:#0a7b34;
-}
-input{
-  width:100%;
-  padding:14px;
-  font-size:16px;
-  border-radius:10px;
-  border:1px solid #d1d5db;
-}
-button{
-  margin-top:14px;
-  width:100%;
-  padding:14px;
-  background:#0a7b34;
-  color:#fff;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
-  cursor:pointer;
-}
-.hint{
-  margin-top:12px;
-  font-size:13px;
-  color:#6b7280;
-}
-.resultado{
-  margin-top:18px;
-  text-align:left;
-  background:#f9fafb;
-  padding:14px;
-  border-radius:10px;
-  border:1px solid #e5e7eb;
-  display:none;
-}
-.voltar{
-  margin-top:20px;
-  background:#0a7b34;
-  color:#fff;
-  padding:10px 20px;
-  border-radius:10px;
-  display:inline-block;
-  cursor:pointer;
-  font-size:14px;
-}
+body{margin:0;font-family:system-ui,Arial,sans-serif;background:linear-gradient(135deg,#bdeeff,#81d4fa);color:#232630}
+.brandline{display:grid;grid-template-columns:140px 1fr 140px;gap:12px;align-items:center;justify-items:center;margin:18px auto 0;max-width:600px}
+.brandline img{height:100px;object-fit:contain}
+.pill{background:#e9fff1;border:1px solid #b7efc2;color:#0a4c1a;border-radius:999px;padding:12px 20px;font-weight:900;font-size:1.6rem;text-align:center}
+.wrap{max-width:600px;margin:auto;padding:16px}
+.card{background:#fff;border-radius:14px;box-shadow:0 6px 22px #0001;padding:20px;margin:18px auto}
+input{width:100%;padding:10px;margin-top:6px;border-radius:6px;border:1px solid #ccc}
+button{margin-top:16px;padding:12px 18px;font-weight:700;color:#fff;border:none;border-radius:10px;cursor:pointer;background:#0a7f2e;width:100%}
+.btn2{margin-top:12px;background:#0a7f2e}
+.voltar{display:inline-block;margin-top:14px;padding:10px 14px;background:#0a7f2e;color:#fff;border-radius:10px;text-decoration:none;font-weight:800}
+#resultado{margin-top:14px;border-radius:12px;padding:14px;border:1px solid #e5eaee;background:#f7fbff}
+#resultado.ativo{background:#e9fbe9;border:2px solid #1e8e3e}
+#resultado.inativo{background:#fdeaea;border:2px solid #d93025}
+.small{font-size:.9rem;color:#444;text-align:center;margin-top:6px}
 </style>
 </head>
 
 <body>
 
-<!-- CABEÇALHO -->
-<div class="topo">
-  <img src="logo-prometheus.png" class="logo">
-  <div class="titulo-topo">Cartão AproveitAI</div>
-  <img src="logo-aproveitai.png" class="logo">
+<div class="brandline">
+  <img src="logo-prometheus.png">
+  <div class="pill">Cartão AproveitAI</div>
+  <img src="logo-aproveitai.png">
 </div>
 
-<div class="container">
+<div class="wrap">
   <div class="card">
-    <h1>Bem-vindo à Área do Cliente</h1>
+    <h2 style="text-align:center;margin:0 0 10px;color:#0a4c1a">Bem-vindo à Área do Cliente</h2>
 
-    <input id="entrada" placeholder="Digite seu CPF ou código do cartão (APV...)">
+    <input id="cpf" placeholder="Digite seu CPF ou ID Público (APV-XXXX)">
     <button onclick="consultar()">Consultar</button>
 
-    <div class="hint">
-      Após a consulta, você poderá acessar seu cartão digital,
-      salvar no celular ou imprimir para usar mesmo sem internet.
-    </div>
+    <div class="small">Após a consulta, você poderá acessar seu cartão digital, salvar no celular ou imprimir.</div>
 
-    <div id="resultado" class="resultado"></div>
+    <div id="resultado"></div>
 
-    <div class="voltar" onclick="window.location.href='index.html'">
-      ← Voltar ao site
-    </div>
+    <button id="btnCartao" class="btn2" style="display:none" onclick="abrirCartao()">Ver / Salvar Cartão</button>
+    <div style="text-align:center"><a class="voltar" href="index.html">← Voltar ao site</a></div>
   </div>
 </div>
 
 <script>
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzXZpsNWvfsfjoFRMhOn6SXnBEjnUcU-kcGPhGssr30Gl9TOyRUjQaz3GmVce7iGsBc/exec";
 
-function limpar(v){return (v||"").replace(/\D/g,"");}
+let ultimoIdPublico = "";
+
+function norm(v){ return String(v ?? "").toLowerCase().trim(); }
+function isAtivo(v){
+  const s = norm(v);
+  return ["sim","true","1","ativo","yes"].includes(s);
+}
 
 async function consultar(){
-  const valor=document.getElementById("entrada").value.trim();
-  const r=document.getElementById("resultado");
-  r.style.display="none";
-  if(!valor){alert("Digite CPF ou código");return;}
+  const valor = document.getElementById("cpf").value.trim();
+  const box = document.getElementById("resultado");
+  const btn = document.getElementById("btnCartao");
 
-  const res=await fetch(ENDPOINT+"?aba=clientes");
-  const dados=await res.json();
+  btn.style.display = "none";
+  box.classList.remove("ativo","inativo");
+  box.textContent = "Consultando...";
 
-  const achado=dados.find(c =>
-    limpar(c.cpf)===limpar(valor) ||
-    c.codigoUnico===valor ||
-    c.idPublico===valor
-  );
-
-  if(!achado){
-    r.style.display="block";
-    r.innerHTML="Cliente não encontrado.";
+  if(!valor){
+    box.textContent = "Informe seu CPF ou ID Público.";
     return;
   }
 
-  r.style.display="block";
-  r.innerHTML = `
-  <b>Nome:</b> ${achado.nome}<br>
-  <b>CPF:</b> ${achado.cpf}<br>
-  <b>ID Público:</b> ${achado.idPublico}<br>
-  <b>Grupo:</b> ${achado.grupo || "-"}<br>
-  <b>Cidade:</b> ${achado.cidade || "-"}<br>
-  <b>Celular:</b> ${achado.celular || "-"}<br>
-  <b>Data de Nascimento:</b> ${achado.dataNascimento || "-"}<br>
-  <b>Data de Cadastro:</b> ${achado.dataCadastro || "-"}<br>
-  <b>Status:</b> ${achado.ativo == "TRUE" ? "ATIVO" : "INATIVO"}<br>
-  <br>
-const box = document.getElementById("resultado");
+  const soDigitos = valor.replace(/\D/g,"");
+  const isCpf = soDigitos.length === 11;
 
-const ativo = String(data.ativo).toLowerCase().trim();
+  try{
+    const url = isCpf
+      ? `${API_URL}?aba=clientes&cpf=${encodeURIComponent(soDigitos)}`
+      : `${API_URL}?aba=clientes&idPublico=${encodeURIComponent(valor)}`;
 
-if (ativo === "sim") {
-  // ATIVO
-} else {
-  // INATIVO
+    const res = await fetch(url);
+    const data = await res.json();
+
+    // aceita objeto direto OU array (fallback)
+    let achado = null;
+    if(Array.isArray(data)){
+      achado = isCpf
+        ? data.find(x => String(x.cpf).replace(/\D/g,"") === soDigitos)
+        : data.find(x => String(x.idPublico).trim() === valor);
+    }else{
+      achado = data;
+    }
+
+    if(!achado || !achado.cpf){
+      box.textContent = "Cadastro não encontrado.";
+      return;
+    }
+
+    const ativo = isAtivo(achado.ativo);
+
+    box.classList.add(ativo ? "ativo" : "inativo");
+
+    ultimoIdPublico = (achado.idPublico || "").trim();
+
+    box.innerHTML = `
+      <div><b>Nome:</b> ${achado.nome || "-"}</div>
+      <div><b>CPF:</b> ${achado.cpf || "-"}</div>
+      <div><b>ID Público:</b> ${achado.idPublico || "-"}</div>
+      <div><b>Grupo:</b> ${achado.grupo || "-"}</div>
+      <div><b>Cidade:</b> ${achado.cidade || "-"}</div>
+      <div><b>Celular:</b> ${achado.celular || "-"}</div>
+      <div><b>Data de Nascimento:</b> ${achado.dataNascimento || "-"}</div>
+      <div><b>Data de Cadastro:</b> ${achado.dataCadastro || "-"}</div>
+      <div><b>Status:</b> <b>${ativo ? "ATIVO" : "INATIVO"}</b></div>
+    `;
+
+    if(ultimoIdPublico){
+      btn.style.display = "block";
+    }
+  }catch(e){
+    console.error(e);
+    box.textContent = "Erro na consulta.";
+  }
 }
- {
-  box.style.background = "#e9fbe9";
-  box.style.border = "2px solid green";
-} else {
-  box.style.background = "#fdeaea";
-  box.style.border = "2px solid red";
-}
 
-  <button onclick="window.location.href='cartao.html?id=${achado.idPublico}'">
-    Ver / Salvar Cartão
-  </button>
-`;
+function abrirCartao(){
+  if(!ultimoIdPublico) return;
+  window.location.href = `cartao.html?id=${encodeURIComponent(ultimoIdPublico)}`;
 }
 </script>
 

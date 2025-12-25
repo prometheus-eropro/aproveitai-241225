@@ -1,15 +1,15 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cartão AproveitAI</title>
-
   <style>
-    body{font-family:Arial,sans-serif;margin:0;background:#fff}
+    body{font-family:Arial,sans-serif;margin:0;min-height:100vh;display:flex;flex-direction:column;background:#fff}
     header{text-align:center;padding:20px}
     .brandline{display:grid;grid-template-columns:140px 1fr 140px;gap:12px;align-items:center;justify-items:center;max-width:1000px;margin:18px auto 0;padding:0 12px}
-    .brandline img{height:110px;object-fit:contain}
+    .brandline img{height:130px;object-fit:contain}
     .pill{background:#e9fff1;border:1px solid #b7efc2;color:#0a4c1a;border-radius:999px;padding:14px 24px;font-weight:900;font-size:2rem;text-align:center}
     .slogan{text-align:center;color:#0a7f2e;font-weight:700;margin:6px 0 18px}
     .hero{max-width:980px;margin:0 auto;padding:0 12px}
@@ -27,15 +27,14 @@
     .nome{font-weight:900;color:#0a4c1a;margin:0}
     .meta{margin:4px 0 0;color:#333;font-size:.95rem}
     .tag{display:inline-block;margin-top:8px;background:#e9fff1;border:1px solid #b7efc2;color:#0a4c1a;border-radius:999px;padding:5px 10px;font-weight:800;font-size:.85rem}
-    .foot{background:#063d1b;color:#fff;margin-top:10px}
+    .foot{background:#063d1b;color:#fff;margin-top:auto}
     .foot .wrap{max-width:980px;margin:0 auto;padding:18px 12px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:18px}
     .foot a{color:#bff7cc;text-decoration:none}
     @media (max-width:920px){
-      .filters .row{grid-template-columns:1fr 1fr; }
+      .filters .row{grid-template-columns:1fr 1fr;}
     }
   </style>
 </head>
-
 <body>
 
   <header class="brandline">
@@ -79,7 +78,7 @@
         <div>CNPJ: 58.584.332/0001-40</div>
         <div>📧 <a href="mailto:cartao.aproveitai@gmail.com">cartao.aproveitai@gmail.com</a></div>
         <div>📞 WhatsApp: (28) 99969-2303</div>
-        <div>📷 Instagram: <a href="https://instagram.com/cartao.aproveitai" target="_blank" rel="noreferrer">@cartao.aproveitai</a></div>
+        <div>📷 Instagram: <a href="https://instagram.com/cartao.aproveitai" target="_blank">@cartao.aproveitai</a></div>
       </div>
       <div>
         <div style="font-weight:900;margin-bottom:6px">Links Rápidos</div>
@@ -97,121 +96,103 @@
     </div>
   </footer>
 
-<script>
-  // ✅ SUA API (Apps Script)
-  const API_URL = "https://script.google.com/macros/s/AKfycbzXZpsNWvfsfjoFRMhOn6SXnBEjnUcU-kcGPhGssr30Gl9TOyRUjQaz3GmVce7iGsBc/exec";
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbzXZpsNWvfsfjoFRMhOn6SXnBEjnUcU-kcGPhGssr30Gl9TOyRUjQaz3GmVce7iGsBc/exec";
 
-  const elLista = document.getElementById("listaParceiros");
-  const elStatus = document.getElementById("status");
+    const elLista = document.getElementById("listaParceiros");
+    const elStatus = document.getElementById("status");
 
-  const elBusca = document.getElementById("buscaNome");
-  const elCidade = document.getElementById("filtroCidade");
-  const elRamo = document.getElementById("filtroRamo");
+    const elBusca = document.getElementById("buscaNome");
+    const elCidade = document.getElementById("filtroCidade");
+    const elRamo = document.getElementById("filtroRamo");
 
-  let parceiros = [];
+    let parceiros = [];
 
-  function normTxt(v){ return String(v ?? "").toLowerCase().trim(); }
-  function isAtivo(v){
-    const s = normTxt(v);
-    return ["sim","true","1","ativo","yes"].includes(s);
-  }
-  function onlyDigits(v){ return String(v ?? "").replace(/\D/g,""); }
-  function waLink(v){
-    const d = onlyDigits(v);
-    if(!d) return "";
-    const br = d.startsWith("55") ? d : ("55" + d);
-    return "https://wa.me/" + br;
-  }
-
-  function popularFiltros(lista){
-    const cidades = [...new Set(lista.map(p => (p.cidade || p.Cidade || "")).filter(Boolean))].sort();
-    const ramos   = [...new Set(lista.map(p => (p.ramo || p.Ramo || p.segmento || "")).filter(Boolean))].sort();
-
-    elCidade.innerHTML = `<option value="">Todas as cidades</option>` + cidades.map(c => `<option>${c}</option>`).join("");
-    elRamo.innerHTML   = `<option value="">Todos os ramos</option>` + ramos.map(r => `<option>${r}</option>`).join("");
-  }
-
-  function render(lista){
-    if(!lista.length){
-      elLista.innerHTML = "";
-      elStatus.textContent = "Nenhum parceiro encontrado.";
-      return;
+    function norm(v){ return String(v || "").toLowerCase().trim(); }
+    function isAtivo(v){ return ["sim","true","1","ativo"].includes(norm(v)); }
+    function wa(v){
+      const d = String(v || "").replace(/\D/g, "");
+      return d ? "https://wa.me/55" + d : "";
     }
-    elStatus.textContent = "";
-    elLista.innerHTML = lista.map(p => {
-      const nome = p.nomeFantasia || p.nome || p.razaoSocial || p.empresa || "Parceiro";
-      const cidade = p.cidade || p.Cidade || "-";
-      const ramo = p.ramo || p.Ramo || p.segmento || "-";
-      const desc = p.desconto || p.beneficio || p.oferta || p.descricao || "";
-      const logo = p.logoURL || p.logoUrl || p.logo || "logo-aproveitai.png";
-      const w = waLink(p.whatsapp || p.celular || p.contato || "");
-      const insta = p.instagram || "";
 
-      return `
-        <div class="card">
-          <img class="logo" src="${logo}" onerror="this.src='logo-aproveitai.png'" alt="logo">
-          <div>
-            <p class="nome">${nome}</p>
-            <div class="meta"><b>Cidade:</b> ${cidade}</div>
-            <div class="meta"><b>Ramo:</b> ${ramo}</div>
-            ${desc ? `<div class="meta"><b>Desconto:</b> ${desc}</div>` : ``}
-            <div class="tag">
-              ${w ? `<a href="${w}" target="_blank" rel="noreferrer" style="color:#0a4c1a;text-decoration:none">WhatsApp</a>` : `Contato`}
-              ${insta ? ` • <a href="https://instagram.com/${insta.replace('@','')}" target="_blank" rel="noreferrer" style="color:#0a4c1a;text-decoration:none">${insta}</a>` : ``}
+    function popularFiltros(lista){
+      const cidades = [...new Set(lista.map(p => p.cidade || p.Cidade || "").filter(Boolean))].sort();
+      const ramos = [...new Set(lista.map(p => p.ramo || p.Ramo || p.segmento || "").filter(Boolean))].sort();
+      elCidade.innerHTML = `<option value="">Todas as cidades</option>` + cidades.map(c => `<option>${c}</option>`).join("");
+      elRamo.innerHTML = `<option value="">Todos os ramos</option>` + ramos.map(r => `<option>${r}</option>`).join("");
+    }
+
+    function render(lista){
+      if(!lista.length){
+        elStatus.textContent = "Nenhum parceiro encontrado.";
+        elLista.innerHTML = "";
+        return;
+      }
+      elStatus.textContent = "";
+      elLista.innerHTML = lista.map(p => {
+        const nome = p.nomeFantasia || p.nome || "Parceiro";
+        const cidade = p.cidade || "-";
+        const ramo = p.ramo || "-";
+        const desc = p.desconto || p.beneficio || "";
+        const logo = p.logoURL || "logo-aproveitai.png";
+        const zap = wa(p.whatsapp || p.celular);
+        const insta = p.instagram || "";
+
+        return `
+          <div class="card">
+            <img class="logo" src="${logo}" onerror="this.src='logo-aproveitai.png'" />
+            <div>
+              <p class="nome">${nome}</p>
+              <div class="meta"><b>Cidade:</b> ${cidade}</div>
+              <div class="meta"><b>Ramo:</b> ${ramo}</div>
+              ${desc ? `<div class="meta"><b>Desconto:</b> ${desc}</div>` : ""}
+              <div class="tag">
+                ${zap ? `<a href="${zap}" target="_blank">WhatsApp</a>` : ""}
+                ${insta ? ` • <a href="https://instagram.com/${insta.replace('@','')}" target="_blank">${insta}</a>` : ""}
+              </div>
             </div>
           </div>
-        </div>
-      `;
-    }).join("");
-  }
-
-  function aplicarFiltro(){
-    const q = normTxt(elBusca.value);
-    const c = normTxt(elCidade.value);
-    const r = normTxt(elRamo.value);
-
-    const filtrado = parceiros.filter(p => {
-      const nome = normTxt(p.nomeFantasia || p.nome || p.razaoSocial || "");
-      const cidade = normTxt(p.cidade || p.Cidade || "");
-      const ramo = normTxt(p.ramo || p.Ramo || p.segmento || "");
-      return (!q || nome.includes(q)) && (!c || cidade === c) && (!r || ramo === r);
-    });
-
-    render(filtrado);
-  }
-
-  async function carregarParceiros(){
-    try{
-      elStatus.textContent = "Carregando parceiros...";
-      const res = await fetch(`${API_URL}?aba=parceiros`);
-      const data = await res.json();
-
-      // aceita array ou {data:[...]}
-      const lista = Array.isArray(data) ? data : (data.data || []);
-      parceiros = lista.filter(p => isAtivo(p.ativo ?? p.Ativo ?? p.status));
-
-      popularFiltros(parceiros);
-      render(parceiros);
-    }catch(e){
-      console.error(e);
-      elStatus.textContent = "Erro ao carregar parceiros.";
-      elLista.innerHTML = "";
+        `;
+      }).join("");
     }
-  }
 
-  document.getElementById("btnFiltrar").addEventListener("click", aplicarFiltro);
-  elBusca.addEventListener("input", aplicarFiltro);
+    function aplicarFiltro(){
+      const q = norm(elBusca.value);
+      const c = norm(elCidade.value);
+      const r = norm(elRamo.value);
 
-  document.getElementById("btnQueroCliente").addEventListener("click", (e)=>{
-    e.preventDefault();
-    window.open("https://wa.me/5528999692303?text=" + encodeURIComponent("Olá! Quero ser cliente do Cartão AproveitAI."), "_blank");
-  });
-  document.getElementById("btnQueroParceiro").addEventListener("click", (e)=>{
-    e.preventDefault();
-    window.open("https://wa.me/5528999692303?text=" + encodeURIComponent("Olá! Quero ser parceiro do Cartão AproveitAI."), "_blank");
-  });
+      const lista = parceiros.filter(p => {
+        const nome = norm(p.nomeFantasia || p.nome || "");
+        const cidade = norm(p.cidade || "");
+        const ramo = norm(p.ramo || "");
+        return (!q || nome.includes(q)) && (!c || cidade === c) && (!r || ramo === r);
+      });
 
-  carregarParceiros();
-</script>
+      render(lista);
+    }
+
+    async function carregarParceiros(){
+      try{
+        elStatus.textContent = "Carregando parceiros...";
+        const res = await fetch(API_URL + "?aba=parceiros");
+        const data = await res.json();
+        const lista = Array.isArray(data) ? data : data.data || [];
+        parceiros = lista.filter(p => isAtivo(p.ativo || p.Ativo));
+        popularFiltros(parceiros);
+        render(parceiros);
+      }catch(e){
+        console.error(e);
+        elStatus.textContent = "Erro ao carregar parceiros.";
+        elLista.innerHTML = "";
+      }
+    }
+
+    document.getElementById("btnFiltrar").addEventListener("click", aplicarFiltro);
+    elBusca.addEventListener("input", aplicarFiltro);
+    document.getElementById("btnQueroCliente").onclick = () => window.open("https://wa.me/5528999692303?text=" + encodeURIComponent("Olá! Quero ser cliente do Cartão AproveitAI."), "_blank");
+    document.getElementById("btnQueroParceiro").onclick = () => window.open("https://wa.me/5528999692303?text=" + encodeURIComponent("Olá! Quero ser parceiro do Cartão AproveitAI."), "_blank");
+
+    carregarParceiros();
+  </script>
 </body>
 </html>

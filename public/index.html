@@ -103,9 +103,11 @@
     }
 
     footer div {
-      flex: 1;
-      margin: 10px;
-    }
+  flex: none;
+  margin: 10px;
+  min-width: 200px;
+}
+
 
     footer strong {
       display: block;
@@ -115,14 +117,25 @@
     a {
       color: white;
     }
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  margin-top: auto;
+}
+
   </style>
 </head>
 <body>
 
   <header>
-    <img src="https://aproveitai.vercel.app/logo-cons.png" alt="Logo 1">
-    <div class="titulo">Cartão AproveitAI</div>
-    <img src="https://aproveitai.vercel.app/logo-aproveitai.png" alt="Logo 2">
+    <img src="https://aproveitai.vercel.app/logo-cons.png" alt="Logo ConsciêncIAs">
+...
+<img src="https://aproveitai.vercel.app/logo-aproveitai.png" alt="Logo AproveitAI">
+
   </header>
 
   <p class="subtitulo">Tecnologia com ConsciêncIA gera Resultado.</p>
@@ -172,7 +185,7 @@
   </footer>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzXZlpsNhWfsfiofRhM6n5X9hEdnuC_zRZYWITQOmZdcyrK/exec"; // seu endpoint
+    const API_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec"; // seu endpoint
 
     let dadosParceiros = [];
 

@@ -168,6 +168,15 @@ async function consultar(){
   <b>Data de Cadastro:</b> ${achado.dataCadastro || "-"}<br>
   <b>Status:</b> ${achado.ativo == "TRUE" ? "ATIVO" : "INATIVO"}<br>
   <br>
+const box = document.getElementById("resultado");
+
+if (data.ativo === "TRUE") {
+  box.style.background = "#e9fbe9";
+  box.style.border = "2px solid green";
+} else {
+  box.style.background = "#fdeaea";
+  box.style.border = "2px solid red";
+}
 
   <button onclick="window.location.href='cartao.html?id=${achado.idPublico}'">
     Ver / Salvar Cartão

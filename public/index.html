@@ -72,7 +72,7 @@ html,body{
   <div class="cta-row">
     <a href="https://wa.me/5528999692303?text=Olá,%20quero%20ser%20cliente%20do%20Cartão%20AproveitAI." target="_blank">Quero ser Cliente</a>
     <a href="painelcliente.html">Área do Cliente</a>
-    <a href="paineldoparceiro.html">Área do Parceiro</a>
+    <a href="painelparceiro.html">Área do Parceiro</a>
     <a href="https://wa.me/5528999692303?text=Olá,%20sou%20comerciante%20e%20quero%20ser%20parceiro." target="_blank">Quero ser Parceiro</a>
   </div>
 </div>
@@ -139,7 +139,7 @@ const btnFiltrar = document.getElementById("btnFiltrar");
 
 let parceiros = [];
 
-fetch(`${SCRIPT_URL}?aba=parceiros`)
+fetch(`${API_URL}&aba=parceiros`)
   .then(r => r.json())
   .then(dados => {
     parceiros = dados

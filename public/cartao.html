@@ -130,38 +130,35 @@
   </div>
 
 <script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const idPublico = urlParams.get("id");
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
 
-  if (!idPublico) {
-    alert("ID do cartão não informado.");
-  } else {
-    const API_URL = "SUA_URL_DO_APPS_SCRIPT_AQUI";
+if (!id) {
+  alert("ID do cartão não informado.");
+}
 
-    fetch(`${API_URL}?aba=clientes&id=${encodeURIComponent(idPublico)}`)
-      .then(res => res.json())
-      .then(dados => {
-        if (dados.erro) {
-          alert(dados.erro);
-          return;
-        }
+const API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=SEU_TOKEN_AQUI";
 
-        document.getElementById("nome").textContent = dados.nome || "-";
-        document.getElementById("cpf").textContent = dados.cpf || "-";
-        document.getElementById("id").textContent = dados.idPublico || "-";
-        document.getElementById("grupo").textContent = dados.grupo || "-";
-        document.getElementById("cidade").textContent = dados.cidade || "-";
-        document.getElementById("data").textContent = dados.dataCadastro || "-";
-      })
-      .catch(err => {
-        console.error("Erro ao buscar dados:", err);
-        alert("Erro ao carregar os dados do cartão.");
-      });
-  }
+fetch(`${API_URL}&aba=clientes&idPublico=${id}`)
+  .then(res => res.json())
+  .then(data => {
+    if (!data || data.erro) {
+      alert("Erro ao carregar os dados do cartão.");
+      return;
+    }
 
-  function voltar() {
-    window.location.href = "index.html";
-  }
+    document.getElementById("nome").innerText = data.nome;
+    document.getElementById("cpf").innerText = data.cpf;
+    document.getElementById("idPublico").innerText = data.idPublico;
+    document.getElementById("grupo").innerText = data.grupo;
+    document.getElementById("cidade").innerText = data.cidade;
+    document.getElementById("dataCadastro").innerText = data.dataCadastro;
+
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Erro ao carregar os dados do cartão.");
+  });
 </script>
 </body>
 </html>

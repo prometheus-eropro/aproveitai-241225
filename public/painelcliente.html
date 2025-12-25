@@ -157,14 +157,22 @@ async function consultar(){
   }
 
   r.style.display="block";
-  r.innerHTML=`
-    <b>Nome:</b> ${achado.nome}<br>
-    <b>Status:</b> ${achado.ativo=="TRUE"?"ATIVO":"INATIVO"}<br>
-    <b>Cidade:</b> ${achado.cidade || "-"}<br><br>
-    <button onclick="window.location.href='cartao.html?id=${achado.idPublico}'">
-      Ver / Salvar Cartão
-    </button>
-  `;
+  r.innerHTML = `
+  <b>Nome:</b> ${achado.nome}<br>
+  <b>CPF:</b> ${achado.cpf}<br>
+  <b>ID Público:</b> ${achado.idPublico}<br>
+  <b>Grupo:</b> ${achado.grupo || "-"}<br>
+  <b>Cidade:</b> ${achado.cidade || "-"}<br>
+  <b>Celular:</b> ${achado.celular || "-"}<br>
+  <b>Data de Nascimento:</b> ${achado.dataNascimento || "-"}<br>
+  <b>Data de Cadastro:</b> ${achado.dataCadastro || "-"}<br>
+  <b>Status:</b> ${achado.ativo == "TRUE" ? "ATIVO" : "INATIVO"}<br>
+  <br>
+
+  <button onclick="window.location.href='cartao.html?id=${achado.idPublico}'">
+    Ver / Salvar Cartão
+  </button>
+`;
 }
 </script>
 

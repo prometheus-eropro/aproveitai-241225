@@ -59,6 +59,28 @@ button{margin-top:16px;padding:12px 18px;font-weight:800;color:#fff;border:none;
     <button class="verde" onclick="validar()">Validar Cliente</button>
 
     <div id="resultado"></div>
+<button class="verde" onclick="carregarRelatorio()">📊 Ver relatório de consultas</button>
+<!-- RELATÓRIO DE CONSULTAS -->
+<div id="relatorioBox" style="display:none; margin-top:20px;">
+  <h3>Consultas dos últimos 7 dias</h3>
+
+  <table border="1" width="100%" cellpadding="8">
+    <thead>
+      <tr>
+        <th>Data/Hora</th>
+        <th>Cliente</th>
+        <th>CPF</th>
+        <th>Parceiro</th>
+        <th>Código</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="relatorioTabela"></tbody>
+  </table>
+
+  <br>
+  <button onclick="window.print()">🖨️ Imprimir</button>
+</div>
 
     <button class="vermelho" onclick="logout()">Sair</button>
   </div>
@@ -68,170 +90,162 @@ button{margin-top:16px;padding:12px 18px;font-weight:800;color:#fff;border:none;
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
 
-function norm(v){ return String(v ?? "").toLowerCase().trim(); }
-function onlyDigits(v){ return String(v ?? "").replace(/\D/g,""); }
-function isAtivo(v){ const s = norm(v); return ["sim","true","1","ativo","yes"].includes(s); }
-
-function abrirPainel(p){
-  document.getElementById("loginBox").style.display = "none";
-  document.getElementById("painelBox").style.display = "block";
-  document.getElementById("nomeParceiro").textContent = p.nome || "Parceiro";
-}
-
-const sess = JSON.parse(localStorage.getItem("parceiro_sess") || "null");
-if(sess) abrirPainel(sess);
-
-async function login(){
-  const cnpj = onlyDigits(document.getElementById("cnpj").value);
+async function login() {
+  const cnpj = document.getElementById("cnpj").value.trim();
   const token = document.getElementById("token").value.trim();
   const erro = document.getElementById("erroLogin");
-  erro.textContent = "";
 
-  if(!cnpj || !token){ erro.textContent = "Preencha CNPJ e token."; return; }
+  erro.innerText = "";
 
-  try{
-    const res = await fetch(`${API_URL}?aba=parceiros`);
-    const data = await res.json();
-    const achado = data.find(p => onlyDigits(p.cnpj)==cnpj && String(p.token).trim()==token);
-    if(!achado){ erro.textContent = "CNPJ ou token inválidos."; return; }
-    if(!isAtivo(achado.ativo)){ erro.textContent="Parceiro INATIVO."; return; }
+  if (!cnpj || !token) {
+    erro.innerText = "Informe CNPJ e token.";
+    return;
+  }
 
-    const nome = achado.nomeFantasia || achado.nome || "Parceiro";
-    localStorage.setItem("parceiro_sess", JSON.stringify({ cnpj, nome }));
-    abrirPainel({ nome });
-  }catch(e){ erro.textContent="Erro ao validar parceiro."; console.error(e); }
-}
+  try {
+    const resp = await fetch(API_URL + "?aba=parceiros");
+    const parceiros = await resp.json();
 
-async function validar(){
-  const v = document.getElementById("chaveCliente").value.trim();
-  const box = document.getElementById("resultado");
-  box.classList.remove("ativo","inativo");
-  box.textContent = "Consultando...";
+    const parceiro = parceiros.find(
+      p => String(p.cnpj) === cnpj && String(p.token) === token
+    );
 
-  if(!v){ box.textContent="Informe CPF ou ID Público."; return; }
-
-  const dig = onlyDigits(v);
-  const isCpf = dig.length===11;
-
-  try{
-    const url = isCpf ? `${API_URL}?aba=clientes&cpf=${dig}` : `${API_URL}?aba=clientes&idPublico=${v}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    const c = Array.isArray(data) ? (isCpf ? data.find(x=>onlyDigits(x.cpf)===dig) : data.find(x=>String(x.idPublico).trim()===v)) : data;
-
-    const parceiroSess = JSON.parse(localStorage.getItem("parceiro_sess") || "{}");
-    const parceiroNome = parceiroSess.nome || "Desconhecido";
-
-    const agora = new Date();
-    const dataHora = agora.toLocaleString("pt-BR");
-    const dd = String(agora.getDate()).padStart(2,"0");
-    const mm = String(agora.getMonth()+1).padStart(2,"0");
-    const hh = String(agora.getHours()).padStart(2,"0");
-    const min = String(agora.getMinutes()).padStart(2,"0");
-    const ss = String(agora.getSeconds()).padStart(2,"0");
-    const codigoUnicoERC = `ERO-${dd}${mm}-${hh}${min}${ss}`;
-
-    const cpfOriginal = c?.cpf || v;
-    const cpfCamuflado = cpfOriginal.replace(/^(\d{3})\d{3}(\d{3})(\d{2})$/,"$1.***.$2-$3");
-    const ativo = c && isAtivo(c.ativo);
-
-    // === Exibir resultado ===
-    if(!c || !c.cpf){
-      box.innerHTML = `<div><b>Cliente não encontrado.</b></div><div class="small">❌ Desconto não autorizado</div>`;
-      await registrarLog({
-        dataHora, cpfConsultado:cpfCamuflado, nomeConsultado:"-", 
-        parceiro:parceiroNome, codigoUnicoERC, statusCliente:"ERRO", beneficiosVigentes:"-"
-      });
+    if (!parceiro) {
+      erro.innerText = "CNPJ ou token inválido.";
       return;
     }
 
-    box.classList.add(ativo?"ativo":"inativo");
-    box.innerHTML = ativo ? `
-      <div><b>Nome:</b> ${c.nome||"-"}</div>
-      <div><b>Status:</b> ATIVO</div>
-      <div><b>CPF:</b> ${cpfCamuflado}</div>
-      <div><b>Número do Cartão:</b> ${c.idPublico||"-"}</div>
-      <div><b>Código de Autorização:</b> <b>${codigoUnicoERC}</b></div>
-      <div class="small">✅ Desconto autorizado</div>`
-      :
-      `<div><b>Nome:</b> ${c.nome||"-"}</div>
-      <div><b>Status:</b> INATIVO</div>
-      <div><b>CPF:</b> ${cpfCamuflado}</div>
-      <div class="small">❌ Desconto não autorizado</div>`;
+    // SALVA SESSÃO
+    localStorage.setItem(
+      "parceiro_sess",
+      JSON.stringify({
+        nome: parceiro.nome || parceiro.parceiro || "Parceiro",
+        cnpj: cnpj
+      })
+    );
 
-    // === Registrar log, mesmo ativo ou inativo ===
-    await registrarLog({
-      dataHora, cpfConsultado:cpfCamuflado, nomeConsultado:c.nome||"-",
-      parceiro:parceiroNome, codigoUnicoERC, 
-      statusCliente: ativo ? "ATIVO" : "INATIVO",
-      beneficiosVigentes: "-"
-    });
+    document.getElementById("nomeParceiro").innerText =
+      parceiro.nome || parceiro.parceiro || "Parceiro";
 
-    carregarRelatorio();
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("painelBox").style.display = "block";
 
-  }catch(e){
+  } catch (e) {
     console.error(e);
-    box.textContent="Erro na validação.";
-    await registrarLog({
-      dataHora:new Date().toLocaleString("pt-BR"),
-      cpfConsultado:v,
-      nomeConsultado:"-",
-      parceiro:"Erro no sistema",
-      codigoUnicoERC:"ERO-ERRO",
-      statusCliente:"ERRO",
-      beneficiosVigentes:"-"
-    });
+    erro.innerText = "Erro ao conectar ao servidor.";
   }
 }
+async function validar() {
+  const chave = document.getElementById("chaveCliente").value.trim();
+  const resultado = document.getElementById("resultado");
+  resultado.innerHTML = "";
 
-// === Função global para salvar log ===
-async function registrarLog(dados){
-  try{
-    const resp = await fetch(API_URL, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ aba: "logs", modo: "registrar", dados })
-    });
-    const result = await resp.json();
-    console.log("📘 Log enviado:", result);
-  }catch(err){
-    console.error("❌ Erro ao salvar log:", err);
+  if (!chave) {
+    resultado.innerHTML = "Informe o CPF ou ID do cliente.";
+    return;
   }
-}
 
-function logout(){
-  localStorage.removeItem("parceiro_sess");
-  location.reload();
-}
+  const sess = JSON.parse(localStorage.getItem("parceiro_sess") || "null");
+  if (!sess || !sess.nome) {
+    resultado.innerHTML = "Sessão do parceiro inválida. Faça login novamente.";
+    return;
+  }
 
-async function carregarRelatorio(){
-  try{
-    const resp = await fetch(`${API_URL}?aba=logs&modo=listar`);
-    const dados = await resp.json();
-    const seteDiasAtras = new Date();
-    seteDiasAtras.setDate(seteDiasAtras.getDate()-7);
+  try {
+    const resp = await fetch(API_URL + "?aba=clientes");
+    const clientes = await resp.json();
 
-    const recentes = dados.filter(l => new Date(l.dataHora) >= seteDiasAtras);
-    let html = recentes.map(l => `
-      <p>
-        <b>${l.dataHora}</b><br>
-        ${l.parceiro} — <b>${l.nomeConsultado}</b> (${l.cpfConsultado})<br>
-        Código: <b>${l.codigoUnicoERC}</b> — Status: <b>${l.statusCliente}</b>
-      </p>`).join("");
+    const cliente = clientes.find(c =>
+      String(c.cpf) === chave || String(c.codigo) === chave
+    );
 
-    if(!html) html="Nenhuma consulta recente.";
+    let status = "INATIVO";
+    let nomeCliente = "-";
+    let cpfMascarado = "-";
+    let codigo = "-";
 
-    let relatorioDiv=document.getElementById("relatorio");
-    if(!relatorioDiv){
-      relatorioDiv=document.createElement("div");
-      relatorioDiv.id="relatorio"; relatorioDiv.className="card";
-      document.querySelector(".wrap").appendChild(relatorioDiv);
+    if (cliente && String(cliente.ativo).toUpperCase() === "SIM") {
+      status = "ATIVO";
+      nomeCliente = cliente.nome || "-";
+      cpfMascarado = cliente.cpf
+        ? cliente.cpf.replace(/^(\d{3})\d{3}(\d{2})(\d{2})$/, "$1.***.$2-$3")
+        : "-";
+      codigo = "ERO-" + new Date().toLocaleString("pt-BR").replace(/\D/g,"").slice(0,12);
     }
-    relatorioDiv.innerHTML=`<h3>Consultas dos últimos 7 dias</h3>${html}`;
-  }catch(e){ console.error("Erro ao carregar logs:",e); }
+
+    resultado.className = status === "ATIVO" ? "ativo" : "inativo";
+    resultado.innerHTML = `
+      <b>Nome:</b> ${nomeCliente}<br>
+      <b>Status:</b> ${status}<br>
+      <b>CPF:</b> ${cpfMascarado}<br>
+      ${status === "ATIVO" ? `<b>Código:</b> ${codigo}` : "❌ Desconto não autorizado"}
+    `;
+
+    // ===== SALVA LOG =====
+    await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        aba: "logs",
+        dados: {
+          dataHora: new Date().toLocaleString("pt-BR"),
+          cpfConsultado: cpfMascarado,
+          nomeConsultado: nomeCliente,
+          parceiro: sess.nome,
+          codigoUnicoERC: codigo,
+          statusCliente: status
+        }
+      })
+    });
+
+  } catch (e) {
+    console.error(e);
+    resultado.innerHTML = "Erro ao validar cliente.";
+  }
 }
 
-carregarRelatorio();
+// ====== RELATÓRIO DE CONSULTAS ======
+async function carregarRelatorio() {
+  const sess = JSON.parse(localStorage.getItem("parceiro_sess") || "null");
+  if (!sess || !sess.nome) {
+    alert("Parceiro não identificado. Faça login novamente.");
+    return;
+  }
+
+  const box = document.getElementById("relatorioBox");
+  const tabela = document.getElementById("relatorioTabela");
+  tabela.innerHTML = "";
+
+  try {
+    const resp = await fetch(
+      API_URL + "?aba=logs&parceiro=" + encodeURIComponent(sess.nome)
+    );
+    const dados = await resp.json();
+
+    if (!dados || dados.length === 0) {
+      tabela.innerHTML =
+        "<tr><td colspan='6'>Nenhuma consulta encontrada.</td></tr>";
+    } else {
+      dados.forEach(l => {
+        tabela.innerHTML += `
+          <tr>
+            <td>${l.dataHora || "-"}</td>
+            <td>${l.nomeConsultado || "-"}</td>
+            <td>${l.cpfConsultado || "-"}</td>
+            <td>${l.parceiro || "-"}</td>
+            <td>${l.codigoUnicoERC || "-"}</td>
+            <td>${l.statusCliente || "-"}</td>
+          </tr>`;
+      });
+    }
+
+    box.style.display = "block";
+
+  } catch (e) {
+    console.error("Erro ao carregar relatório:", e);
+    alert("Erro ao carregar relatório.");
+  }
+}
 </script>
 
 </body>

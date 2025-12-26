@@ -36,7 +36,7 @@ button{margin-top:16px;padding:12px 18px;font-weight:800;color:#fff;border:none;
 
   <div class="card" id="loginBox">
     <h2 style="margin:0;color:#0a4c1a;text-align:center">Acesso do Parceiro</h2>
-    <div class="small">Use seu CNPJ e token cadastrado na planilha <b>parceiros</b>.</div>
+    <div class="small"><b>Parceiro</b> use seu CNPJ e token cadastrado .</div>
 
     <label style="font-weight:800;margin-top:10px;display:block">CNPJ</label>
     <input id="cnpj" placeholder="Digite seu CNPJ">
@@ -66,14 +66,11 @@ button{margin-top:16px;padding:12px 18px;font-weight:800;color:#fff;border:none;
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzXZpsNWvfsfjoFRMhOn6SXnBEjnUcU-kcGPhGssr30Gl9TOyRUjQaz3GmVce7iGsBc/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
 
 function norm(v){ return String(v ?? "").toLowerCase().trim(); }
 function onlyDigits(v){ return String(v ?? "").replace(/\D/g,""); }
-function isAtivo(v){
-  const s = norm(v);
-  return ["sim","true","1","ativo","yes"].includes(s);
-}
+function isAtivo(v){ const s = norm(v); return ["sim","true","1","ativo","yes"].includes(s); }
 
 function abrirPainel(p){
   document.getElementById("loginBox").style.display = "none";
@@ -90,90 +87,115 @@ async function login(){
   const erro = document.getElementById("erroLogin");
   erro.textContent = "";
 
-  if(!cnpj || !token){
-    erro.textContent = "Preencha CNPJ e token.";
-    return;
-  }
+  if(!cnpj || !token){ erro.textContent = "Preencha CNPJ e token."; return; }
 
   try{
     const res = await fetch(`${API_URL}?aba=parceiros`);
     const data = await res.json();
-    const lista = Array.isArray(data) ? data : (data.data || []);
+    const achado = data.find(p => onlyDigits(p.cnpj)==cnpj && String(p.token).trim()==token);
+    if(!achado){ erro.textContent = "CNPJ ou token inválidos."; return; }
+    if(!isAtivo(achado.ativo)){ erro.textContent="Parceiro INATIVO."; return; }
 
-    const achado = lista.find(p => {
-      const pc = onlyDigits(p.cnpj || p.CNPJ || "");
-      const pt = String(p.token || p.Token || p.tokenAcesso || "").trim();
-      return pc === cnpj && pt === token;
-    });
-
-    if(!achado){
-      erro.textContent = "CNPJ ou token inválidos.";
-      return;
-    }
-
-    if(!isAtivo(achado.ativo ?? achado.Ativo ?? achado.status)){
-      erro.textContent = "Parceiro INATIVO. Contate o suporte.";
-      return;
-    }
-
-    const nome = achado.nomeFantasia || achado.nome || achado.razaoSocial || "Parceiro";
-    const sessObj = { cnpj, nome };
-
-    localStorage.setItem("parceiro_sess", JSON.stringify(sessObj));
-    abrirPainel(sessObj);
-  }catch(e){
-    console.error(e);
-    erro.textContent = "Erro ao acessar a base do parceiro.";
-  }
+    const nome = achado.nomeFantasia || achado.nome || "Parceiro";
+    localStorage.setItem("parceiro_sess", JSON.stringify({ cnpj, nome }));
+    abrirPainel({ nome });
+  }catch(e){ erro.textContent="Erro ao validar parceiro."; console.error(e); }
 }
 
 async function validar(){
   const v = document.getElementById("chaveCliente").value.trim();
   const box = document.getElementById("resultado");
-
   box.classList.remove("ativo","inativo");
   box.textContent = "Consultando...";
 
-  if(!v){
-    box.textContent = "Informe CPF ou ID Público.";
-    return;
-  }
+  if(!v){ box.textContent="Informe CPF ou ID Público."; return; }
 
   const dig = onlyDigits(v);
-  const isCpf = dig.length === 11;
+  const isCpf = dig.length===11;
 
   try{
-    const url = isCpf
-      ? `${API_URL}?aba=clientes&cpf=${encodeURIComponent(dig)}`
-      : `${API_URL}?aba=clientes&idPublico=${encodeURIComponent(v)}`;
-
+    const url = isCpf ? `${API_URL}?aba=clientes&cpf=${dig}` : `${API_URL}?aba=clientes&idPublico=${v}`;
     const res = await fetch(url);
     const data = await res.json();
+    const c = Array.isArray(data) ? (isCpf ? data.find(x=>onlyDigits(x.cpf)===dig) : data.find(x=>String(x.idPublico).trim()===v)) : data;
 
-    let c = null;
-    if(Array.isArray(data)){
-      c = isCpf
-        ? data.find(x => onlyDigits(x.cpf) === dig)
-        : data.find(x => String(x.idPublico).trim() === v);
-    }else{
-      c = data;
-    }
+    const parceiroSess = JSON.parse(localStorage.getItem("parceiro_sess") || "{}");
+    const parceiroNome = parceiroSess.nome || "Desconhecido";
 
+    const agora = new Date();
+    const dataHora = agora.toLocaleString("pt-BR");
+    const dd = String(agora.getDate()).padStart(2,"0");
+    const mm = String(agora.getMonth()+1).padStart(2,"0");
+    const hh = String(agora.getHours()).padStart(2,"0");
+    const min = String(agora.getMinutes()).padStart(2,"0");
+    const ss = String(agora.getSeconds()).padStart(2,"0");
+    const codigoUnicoERC = `ERO-${dd}${mm}-${hh}${min}${ss}`;
+
+    const cpfOriginal = c?.cpf || v;
+    const cpfCamuflado = cpfOriginal.replace(/^(\d{3})\d{3}(\d{3})(\d{2})$/,"$1.***.$2-$3");
+    const ativo = c && isAtivo(c.ativo);
+
+    // === Exibir resultado ===
     if(!c || !c.cpf){
-      box.textContent = "Cliente não encontrado.";
+      box.innerHTML = `<div><b>Cliente não encontrado.</b></div><div class="small">❌ Desconto não autorizado</div>`;
+      await registrarLog({
+        dataHora, cpfConsultado:cpfCamuflado, nomeConsultado:"-", 
+        parceiro:parceiroNome, codigoUnicoERC, statusCliente:"ERRO", beneficiosVigentes:"-"
+      });
       return;
     }
 
-    const ativo = isAtivo(c.ativo);
-    box.classList.add(ativo ? "ativo" : "inativo");
-    box.innerHTML = `
-      <div><b>Nome:</b> ${c.nome || "-"}</div>
-      <div><b>Status:</b> <b>${ativo ? "ATIVO" : "INATIVO"}</b></div>
-      <div class="small">${ativo ? "✅ Desconto autorizado" : "❌ Desconto não autorizado"}</div>
-    `;
+    box.classList.add(ativo?"ativo":"inativo");
+    box.innerHTML = ativo ? `
+      <div><b>Nome:</b> ${c.nome||"-"}</div>
+      <div><b>Status:</b> ATIVO</div>
+      <div><b>CPF:</b> ${cpfCamuflado}</div>
+      <div><b>Número do Cartão:</b> ${c.idPublico||"-"}</div>
+      <div><b>Código de Autorização:</b> <b>${codigoUnicoERC}</b></div>
+      <div class="small">✅ Desconto autorizado</div>`
+      :
+      `<div><b>Nome:</b> ${c.nome||"-"}</div>
+      <div><b>Status:</b> INATIVO</div>
+      <div><b>CPF:</b> ${cpfCamuflado}</div>
+      <div class="small">❌ Desconto não autorizado</div>`;
+
+    // === Registrar log, mesmo ativo ou inativo ===
+    await registrarLog({
+      dataHora, cpfConsultado:cpfCamuflado, nomeConsultado:c.nome||"-",
+      parceiro:parceiroNome, codigoUnicoERC, 
+      statusCliente: ativo ? "ATIVO" : "INATIVO",
+      beneficiosVigentes: "-"
+    });
+
+    carregarRelatorio();
+
   }catch(e){
     console.error(e);
-    box.textContent = "Erro na validação.";
+    box.textContent="Erro na validação.";
+    await registrarLog({
+      dataHora:new Date().toLocaleString("pt-BR"),
+      cpfConsultado:v,
+      nomeConsultado:"-",
+      parceiro:"Erro no sistema",
+      codigoUnicoERC:"ERO-ERRO",
+      statusCliente:"ERRO",
+      beneficiosVigentes:"-"
+    });
+  }
+}
+
+// === Função global para salvar log ===
+async function registrarLog(dados){
+  try{
+    const resp = await fetch(API_URL, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ aba: "logs", modo: "registrar", dados })
+    });
+    const result = await resp.json();
+    console.log("📘 Log enviado:", result);
+  }catch(err){
+    console.error("❌ Erro ao salvar log:", err);
   }
 }
 
@@ -181,6 +203,35 @@ function logout(){
   localStorage.removeItem("parceiro_sess");
   location.reload();
 }
+
+async function carregarRelatorio(){
+  try{
+    const resp = await fetch(`${API_URL}?aba=logs&modo=listar`);
+    const dados = await resp.json();
+    const seteDiasAtras = new Date();
+    seteDiasAtras.setDate(seteDiasAtras.getDate()-7);
+
+    const recentes = dados.filter(l => new Date(l.dataHora) >= seteDiasAtras);
+    let html = recentes.map(l => `
+      <p>
+        <b>${l.dataHora}</b><br>
+        ${l.parceiro} — <b>${l.nomeConsultado}</b> (${l.cpfConsultado})<br>
+        Código: <b>${l.codigoUnicoERC}</b> — Status: <b>${l.statusCliente}</b>
+      </p>`).join("");
+
+    if(!html) html="Nenhuma consulta recente.";
+
+    let relatorioDiv=document.getElementById("relatorio");
+    if(!relatorioDiv){
+      relatorioDiv=document.createElement("div");
+      relatorioDiv.id="relatorio"; relatorioDiv.className="card";
+      document.querySelector(".wrap").appendChild(relatorioDiv);
+    }
+    relatorioDiv.innerHTML=`<h3>Consultas dos últimos 7 dias</h3>${html}`;
+  }catch(e){ console.error("Erro ao carregar logs:",e); }
+}
+
+carregarRelatorio();
 </script>
 
 </body>

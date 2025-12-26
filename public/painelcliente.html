@@ -48,7 +48,7 @@ button{margin-top:16px;padding:12px 18px;font-weight:700;color:#fff;border:none;
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzXZpsNWvfsfjoFRMhOn6SXnBEjnUcU-kcGPhGssr30Gl9TOyRUjQaz3GmVce7iGsBc/exec";
+const sheetURL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
 
 let ultimoIdPublico = "";
 
@@ -77,8 +77,8 @@ async function consultar(){
 
   try{
     const url = isCpf
-      ? `${API_URL}?aba=clientes&cpf=${encodeURIComponent(soDigitos)}`
-      : `${API_URL}?aba=clientes&idPublico=${encodeURIComponent(valor)}`;
+  ? `${sheetURL}?aba=clientes&cpf=${encodeURIComponent(soDigitos)}`
+  : `${sheetURL}?aba=clientes&idPublico=${encodeURIComponent(valor)}`;
 
     const res = await fetch(url);
     const data = await res.json();

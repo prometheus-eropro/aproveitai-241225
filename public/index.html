@@ -241,7 +241,7 @@ footer a:hover {
 </footer>
 
 <script>
-const sheetURL = "https://script.google.com/macros/s/AKfycbzXZpsNWvfsfjoFRMhOn6SXnBEjnUcU-kcGPhGssr30Gl9TOyRUjQaz3GmVce7iGsBc/exec";
+const sheetURL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
 const parceirosDiv = document.getElementById("parceiros");
 const buscaNome = document.getElementById("buscaNome");
 const buscaCidade = document.getElementById("buscaCidade");
@@ -249,18 +249,15 @@ const buscaRamo = document.getElementById("buscaRamo");
 
 let parceiros = [];
 
-async function carregarParceiros() {
-  try {
-    const resposta = await fetch(`${sheetURL}?aba=parceiros`);
-    const dados = await resposta.json();
-    parceiros = dados.filter(p => (p.ativo || "").toLowerCase() === "sim");
-    renderizar(parceiros);
-  } catch (erro) {
-    console.error("Erro ao carregar parceiros:", erro);
-    parceirosDiv.innerHTML = "Erro ao carregar parceiros.";
-  }
+function normalizar(txt) {
+  return (txt || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
 }
 
+// === RENDERIZAR CARDS ===
 function renderizar(lista) {
   parceirosDiv.innerHTML = "";
   if (!lista.length) {
@@ -277,11 +274,21 @@ function renderizar(lista) {
     const instagram = p.instagram || "";
     const site = p.site || "";
     const email = p.email || "";
-    const logo = p.logoURL || "logo-aproveitai.png";
+
+    // === LOGO do parceiro (com fallback) ===
+    let logo = (p.logoURL || "").trim();
+    if (!logo || !logo.includes("http")) {
+      logo = "logo-aproveitai.png";
+    }
 
     parceirosDiv.innerHTML += `
       <div class="card">
-        <img src="${logo}" alt="${nome}">
+        <img 
+          src="${logo}" 
+          alt="${nome}" 
+          onerror="this.src='logo-aproveitai.png'" 
+          style="max-height:100px;margin-bottom:10px;"
+        >
         <h3>${nome}</h3>
         <p><b>Cidade:</b> ${cidade}</p>
         <p><b>Ramo:</b> ${ramo}</p>
@@ -295,23 +302,74 @@ function renderizar(lista) {
   });
 }
 
+// === PREENCHER FILTROS ===
+function preencherFiltros() {
+  buscaCidade.innerHTML = `<option value="">Todas as cidades</option>`;
+  buscaRamo.innerHTML = `<option value="">Todos os ramos</option>`;
+
+  // remove acento e caracteres especiais pra uniformizar
+  const cidades = [...new Set(parceiros
+    .map(p => normalizar(p.cidade))
+    .filter(Boolean)
+  )].sort();
+
+  const ramos = [...new Set(parceiros
+    .map(p => normalizar(p.ramo))
+    .filter(Boolean)
+  )].sort();
+
+  cidades.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c;
+    opt.textContent = c.charAt(0).toUpperCase() + c.slice(1);
+    buscaCidade.appendChild(opt);
+  });
+
+  ramos.forEach(r => {
+    const opt = document.createElement("option");
+    opt.value = r;
+    opt.textContent = r.charAt(0).toUpperCase() + r.slice(1);
+    buscaRamo.appendChild(opt);
+  });
+}
+
+// === FILTRAR ===
 function filtrar() {
-  const nome = buscaNome.value.toLowerCase();
-  const cidade = buscaCidade.value;
-  const ramo = buscaRamo.value;
+  const nomeBusca = normalizar(buscaNome.value);
+  const cidadeBusca = normalizar(buscaCidade.value);
+  const ramoBusca = normalizar(buscaRamo.value);
 
   const filtrados = parceiros.filter(p => {
-    const nomeCampo = (p.nomeFantasia || "").toLowerCase();
-    const cidadeCampo = p.cidade || "";
-    const ramoCampo = p.ramo || "";
-    return (
-      (!nome || nomeCampo.includes(nome)) &&
-      (!cidade || cidadeCampo === cidade) &&
-      (!ramo || ramoCampo === ramo)
-    );
+    const nomeOk =
+      !nomeBusca ||
+      normalizar(p.nomeFantasia || p.nome).includes(nomeBusca);
+
+    const cidadeOk =
+      !cidadeBusca ||
+      normalizar(p.cidade).includes(cidadeBusca); // compara sem acento e sem hífen
+
+    const ramoOk =
+      !ramoBusca ||
+      normalizar(p.ramo).includes(ramoBusca);
+
+    return nomeOk && cidadeOk && ramoOk;
   });
 
   renderizar(filtrados);
+}
+
+// === CARREGAR PARCEIROS ===
+async function carregarParceiros() {
+  try {
+    const resposta = await fetch(`${sheetURL}?aba=parceiros`);
+    const dados = await resposta.json();
+    parceiros = dados.filter(p => (p.ativo || "").toLowerCase() === "sim");
+    renderizar(parceiros);
+    preencherFiltros();
+  } catch (erro) {
+    console.error("Erro ao carregar parceiros:", erro);
+    parceirosDiv.innerHTML = "Erro ao carregar parceiros.";
+  }
 }
 
 carregarParceiros();

@@ -1,252 +1,320 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Cartão AproveitAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background-color: #f0fdf4;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f2fff2;
     }
 
+    /* ===== CABEÇALHO ===== */
     header {
-      background-color: #ffffff;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 10px 20px;
+      align-items: center;
+      padding: 20px 40px;
+      background: #ffffff;
       border-bottom: 1px solid #ccc;
     }
 
     header img {
-      height: 60px;
+      height: 150px;
     }
 
-    .titulo {
-      font-size: 28px;
-      color: #037c3c;
-      font-weight: bold;
+    .titulo-centro {
       text-align: center;
-      flex-grow: 1;
+      max-width: 600px;
     }
 
-    .subtitulo {
-      text-align: center;
-      color: #037c3c;
-      font-weight: bold;
+    .titulo-centro h1 {
       margin: 0;
+      padding: 12px 30px;
+      background: #e0f9e0;
+      border-radius: 12px;
+      color: #0a7a2a;
+      font-size: 36px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
 
-    .botoes-centro {
+    .slogan {
+      margin-top: 15px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #0a7a2a;
+    }
+
+    .boas-vindas {
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    /* ===== BOTÕES ===== */
+    .botoes {
       display: flex;
       justify-content: center;
+      gap: 15px;
+      margin: 25px 0;
       flex-wrap: wrap;
-      margin: 10px 0;
-      gap: 10px;
     }
 
-    .botoes-centro button {
-      padding: 10px 16px;
-      background-color: #037c3c;
+    .botoes button {
+      background: #0a7a2a;
       color: white;
       border: none;
+      padding: 12px 22px;
       border-radius: 6px;
-      font-weight: bold;
       cursor: pointer;
+      font-size: 15px;
     }
 
+    .botoes button:hover {
+      background: #055a1f;
+    }
+
+    /* ===== FILTROS ===== */
     .filtros {
       display: flex;
       justify-content: center;
       gap: 10px;
       padding: 15px;
-      background-color: #c3eeff;
+      background: #cfefff;
       flex-wrap: wrap;
     }
 
-    .filtros input, .filtros select {
+    .filtros input,
+    .filtros select,
+    .filtros button {
       padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      font-size: 14px;
     }
 
+    /* ===== PARCEIROS ===== */
     .container-parceiros {
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
-      gap: 16px;
-      padding: 20px;
-    }
-
-    .parceiro-card {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 0 5px #ccc;
-      padding: 10px;
-      width: 250px;
-    }
-
-    .parceiro-card img {
-      width: 50px;
-    }
-
-    footer {
-      background-color: #013b1c;
-      color: white;
-      padding: 15px 20px;
-      font-size: 14px;
-      display: flex;
-      justify-content: space-between;
+      gap: 20px;
+      padding: 30px;
       flex-wrap: wrap;
     }
 
-    footer div {
-  flex: none;
-  margin: 10px;
-  min-width: 200px;
-}
-
-
-    footer strong {
-      display: block;
-      margin-bottom: 5px;
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      width: 260px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      text-align: center;
     }
 
-    a {
-      color: white;
+    .card img {
+      max-height: 120px;
+      margin-bottom: 10px;
     }
-html, body {
-  height: 100%;
+
+    /* ===== RODAPÉ ===== */
+    footer {
+  background: #003300;
+  color: white;
+  padding: 15px 40px;
+  font-size: 15px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
-footer {
-  margin-top: auto;
+footer .col {
+  flex: 1 1 300px;
+  margin: 10px;
 }
 
+footer h4 {
+  color: #9dffb3;
+  margin-bottom: 10px;
+}
+
+footer a {
+  color: #bdf8c9;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer .copyright {
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid #0a7a2a;
+  padding-top: 8px;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+footer h3, footer h4 {
+  margin-bottom: 10px;
+  color: #9dffb3;
+}
+
+footer a {
+  color: #bdf8c9;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+.copyright {
+  width: 100%;
+  text-align: center;
+  margin-top: 15px;
+  border-top: 1px solid #0a7a2a;
+  padding-top: 10px;
+  font-size: 13px;
+}
   </style>
 </head>
+
 <body>
 
-  <header>
-    <img src="https://aproveitai.vercel.app/logo-cons.png" alt="Logo ConsciêncIAs">
-...
-<img src="https://aproveitai.vercel.app/logo-aproveitai.png" alt="Logo AproveitAI">
+<header>
+  <img src="logo-prometheus.png" alt="ConsciêncIAs">
 
-  </header>
-
-  <p class="subtitulo">Tecnologia com ConsciêncIA gera Resultado.</p>
-
-  <div class="botoes-centro">
-    <button onclick="location.href='cliente.html'">Quero ser Cliente</button>
-    <button onclick="location.href='painelcliente.html'">Área do Cliente</button>
-    <button onclick="location.href='painelparceiro.html'">Área do Parceiro</button>
-    <button onclick="location.href='parceiro.html'">Quero ser Parceiro</button>
+  <div class="titulo-centro">
+    <h1>Cartão AproveitAI</h1>
+    <div class="slogan">Tecnologia com ConsciêncIA gera Resultado.</div>
+    <div class="boas-vindas">
+      <strong>Bem-vindo à PROMETHEUS EROPRO Soluções Inteligentes!</strong><br>
+      Assine e experimente o <strong>Cartão AproveitAI</strong> e comece a economizar de verdade.
+    </div>
   </div>
 
-  <div class="filtros">
-    <input type="text" id="filtroNome" placeholder="Buscar por nome...">
-    <select id="filtroCidade">
-      <option value="">Todas as cidades</option>
-    </select>
-    <select id="filtroRamo">
-      <option value="">Todos os ramos</option>
-    </select>
-    <button onclick="filtrarParceiros()">Filtrar</button>
+  <img src="logo-aproveitai.png" alt="AproveitAI">
+</header>
+
+<div class="botoes">
+  <a href="https://wa.me/5528999692303?text=Olá!%20Quero%20ser%20cliente%20do%20Cartão%20AproveitAI." target="_blank" class="btn">Quero ser Cliente</a>
+  <a href="painelcliente.html" class="btn">Área do Cliente</a>
+  <a href="painelparceiro.html" class="btn">Área do Parceiro</a>
+  <a href="https://wa.me/5528999692303?text=Olá!%20Quero%20ser%20parceiro%20do%20Cartão%20AproveitAI." target="_blank" class="btn">Quero ser Parceiro</a>
+</div>
+
+<div class="filtros">
+  <input type="text" id="buscaNome" placeholder="Buscar por nome">
+  <select id="buscaCidade"><option value="">Todas as cidades</option></select>
+  <select id="buscaRamo"><option value="">Todos os ramos</option></select>
+  <button onclick="filtrar()">Filtrar</button>
+</div>
+
+<div id="parceiros" class="container-parceiros">
+  Carregando parceiros...
+</div>
+
+<footer>
+  <div class="col">
+    <h4>Cartão AproveitAI</h4>
+    PROMETHEUS EROPRO Soluções Inteligentes LTDA<br>
+    CNPJ: 58.584.332/0001-40<br>
+    📧 cartao.aproveitai@gmail.com<br>
+    📞 (28) 99969-2303<br>
+    📸 @cartao.aproveitai
   </div>
 
-  <div id="parceiros" class="container-parceiros">Carregando parceiros...</div>
+  <div class="col">
+    <h4>Links Rápidos</h4>
+    <a href="beneficios.html">Benefícios</a><br>
+    <a href="promocoes.html">Promoções</a><br>
+    <a href="depoimentos.html">Depoimentos</a><br>
+    <a href="faq.html">Dúvidas</a><br>
+    <a href="privacidade.html">Privacidade</a><br>
+    <a href="termos.html">Termos</a><br>
+    <a href="excluir.html">Excluir Dados</a>
+  </div>
 
-  <footer>
-    <div>
-      <strong>Cartão AproveitAI</strong>
-      PROMETHEUS EROPRO Soluções Inteligentes LTDA<br>
-      CNPJ: 58.584.332/0001-40<br>
-      📧 cartao.aproveitai@gmail.com<br>
-      📞 WhatsApp: (28) 99969-2303<br>
-      📷 Instagram: @cartao.aproveitai
-    </div>
-    <div>
-      <strong>Links Rápidos</strong>
-      <a href="beneficios.html">Benefícios</a><br>
-      <a href="promocoes.html">Promoções</a><br>
-      <a href="duvidas.html">Dúvidas</a><br>
-      <a href="politica.html">Privacidade</a><br>
-      <a href="termos.html">Termos</a><br>
-      <a href="excluir.html">Excluir Dados</a>
-    </div>
-    <div>
-      <strong>Depoimentos</strong>
-      <a href="#">Ver depoimentos</a>
-    </div>
-  </footer>
+  <div class="copyright">© 2025 AproveitAI. Todos os direitos reservados.</div>
+</footer>
 
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec"; // seu endpoint
+<script>
+const sheetURL = "https://script.google.com/macros/s/AKfycbzXZpsNWvfsfjoFRMhOn6SXnBEjnUcU-kcGPhGssr30Gl9TOyRUjQaz3GmVce7iGsBc/exec";
+const parceirosDiv = document.getElementById("parceiros");
+const buscaNome = document.getElementById("buscaNome");
+const buscaCidade = document.getElementById("buscaCidade");
+const buscaRamo = document.getElementById("buscaRamo");
 
-    let dadosParceiros = [];
+let parceiros = [];
 
-    fetch(API_URL + "?aba=parceiros")
-      .then(res => res.json())
-      .then(data => {
-        dadosParceiros = data.filter(p => p.ativo === 'sim');
-        carregarFiltros(dadosParceiros);
-        exibirParceiros(dadosParceiros);
-      })
-      .catch(err => {
-        document.getElementById("parceiros").innerHTML = "Erro ao carregar parceiros.";
-        console.error(err);
-      });
+async function carregarParceiros() {
+  try {
+    const resposta = await fetch(`${sheetURL}?aba=parceiros`);
+    const dados = await resposta.json();
+    parceiros = dados.filter(p => (p.ativo || "").toLowerCase() === "sim");
+    renderizar(parceiros);
+  } catch (erro) {
+    console.error("Erro ao carregar parceiros:", erro);
+    parceirosDiv.innerHTML = "Erro ao carregar parceiros.";
+  }
+}
 
-    function carregarFiltros(dados) {
-      const cidades = [...new Set(dados.map(p => p.cidade))];
-      const ramos = [...new Set(dados.map(p => p.ramo))];
+function renderizar(lista) {
+  parceirosDiv.innerHTML = "";
+  if (!lista.length) {
+    parceirosDiv.innerHTML = "Nenhum parceiro encontrado.";
+    return;
+  }
 
-      const selCidade = document.getElementById("filtroCidade");
-      cidades.forEach(c => selCidade.innerHTML += `<option value="${c.toLowerCase()}">${c}</option>`);
+  lista.forEach(p => {
+    const nome = p.nomeFantasia || p.nome || "Parceiro";
+    const cidade = p.cidade || "-";
+    const ramo = p.ramo || "-";
+    const tipoDesconto = p.tipoDesconto || "";
+    const whatsapp = (p.whatsapp || "").replace(/\D/g, "");
+    const instagram = p.instagram || "";
+    const site = p.site || "";
+    const email = p.email || "";
+    const logo = p.logoURL || "logo-aproveitai.png";
 
-      const selRamo = document.getElementById("filtroRamo");
-      ramos.forEach(r => selRamo.innerHTML += `<option value="${r.toLowerCase()}">${r}</option>`);
-    }
+    parceirosDiv.innerHTML += `
+      <div class="card">
+        <img src="${logo}" alt="${nome}">
+        <h3>${nome}</h3>
+        <p><b>Cidade:</b> ${cidade}</p>
+        <p><b>Ramo:</b> ${ramo}</p>
+        ${tipoDesconto ? `<p><b>Desconto:</b> ${tipoDesconto}</p>` : ""}
+        ${whatsapp ? `<p><a href="https://wa.me/55${whatsapp}" target="_blank">WhatsApp</a></p>` : ""}
+        ${instagram ? `<p><a href="https://instagram.com/${instagram.replace("@", "")}" target="_blank">${instagram}</a></p>` : ""}
+        ${site ? `<p><a href="${site}" target="_blank">Site</a></p>` : ""}
+        ${email ? `<p><a href="mailto:${email}">${email}</a></p>` : ""}
+      </div>
+    `;
+  });
+}
 
-    function filtrarParceiros() {
-      const nome = document.getElementById("filtroNome").value.toLowerCase();
-      const cidade = document.getElementById("filtroCidade").value;
-      const ramo = document.getElementById("filtroRamo").value;
+function filtrar() {
+  const nome = buscaNome.value.toLowerCase();
+  const cidade = buscaCidade.value;
+  const ramo = buscaRamo.value;
 
-      const filtrado = dadosParceiros.filter(p =>
-        p.nome.toLowerCase().includes(nome) &&
-        (cidade === "" || p.cidade.toLowerCase() === cidade) &&
-        (ramo === "" || p.ramo.toLowerCase() === ramo)
-      );
+  const filtrados = parceiros.filter(p => {
+    const nomeCampo = (p.nomeFantasia || "").toLowerCase();
+    const cidadeCampo = p.cidade || "";
+    const ramoCampo = p.ramo || "";
+    return (
+      (!nome || nomeCampo.includes(nome)) &&
+      (!cidade || cidadeCampo === cidade) &&
+      (!ramo || ramoCampo === ramo)
+    );
+  });
 
-      exibirParceiros(filtrado);
-    }
+  renderizar(filtrados);
+}
 
-    function exibirParceiros(lista) {
-      const container = document.getElementById("parceiros");
-      container.innerHTML = "";
-
-      if (lista.length === 0) {
-        container.innerHTML = "<p>Nenhum parceiro encontrado.</p>";
-        return;
-      }
-
-      lista.forEach(p => {
-        container.innerHTML += `
-          <div class="parceiro-card">
-            <img src="${p.logoURL || 'https://aproveitai.vercel.app/logo-aproveitai.png'}" alt="Logo">
-            <p><strong>${p.nome}</strong></p>
-            <p><strong>Cidade:</strong> ${p.cidade}</p>
-            <p><strong>Ramo:</strong> ${p.ramo}</p>
-            <p><a href="https://wa.me/${p.whatsapp}" target="_blank">WhatsApp</a></p>
-          </div>
-        `;
-      });
-    }
-  </script>
+carregarParceiros();
+</script>
 </body>
 </html>

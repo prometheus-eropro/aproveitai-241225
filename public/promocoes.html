@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
 <title>Promoções | Cartão AproveitAI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +23,8 @@ h1{text-align:center;color:#0a7b34}
 .card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 4px 10px rgba(0,0,0,.08)}
 .voltar{margin:40px auto 0;display:inline-block;background:#0a7b34;color:#fff;padding:10px 22px;border-radius:10px}
 </style>
+<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -42,18 +45,47 @@ h1{text-align:center;color:#0a7b34}
 </div>
 
 <script>
-const ENDPOINT="https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
 
-fetch(ENDPOINT+"?aba=promocoes")
-.then(r=>r.json())
-.then(d=>{
-  document.getElementById("lista").innerHTML=d.map(p=>`
-    <div class="card">
-      <b>${p.titulo}</b><br>
-      ${p.descricao||""}
-    </div>
-  `).join("");
-});
+fetch(ENDPOINT + "?aba=promocoes")
+  .then(r => r.json())
+  .then(d => {
+    const lista = document.getElementById("lista");
+    lista.innerHTML = "";
+
+    // 🧠 Filtra só promoções ativas e gerais (sem grupo)
+    const ativos = d.filter(p =>
+      String(p.ativo || "").toUpperCase() === "SIM" &&
+      (!p.grupo || p.grupo.trim() === "")
+    );
+
+    ativos.forEach(p => {
+      lista.innerHTML += `
+        <div class="card">
+          <b>${p.titulo || p.nome || "Promoção sem título"}</b><br>
+          <p>${p.descricao || "-"}</p>
+          <small>
+            <b>Parceiro:</b> ${p.parceiro || p.parceiroCNPJ || "-"}<br>
+            <b>Validade:</b> ${p.dataFim || "-"}<br>
+            ${p.zap ? `<b>WhatsApp:</b> ${p.zap}<br>` : ""}
+            ${p.instagram ? `<b>Instagram:</b> @${p.instagram}<br>` : ""}
+          </small>
+        </div>
+      `;
+    });
+
+    lista.innerHTML += `
+      <div style="grid-column:1/-1;text-align:center;margin-top:20px;color:#555;">
+        ⚠️ Algumas promoções podem ser exclusivas para grupos ou clientes específicos.<br>
+        Consulte sua área do cliente para conferir as promoções personalizadas.
+      </div>
+    `;
+  })
+  .catch(err => {
+    document.getElementById("lista").innerHTML =
+      "<p style='color:red;text-align:center'>Erro ao carregar promoções.</p>";
+    console.error(err);
+  });
 </script>
 
 </body>

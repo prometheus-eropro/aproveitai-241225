@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
 <title>Benefícios | Cartão AproveitAI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,6 +33,8 @@ h1{text-align:center;color:#0a7b34}
   padding:10px 22px;border-radius:10px
 }
 </style>
+<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -52,19 +55,49 @@ h1{text-align:center;color:#0a7b34}
 </div>
 
 <script>
-const ENDPOINT="https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
 
-fetch(ENDPOINT+"?aba=beneficios")
-.then(r=>r.json())
-.then(d=>{
-  document.getElementById("lista").innerHTML=d.map(b=>`
-    <div class="card">
-      <b>${b.nome}</b><br>
-      ${b.descricao||""}
-    </div>
-  `).join("");
-});
+fetch(ENDPOINT + "?aba=beneficios")
+  .then(r => r.json())
+  .then(d => {
+    const lista = document.getElementById("lista");
+    lista.innerHTML = "";
+
+    // 🧠 Filtra só benefícios ATIVOS e sem grupo (públicos)
+    const ativos = d.filter(b =>
+      String(b.ativo || "").toUpperCase() === "SIM" &&
+      (!b.grupo || b.grupo.trim() === "")
+    );
+
+    // 🧱 Monta os cartões
+    ativos.forEach(b => {
+      lista.innerHTML += `
+        <div class="card">
+          <b>${b.titulo || b.nome || "Benefício sem título"}</b><br>
+          <p>${b.descricao || "-"}</p>
+          <small>
+            <b>Parceiro:</b> ${b.parceiro || b.parceiroCNPJ || "-"}<br>
+            <b>Validade:</b> ${b.dataFim || "-"}<br>
+            ${b.zap ? `<b>WhatsApp:</b> ${b.zap}<br>` : ""}
+            ${b.instagram ? `<b>Instagram:</b> @${b.instagram}<br>` : ""}
+          </small>
+        </div>
+      `;
+    });
+
+    // ⚠️ Aviso padrão
+    lista.innerHTML += `
+      <div style="grid-column:1/-1;text-align:center;margin-top:20px;color:#555;">
+        ⚠️ Alguns benefícios podem ser exclusivos para grupos ou clientes específicos.<br>
+        Consulte sua área do cliente para conferir benefícios personalizados.
+      </div>
+    `;
+  })
+  .catch(err => {
+    document.getElementById("lista").innerHTML =
+      "<p style='color:red;text-align:center'>Erro ao carregar benefícios.</p>";
+    console.error(err);
+  });
 </script>
-
 </body>
 </html>

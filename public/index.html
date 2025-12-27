@@ -2,7 +2,15 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Cartão AproveitAI</title>
+  <title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a7a2a">
+<link rel="apple-touch-icon" href="logo-aproveitai.png">
+
+Cartão AproveitAI
+
+</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -179,6 +187,7 @@ footer a:hover {
   font-size: 13px;
 }
   </style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -197,12 +206,42 @@ footer a:hover {
 
   <img src="logo-aproveitai.png" alt="AproveitAI">
 </header>
+<div class="botao-destaque">
+  <a href="beneficios.html" class="btn-aproveitai">🎁 Benefícios</a>
+  <a href="promocoes.html" class="btn-aproveitai">🔥 Promoções</a>
+</div>
 
 <div class="botoes">
-  <a href="https://wa.me/5528999692303?text=Olá!%20Quero%20ser%20cliente%20do%20Cartão%20AproveitAI." target="_blank" class="btn">Quero ser Cliente</a>
-  <a href="painelcliente.html" class="btn">Área do Cliente</a>
-  <a href="painelparceiro.html" class="btn">Área do Parceiro</a>
-  <a href="https://wa.me/5528999692303?text=Olá!%20Quero%20ser%20parceiro%20do%20Cartão%20AproveitAI." target="_blank" class="btn">Quero ser Parceiro</a>
+
+<div style="text-align:center;margin-top:20px;">
+  <button onclick="toggleInfo()" style="background:#0a4c1a;color:white;padding:12px 25px;border:none;border-radius:8px;cursor:pointer;font-weight:bold;">
+    🧾 Quero ser Cliente
+  </button>
+
+  <div id="infoCliente" style="display:none;margin-top:20px;background:#f8f9fa;border-radius:10px;padding:20px;max-width:700px;margin-left:auto;margin-right:auto;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+    <h3 style="color:#0a4c1a;">Como funciona o Cartão AproveitAI</h3>
+    <p>O <b>Cartão AproveitAI</b> conecta você a comércios parceiros e oferece descontos reais, exclusivos e automáticos em diversas áreas da cidade.</p>
+    <ol style="text-align:left;max-width:600px;margin:auto;">
+      <li>Preencha o cadastro e aceite os Termos.</li>
+      <li>Nossa equipe entrará em contato para confirmar o pagamento.</li>
+      <li>Após a confirmação, você receberá seu Cartão Digital com QR Code.</li>
+      <li>Apresente o QR Code aos parceiros para receber o desconto.</li>
+    </ol>
+    <p style="font-size:0.95rem;color:#333;">💡 Cartão individual, sem fidelidade. Dados protegidos conforme a <a href="privacidade.html" target="_blank">LGPD</a>.</p>
+    <a href="cadastro.html" style="display:inline-block;margin-top:10px;background:#0a4c1a;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;">Ir para Cadastro</a>
+  </div>
+</div>
+
+<script>
+function toggleInfo(){
+  const box = document.getElementById('infoCliente');
+  box.style.display = (box.style.display==='none'||!box.style.display)?'block':'none';
+}
+</script>
+
+ <a href="painelcliente.html" class="btn-aproveitai">👤 Área do Cliente</a>
+ <a href="painelparceiro.html" class="btn-aproveitai">🏪 Área do Parceiro</a>
+<a href="https://wa.me/5528999692303?text=Olá!%20Quero%20ser%20parceiro%20do%20Cartão%20AproveitAI." target="_blank" class="btn-aproveitai">🤝 Quero ser Parceiro</a>
 </div>
 
 <div class="filtros">
@@ -374,5 +413,31 @@ async function carregarParceiros() {
 
 carregarParceiros();
 </script>
+<div id="lgpd-barra" style="
+  position:fixed;bottom:0;left:0;width:100%;
+  background:#0a7a2a;color:white;padding:12px;text-align:center;
+  font-size:14px;z-index:9999;">
+  Utilizamos cookies para melhorar sua experiência. Ao continuar navegando,
+  você concorda com nossa <a href='privacidade.html' style='color:#aaffaa;text-decoration:underline;'>Política de Privacidade</a>.
+  <button onclick="aceitarLGPD()" style='margin-left:10px;padding:6px 12px;border:none;background:white;color:#0a7a2a;border-radius:6px;cursor:pointer;'>Entendi</button>
+</div>
+
+<script>
+function aceitarLGPD(){
+  localStorage.setItem("lgpd-ok","sim");
+  document.getElementById("lgpd-barra").style.display="none";
+}
+if(localStorage.getItem("lgpd-ok")==="sim"){
+  document.getElementById("lgpd-barra").style.display="none";
+}
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then(() => console.log("✅ Service Worker registrado"))
+    .catch(err => console.error("Erro SW:", err));
+}
+</script>
+
 </body>
 </html>

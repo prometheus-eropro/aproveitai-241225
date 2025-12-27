@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastro | Cartão AproveitAI</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body style="font-family:Arial, sans-serif; background:#e8f6f3;">
+
+<div style="max-width:600px;margin:40px auto;background:white;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);">
+  <h2 style="text-align:center;color:#006400;">Quero ser Cliente</h2>
+  <p style="font-size:14px;text-align:center;color:#444;">
+    Preencha seus dados abaixo e entraremos em contato para confirmar seu pagamento e liberar seu Cartão AproveitAI.
+  </p>
+
+  <form id="formCliente">
+    <label>Nome completo:</label>
+    <input name="nome" required style="width:100%;padding:8px;margin-bottom:10px;">
+    <label>CPF:</label>
+    <input name="cpf" required style="width:100%;padding:8px;margin-bottom:10px;">
+    <label>Celular (WhatsApp):</label>
+    <input name="celular" required style="width:100%;padding:8px;margin-bottom:10px;">
+    <label>Cidade:</label>
+    <input name="cidade" required style="width:100%;padding:8px;margin-bottom:10px;">
+    <label>Grupo (empresa, sindicato ou particular):</label>
+    <input name="grupo" placeholder="(opcional — empresa, sindicato ou particular)" style="width:100%;padding:8px;margin-bottom:10px;">
+
+<label style="display:block;margin-top:10px;">
+  <input type="checkbox" name="aceite" required>
+  Li e aceito os <a href="termos.html" target="_blank">Termos de Adesão e Política de Privacidade</a>.
+</label>
+<p style="font-size:14px;color:#333;text-align:center;background:#f9f9f9;padding:10px;border-radius:6px;margin-bottom:15px;">
+💳 <b>Valor da adesão individual:</b> R$ 20,00/mês. <br>
+👥 <b>Grupos (empresas, associações, sindicatos, condominios entre outros)</b> têm condições especiais — nossa equipe entrará em contato após o envio.
+</p>
+
+    <button type="submit" style="background:#006400;color:white;padding:10px 20px;border:none;border-radius:6px;cursor:pointer;">
+      Enviar cadastro
+    </button>
+  </form>
+
+  <div id="mensagem" style="text-align:center;margin-top:15px;font-weight:bold;"></div>
+</div>
+
+<script>
+document.getElementById("formCliente").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const dados = Object.fromEntries(formData.entries());
+  
+  document.getElementById("mensagem").innerText = "⏳ Enviando seus dados...";
+
+  try {
+    await fetch("https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec", {
+      method: "POST",
+      body: JSON.stringify({ tipo: "cliente", ...dados }),
+    });
+    document.getElementById("mensagem").innerHTML = "✅ Cadastro recebido! Nossa equipe entrará em contato para concluir o pagamento.";
+    e.target.reset();
+  } catch (error) {
+    document.getElementById("mensagem").innerText = "❌ Erro ao enviar. Tente novamente.";
+  }
+});
+</script>
+
+</body>
+</html>

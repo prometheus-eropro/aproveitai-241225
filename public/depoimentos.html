@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
 <title>Depoimentos | Cartão AproveitAI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +22,8 @@ h1{text-align:center;color:#0a7b34}
 .card{background:#fff;border-radius:14px;padding:20px;margin-bottom:20px;box-shadow:0 4px 10px rgba(0,0,0,.08)}
 .voltar{margin:40px auto 0;display:inline-block;background:#0a7b34;color:#fff;padding:10px 22px;border-radius:10px}
 </style>
+<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -49,7 +52,7 @@ fetch(ENDPOINT+"?aba=depoimentos")
   document.getElementById("lista").innerHTML=d.map(x=>`
     <div class="card">
       "${x.texto}"<br><br>
-      <b>- ${x.nome}</b>
+      <b>- ${x.nome || x.autor || x.cliente || x.usuario || "Anônimo"}</b>
     </div>
   `).join("");
 });

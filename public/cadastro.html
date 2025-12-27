@@ -138,6 +138,11 @@
 
         <label>Grupo (empresa, sindicato ou particular):</label>
         <input name="grupo" placeholder="(opcional — empresa, sindicato ou particular)">
+<!-- Data de nascimento -->
+<div class="form-group">
+  <label for="nascimento">Data de nascimento:</label>
+  <input type="date" id="nascimento" name="nascimento" required />
+</div>
 
         <div class="checkline">
           <input type="checkbox" name="aceite" required>
@@ -158,45 +163,33 @@
   </div>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbzhwXhtWdsDSuABRneoz6QAD1SxpnMq3vc8e1FhtknlB7_1j6qLjYIbPA0qPJS7ck7y/exec";
+  const form = document.querySelector("form");
+  const scriptURL = "https://script.google.com/macros/s/AKfycbzhwXhtWdsDSuABRneoz6QAD1SxpnMq3vc8e1FhtknlB7_1j6qLjYIbPA0qPJS7ck7y/exec";
 
-document.getElementById("formCliente").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const dados = Object.fromEntries(formData.entries());
-  const msg = document.getElementById("mensagem");
-  msg.innerText = "⏳ Enviando dados...";
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    formData.append("tipo", "cliente"); // necessário para a API saber que é cadastro
 
-  try {
-    const resposta = await fetch(scriptURL, {
+    fetch(scriptURL, {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        tipo: "cliente",
-        nome: dados.nome,
-        cpf: dados.cpf,
-        celular: dados.celular,
-        cidade: dados.cidade,
-        grupo: dados.grupo || ""
-      }).toString()
+      body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+      console.log("Resposta:", result);
+      if (result.includes("CADASTRO_OK")) {
+        alert("✅ Cliente cadastrado com sucesso!");
+        form.reset();
+      } else {
+        alert("❌ Erro: " + result);
+      }
+    })
+    .catch(error => {
+      console.error("Erro:", error);
+      alert("Erro de conexão com servidor.");
     });
-
-    const texto = await resposta.text();
-    console.log("Retorno Apps Script:", texto);
-
-    if (texto.includes("CADASTRO_OK")) {
-      msg.innerHTML = "✅ Cadastro salvo com sucesso!";
-      e.target.reset();
-    } else if (texto.includes("ERRO")) {
-      msg.innerText = "⚠️ Erro interno no Apps Script.";
-    } else {
-      msg.innerText = "⚠️ Não foi possível gravar. Verifique o Apps Script.";
-    }
-  } catch (err) {
-    console.error(err);
-    msg.innerText = "❌ Falha de conexão com o servidor.";
-  }
-});
+  });
 </script>
 </body>
 </html>

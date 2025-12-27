@@ -186,6 +186,14 @@ footer a:hover {
   padding-top: 10px;
   font-size: 13px;
 }
+.botoes-principais button {
+  width: 220px;
+  height: 65px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 10px;
+}
+
   </style>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -206,42 +214,45 @@ footer a:hover {
 
   <img src="logo-aproveitai.png" alt="AproveitAI">
 </header>
-<div class="botao-destaque">
+<!-- BOTÕES PRINCIPAIS -->
+<div class="botoes-centrais">
   <a href="beneficios.html" class="btn-aproveitai">🎁 Benefícios</a>
   <a href="promocoes.html" class="btn-aproveitai">🔥 Promoções</a>
+  <a href="painelcliente.html" class="btn-aproveitai">👤 Área do Cliente</a>
+  <a href="painelparceiro.html" class="btn-aproveitai">🏪 Área do Parceiro</a>
+  <a href="https://wa.me/5528999692303?text=Olá!%20Quero%20ser%20parceiro%20do%20Cartão%20AproveitAI" target="_blank" class="btn-aproveitai">🤝 Quero ser Parceiro</a>
+  <button id="btnCliente" class="btn-aproveitai">🧾 Quero ser Cliente</button>
 </div>
 
-<div class="botoes">
+<!-- BLOCO EXPLICATIVO (inicialmente oculto) -->
+<section id="explicacaoCliente" class="explicacao" style="display:none;">
+  <h2>Como funciona o Cartão AproveitAI</h2>
+  <p>O <strong>Cartão AproveitAI</strong> conecta você a comércios e serviços parceiros, oferecendo descontos reais e vantagens exclusivas.</p>
+  <ol>
+    <li>Preencha o cadastro e aceite os Termos de Adesão.</li>
+    <li>Nossa equipe entrará em contato para confirmar o pagamento.</li>
+    <li>Após a confirmação, você receberá seu <strong>Cartão Digital AproveitAI</strong> com QR Code.</li>
+    <li>Apresente o QR Code aos parceiros para obter descontos.</li>
+  </ol>
+  <p>💡 <strong>Valor individual:</strong> R$ 20,00/mês.<br>
+  <strong>Grupos</strong> (empresas, associações, sindicatos, condomínios etc.) têm condições especiais.</p>
+  <a href="cadastro.html" class="btn-aproveitai">➡️ Ir para Cadastro</a>
+</section>
 
-<div style="text-align:center;margin-top:20px;">
-  <button onclick="toggleInfo()" style="background:#0a4c1a;color:white;padding:12px 25px;border:none;border-radius:8px;cursor:pointer;font-weight:bold;">
-    🧾 Quero ser Cliente
-  </button>
-
-  <div id="infoCliente" style="display:none;margin-top:20px;background:#f8f9fa;border-radius:10px;padding:20px;max-width:700px;margin-left:auto;margin-right:auto;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-    <h3 style="color:#0a4c1a;">Como funciona o Cartão AproveitAI</h3>
-    <p>O <b>Cartão AproveitAI</b> conecta você a comércios parceiros e oferece descontos reais, exclusivos e automáticos em diversas áreas da cidade.</p>
-    <ol style="text-align:left;max-width:600px;margin:auto;">
-      <li>Preencha o cadastro e aceite os Termos.</li>
-      <li>Nossa equipe entrará em contato para confirmar o pagamento.</li>
-      <li>Após a confirmação, você receberá seu Cartão Digital com QR Code.</li>
-      <li>Apresente o QR Code aos parceiros para receber o desconto.</li>
-    </ol>
-    <p style="font-size:0.95rem;color:#333;">💡 Cartão individual, sem fidelidade. Dados protegidos conforme a <a href="privacidade.html" target="_blank">LGPD</a>.</p>
-    <a href="cadastro.html" style="display:inline-block;margin-top:10px;background:#0a4c1a;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;">Ir para Cadastro</a>
-  </div>
-</div>
-
+<script>
+  document.getElementById("btnCliente").addEventListener("click", function () {
+    const box = document.getElementById("explicacaoCliente");
+    box.style.display = (box.style.display === "none" ? "block" : "none");
+    box.scrollIntoView({ behavior: "smooth" });
+  });
+</script>
+</main>
 <script>
 function toggleInfo(){
   const box = document.getElementById('infoCliente');
   box.style.display = (box.style.display==='none'||!box.style.display)?'block':'none';
 }
 </script>
-
- <a href="painelcliente.html" class="btn-aproveitai">👤 Área do Cliente</a>
- <a href="painelparceiro.html" class="btn-aproveitai">🏪 Área do Parceiro</a>
-<a href="https://wa.me/5528999692303?text=Olá!%20Quero%20ser%20parceiro%20do%20Cartão%20AproveitAI." target="_blank" class="btn-aproveitai">🤝 Quero ser Parceiro</a>
 </div>
 
 <div class="filtros">
@@ -267,8 +278,7 @@ function toggleInfo(){
 
   <div class="col">
     <h4>Links Rápidos</h4>
-    <a href="beneficios.html">Benefícios</a><br>
-    <a href="promocoes.html">Promoções</a><br>
+    
     <a href="depoimentos.html">Depoimentos</a><br>
     <a href="faq.html">Dúvidas</a><br>
     <a href="privacidade.html">Privacidade</a><br>
@@ -438,6 +448,5 @@ if ('serviceWorker' in navigator) {
     .catch(err => console.error("Erro SW:", err));
 }
 </script>
-
 </body>
 </html>

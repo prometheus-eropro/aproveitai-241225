@@ -23,18 +23,18 @@ button,
   background: var(--verde-principal);
   color: #fff;
   font-weight: 600;
-  padding: 16px 28px;
+  padding: 12px 22px;   /* 🔹 Diminuído (antes 16px 28px) */
   border: none;
   border-radius: 10px;
   text-decoration: none;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-width: 220px;
-  height: 65px;
-  font-size: 1.1rem;
+  min-width: 180px;     /* 🔹 Diminuído (antes 220px) */
+  height: 55px;         /* 🔹 Diminuído (antes 65px) */
+  font-size: 1rem;      /* 🔹 Levemente menor (antes 1.1rem) */
   transition: all 0.3s ease;
   cursor: pointer;
 }
@@ -42,7 +42,7 @@ button,
 button:hover,
 .btn-aproveitai:hover {
   background: var(--verde-hover);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 /* ======== LAYOUT DE BOTÕES ======== */
@@ -50,8 +50,8 @@ button:hover,
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
-  margin: 25px 0 35px;
+  gap: 15px; /* 🔹 Menor espaçamento */
+  margin: 20px 0 30px;
 }
 
 /* ======== BLOCO DE EXPLICAÇÃO ======== */
@@ -73,4 +73,64 @@ button:hover,
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+/* ======== BOTÕES PADRÃO APROVEITAI ======== */
+button,
+.btn-aproveitai {
+  background: var(--verde-principal);
+  color: #fff;
+  font-weight: 600;
+  padding: 12px 22px;     /* 🔹 Compacto */
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 180px;       /* 🔹 Largura reduzida */
+  height: 55px;           /* 🔹 Altura reduzida */
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover,
+.btn-aproveitai:hover {
+  background: var(--verde-hover);
+  transform: translateY(-2px);
+}
+
+/* ======== CONTAINER DE BOTÕES ======== */
+.botoes-centrais {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0 30px;
+}
+
+/* ======== VERSÃO MOBILE ======== */
+@media (max-width: 768px) {
+  .botoes-centrais {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  button,
+  .btn-aproveitai {
+    min-width: 90%;       /* 🔹 Preenche quase toda a tela */
+    height: 50px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ======== EFEITO DE TRANSIÇÃO SUAVE ======== */
+@media (prefers-reduced-motion: no-preference) {
+  button,
+  .btn-aproveitai {
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
 }

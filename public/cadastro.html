@@ -158,39 +158,43 @@
   </div>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzhwXhtWdsDSuABRneoz6QAD1SxpnMq3vc8e1FhtknlB7_1j6qLjYIbPA0qPJS7ck7y/exec";
 
 document.getElementById("formCliente").addEventListener("submit", async (e) => {
   e.preventDefault();
   const formData = new FormData(e.target);
   const dados = Object.fromEntries(formData.entries());
-  document.getElementById("mensagem").innerText = "⏳ Enviando dados...";
+  const msg = document.getElementById("mensagem");
+  msg.innerText = "⏳ Enviando dados...";
 
   try {
-    // 🔧 envia como JSON para compatibilidade total com o seu .gs
     const resposta = await fetch(scriptURL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
         tipo: "cliente",
-        ...dados
-      })
+        nome: dados.nome,
+        cpf: dados.cpf,
+        celular: dados.celular,
+        cidade: dados.cidade,
+        grupo: dados.grupo || ""
+      }).toString()
     });
 
     const texto = await resposta.text();
     console.log("Retorno Apps Script:", texto);
 
     if (texto.includes("CADASTRO_OK")) {
-      document.getElementById("mensagem").innerHTML = "✅ Cadastro salvo com sucesso!";
+      msg.innerHTML = "✅ Cadastro salvo com sucesso!";
       e.target.reset();
     } else if (texto.includes("ERRO")) {
-      document.getElementById("mensagem").innerText = "⚠️ Erro interno no Apps Script.";
+      msg.innerText = "⚠️ Erro interno no Apps Script.";
     } else {
-      document.getElementById("mensagem").innerText = "⚠️ Não foi possível gravar. Verifique o Apps Script.";
+      msg.innerText = "⚠️ Não foi possível gravar. Verifique o Apps Script.";
     }
   } catch (err) {
     console.error(err);
-    document.getElementById("mensagem").innerText = "❌ Falha de conexão com o servidor.";
+    msg.innerText = "❌ Falha de conexão com o servidor.";
   }
 });
 </script>

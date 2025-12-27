@@ -126,7 +126,7 @@ button{margin-top:16px;padding:12px 18px;font-weight:800;color:#fff;border:none;
 
 <script>
 // ==================== CONFIGURAÇÃO GERAL ====================
-const API_URL = "https://script.google.com/macros/s/AKfycbz3qpd3Bc0lDRPBc3L9bJhSB802ajtJt3KxAZNLuy49w5ajB3QTituDHirD5RwWyHJu/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzhwXhtWdsDSuABRneoz6QAD1SxpnMq3vc8e1FhtknlB7_1j6qLjYIbPA0qPJS7ck7y/exec";
 
 // ==================== LOGIN ====================
 async function login() {
@@ -273,47 +273,47 @@ async function validar() {
       console.log("✅ Log salvo (ATIVO):", codigoAutorizacao);
     }
 
-    // ========== CLIENTE INATIVO ==========
-    else {
-      box.style.background = "#fdeaea";
-      box.style.borderColor = "#d93025";
-      box.innerHTML = `
-        <div style="font-size:2em;color:#d93025;">⛔</div>
-        <b>Nome:</b> ${cliente.nome}<br>
-        <b>Status:</b> <span style="color:red;font-weight:bold;">${statusCliente}</span><br>
-        <b>CPF:</b> ${cliente.cpf}<br>
-        <b>Nº do Cartão:</b> ${cliente.idPublico || "-"}<br>
-        <b>Data de Cadastro:</b> ${cliente.dataCadastro || "-"}<br>
-        <b>Grupo:</b> ${cliente.grupo || "-"}<br>
-        <b style="color:red;">⛔ Cliente inativo – autorização bloqueada.</b>
-      `;
+// ========== CLIENTE INATIVO ==========
+else {
+  box.style.background = "#fdeaea";
+  box.style.borderColor = "#d93025";
+  box.innerHTML = `
+    <div style="font-size:2em;color:#d93025;">⛔</div>
+    <b>Nome:</b> ${cliente.nome}<br>
+    <b>Status:</b> <span style="color:red;font-weight:bold;">${statusCliente}</span><br>
+    <b>CPF:</b> ${cliente.cpf}<br>
+    <b>Nº do Cartão:</b> ${cliente.idPublico || "-"}<br>
+    <b>Data de Cadastro:</b> ${cliente.dataCadastro || "-"}<br>
+    <b>Grupo:</b> ${cliente.grupo || "-"}<br>
+    <b style="color:red;">⛔ Cliente inativo – autorização bloqueada.</b>
+  `;
 
-      // Salva log SEM código ERO
-      const sess = JSON.parse(localStorage.getItem("parceiro_sess"));
-      const parceiroNome = (sess?.nome || "total").trim();
+  const sess = JSON.parse(localStorage.getItem("parceiro_sess"));
+  const parceiroNome = (sess?.nome || "total").trim();
 
-      await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          acao: "salvar_log",
-          cpf: cliente.cpf || "",
-          cliente: cliente.nome || "",
-          parceiro: parceiroNome,
-          grupo: cliente.grupo || "",
-          codigo_ero: "-",
-          status: statusCliente
-        }).toString()
-      });
-
-      console.log("⚠️ Log salvo (INATIVO)");
-    }
-  } catch (e) {
-    console.error(e);
-    box.innerHTML = "❌ Erro ao consultar a base de dados.";
-    box.style.background = "#fff3cd";
+await fetch(API_URL, {
+  method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  body: new URLSearchParams({
+    acao: "salvar_log",
+    cpf: cliente.cpf || "",
+    cliente: cliente.nome || "",
+    parceiro: parceiroNome,
+    grupo: cliente.grupo || "",
+    codigo_ero: "-",      // ✔️ CORRETO
+    status: "INATIVO"     // ✔️ CORRETO
+  }).toString()
+});
+    } // ← FECHA if (statusCliente === "ATIVO")
+  } catch (err) {
+    console.error("Erro na validação:", err);
+    box.style.background = "#f8d7da";
+    box.style.borderColor = "#842029";
+    box.innerHTML = "❌ Erro ao validar cliente.";
   }
-}
+} // ← FECHA function validar()
+
+
 // ==================== UTILITÁRIOS ====================
 function mascararCPF(cpf) {
   return cpf ? cpf.replace(/^(\d{3})\d{3}\d{3}(\d{2})$/, "$1***.***-$2") : "-";

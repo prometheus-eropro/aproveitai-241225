@@ -1,217 +1,231 @@
-/* =======================
-   RESET BÁSICO
-======================= */
+/* ================= RESET ================= */
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-  background: #e9fff1;
+  margin: 0;
+  background: #f2fff2;
   color: #222;
-  overflow-x: hidden;
 }
 
-/* =======================
-   TOPO / BRANDLINE
-======================= */
-.brandline {
+/* ================= BOTÕES ================= */
+.btn, .btn-aproveitai {
+  background: #0a7a2a;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #095f21;
+}
+
+/* ================= HEADER ================= */
+header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 30px;
-  padding: 25px 15px;
+  justify-content: space-between;
+  padding: 18px 30px;
   background: #fff;
-  flex-wrap: wrap;
+  border-bottom: 1px solid #ddd;
 }
 
-.brandline img {
-  height: 90px;
-  max-width: 180px;
+header img {
+  height: 160px;
+  max-width: 220px;
   object-fit: contain;
 }
 
-/* Título central */
-.site-title {
-  background: #d9f7df;
+.titulo-centro h1 {
+  margin: 0;
+  padding: 10px 28px;
+  background: #e0f9e0;
+  border-radius: 12px;
   color: #0a7a2a;
-  padding: 14px 28px;
-  border-radius: 30px;
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-size: 34px;
 }
 
-/* =======================
-   ÁREA CENTRAL / CARDS
-======================= */
-.wrap {
+.slogan {
+  margin-top: 8px;
+  font-size: 16px;
+  color: #0a7a2a;
+  font-weight: bold;
+}
+
+/* ================= FILTROS ================= */
+.filtros {
   display: flex;
   justify-content: center;
-  padding: 40px 15px;
+  gap: 10px;
+  padding: 14px;
+  background: #cfefff;
+  flex-wrap: wrap;
+}
+
+.filtros input,
+.filtros select,
+.filtros button {
+  padding: 8px;
+  font-size: 14px;
+}
+
+/* ================= CARDS ================= */
+.cards-wrapper {
+  background: #eefaf3;
+  padding: 30px 10px;
+}
+
+.container-parceiros {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
 }
 
 .card {
-  background: #fff;
-  width: 100%;
-  max-width: 650px;
-  padding: 22px;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-}
-
-.card h2 {
+  width: 220px;
+  min-height: 320px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 15px;
   text-align: center;
-  margin-bottom: 20px;
-  color: #0a7a2a;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
 }
 
-/* Cards de parceiros (index) */
+.card:hover {
+  transform: translateY(-4px);
+}
+
 .card img {
-  height: 55px;
-  margin-bottom: 8px;
+  max-width: 90px;
+  margin: 0 auto 12px;
+  display: block;
+}
+
+.card h3 {
+  font-size: 15px;
+  margin: 6px 0;
 }
 
 .card p {
-  margin: 4px 0;
-  font-size: 14px;
+  font-size: 13px;
+  margin: 3px 0;
 }
 
-/* =======================
-   FORMULÁRIO
-======================= */
-form label {
-  display: block;
-  margin-top: 15px;
-  margin-bottom: 6px;
-  font-weight: bold;
+/* ================= PAINÉIS ================= */
+.painel-box {
+  max-width: 420px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
 }
 
-form input,
-form select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+/* ================= CHECKBOX ================= */
+input[type="checkbox"] {
+  accent-color: #0a7a2a;
+}
+
+/* ================= RODAPÉ ================= */
+.footer {
+  background: linear-gradient(180deg, #0f5f32, #0b3f22);
+  color: #e8f5ee;
+  padding: 24px 20px 14px;
+  font-size: 13px;
+}
+
+.footer-container {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 30px;
+}
+
+.footer h3 {
+  color: #a8f0c6;
   font-size: 15px;
+  margin-bottom: 8px;
 }
 
-/* =======================
-   CHECKBOX TERMOS
-======================= */
-.checkline {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 18px;
-  font-size: 14px;
-}
-
-.checkline input {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-}
-
-.checkline a {
-  color: #0a7a2a;
-  font-weight: bold;
+.footer a {
+  color: #c9f5d8;
   text-decoration: none;
 }
 
-.checkline a:hover {
+.footer a:hover {
   text-decoration: underline;
 }
 
-/* =======================
-   BOTÕES
-======================= */
-button[type="submit"] {
-  width: 100%;
-  margin-top: 22px;
-  padding: 14px;
-  background: #0a7a2a;
-  color: #fff;
-  font-size: 16px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-button[type="submit"]:hover {
-  background: #066322;
-}
-
-/* Botão voltar */
-.voltar {
-  display: block;
+.footer-bottom {
+  margin-top: 14px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.2);
   text-align: center;
-  margin-top: 18px;
-  padding: 12px;
-  border-radius: 10px;
-  background: #0a7a2a;
-  color: #fff;
-  font-weight: bold;
-  text-decoration: none;
+  font-size: 12px;
 }
 
-.voltar:hover {
-  background: #066322;
-}
-
-/* =======================
-   RODAPÉ (AJUSTE 2 e 3)
-======================= */
-footer {
-  background: linear-gradient(180deg, #0f6a38, #0b4f2a);
-  color: #e9f7ef;
-  padding: 28px 20px;
-  font-size: 14px;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 25px;
-}
-
-footer hr {
-  border: none;
-  border-top: 1px solid rgba(255,255,255,0.15);
-  margin: 15px 0;
-}
-
-/* =======================
-   RESPONSIVO
-======================= */
+/* ================= MOBILE ================= */
 @media (max-width: 768px) {
-
-  .brandline {
+  header {
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
   }
 
-  .brandline img {
-    height: 70px;
-  }
-
-  .site-title {
-    font-size: 22px;
-    text-align: center;
-    padding: 12px 22px;
-  }
-
-  .footer-grid {
+  .footer-container {
     grid-template-columns: 1fr;
     text-align: center;
-    gap: 18px;
   }
 
   .card {
-    padding: 18px;
+    width: 90%;
   }
+}
+.site-footer {
+  background: #0f3d1f;
+  color: #e6f5ec;
+  padding: 25px 20px 10px;
+  margin-top: 40px;
+}
+
+.footer-container {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.footer-col h4 {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #a7f3c5;
+}
+
+.footer-col p,
+.footer-col a {
+  font-size: 13px;
+  margin: 3px 0;
+  color: #e6f5ec;
+  text-decoration: none;
+}
+
+.footer-col a:hover {
+  text-decoration: underline;
+}
+
+.footer-copy {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 12px;
+  opacity: 0.85;
 }

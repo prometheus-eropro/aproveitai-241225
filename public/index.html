@@ -2,14 +2,11 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a7a2a">
+  <title>Cartão AproveitAI</title>
+<link rel="stylesheet" href="style.css">
+
+
 <link rel="apple-touch-icon" href="logo-aproveitai.png">
-
-Cartão AproveitAI
-
-</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -31,8 +28,10 @@ Cartão AproveitAI
     }
 
     header img {
-      height: 150px;
-    }
+  height: 180px;
+  max-width: 220px;
+  object-fit: contain;
+}
 
     .titulo-centro {
       text-align: center;
@@ -88,39 +87,128 @@ Cartão AproveitAI
     }
 
     .card {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      width: 260px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      text-align: center;
-    }
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  min-height: 220px;
+}
 
     .card img {
-      max-height: 120px;
-      margin-bottom: 10px;
-    }
+  max-height: 65px;
+  margin-bottom: 6px;
+}
+
 
     /* ===== RODAPÉ ===== */
-    footer {
-  background: #003300;
-  color: white;
-  padding: 15px 40px;
-  font-size: 15px;
+    
+.copyright {
+  width: 100%;
+  text-align: center;
+  margin-top: 15px;
+  border-top: 1px solid #0a7a2a;
+  padding-top: 10px;
+  font-size: 13px;
+}
+.botoes-centrais {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+.btn-aproveitai {
+  background: #0a7a2a;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.btn-aproveitai:hover {
+  background: #095f21;
+}
+.titulo-site {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #0a7a2a;
+  margin-bottom: 6px;
+}
+
+.subtitulo-site {
+  font-size: 14px;
+  color: #4b4b4b;
+  letter-spacing: 0.5px;
+}
+.card {
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 15px;
+  margin: 6px 0 4px;
+}
+
+.card p {
+  font-size: 13px;
+  margin: 2px 0;
+}
+
+.card img {
+  max-height: 55px;
+  object-fit: contain;
+}
+footer {
+  background: #0b2e13; /* verde escuro elegante */
+  color: #dfe9df;
+  padding: 25px 15px;
+  font-size: 13px;
+}
+
+footer a {
+  color: #9be0a5;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer .linha {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
+}
+.separador-footer {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #0a7a2a, transparent);
+  margin-top: 40px;
+}
+footer {
+  background: linear-gradient(180deg, #0b3d1a, #06240f);
+  color: #e6f2ea;
+  padding: 18px 20px;
+  font-size: 13px;
 }
 
 footer .col {
-  flex: 1 1 300px;
-  margin: 10px;
+  flex: 1 1 260px;
+  margin: 6px;
 }
 
 footer h4 {
   color: #9dffb3;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+  font-size: 14px;
 }
 
 footer a {
@@ -136,38 +224,17 @@ footer .copyright {
   width: 100%;
   text-align: center;
   border-top: 1px solid #0a7a2a;
-  padding-top: 8px;
-  font-size: 13px;
-  margin-top: 10px;
-}
-
-footer h3, footer h4 {
-  margin-bottom: 10px;
-  color: #9dffb3;
-}
-
-footer a {
-  color: #bdf8c9;
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
-}
-
-.copyright {
-  width: 100%;
-  text-align: center;
-  margin-top: 15px;
-  border-top: 1px solid #0a7a2a;
-  padding-top: 10px;
-  font-size: 13px;
+  padding-top: 6px;
+  font-size: 12px;
+  margin-top: 8px;
 }
 
   </style>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0a7f2e">
+
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#0a7a2a">
+
 
 </head>
 
@@ -220,14 +287,6 @@ footer a:hover {
     box.scrollIntoView({ behavior: "smooth" });
   });
 </script>
-</main>
-<script>
-function toggleInfo(){
-  const box = document.getElementById('infoCliente');
-  box.style.display = (box.style.display==='none'||!box.style.display)?'block':'none';
-}
-</script>
-</div>
 
 <div class="filtros">
   <input type="text" id="buscaNome" placeholder="Buscar por nome">
@@ -236,33 +295,40 @@ function toggleInfo(){
   <button onclick="filtrar()">Filtrar</button>
 </div>
 
-<div id="parceiros" class="container-parceiros">
-  Carregando parceiros...
+<div class="cards-wrapper">
+  <div id="parceiros" class="container-parceiros">
+  </div>
 </div>
 
-<footer>
-  <div class="col">
-    <h4>Cartão AproveitAI</h4>
-    PROMETHEUS EROPRO Soluções Inteligentes LTDA<br>
-    CNPJ: 58.584.332/0001-40<br>
-    📧 cartao.aproveitai@gmail.com<br>
-    📞 (28) 99969-2303<br>
-    📸 @cartao.aproveitai
-  </div>
+<div class="separador-footer"></div>
 
-  <div class="col">
-    <h4>Links Rápidos</h4>
+<footer class="footer">
+  <div class="footer-container">
     
-    <a href="depoimentos.html">Depoimentos</a><br>
-    <a href="faq.html">Dúvidas</a><br>
-    <a href="privacidade.html">Privacidade</a><br>
-    <a href="termos.html">Termos</a><br>
-    <a href="excluir.html">Excluir Dados</a>
+    <div>
+      <h3>Cartão AproveitAI</h3>
+      PROMETHEUS EROPRO Soluções Inteligentes LTDA<br>
+      CNPJ: 58.584.332/0001-40<br>
+      📧 cartao.aproveitai@gmail.com<br>
+      📞 (28) 99969-2303<br>
+      📸 @cartao.aproveitai
+    </div>
+
+    <div>
+      <h3>Links Rápidos</h3>
+      <a href="depoimentos.html">Depoimentos</a><br>
+      <a href="faq.html">Dúvidas</a><br>
+      <a href="privacidade.html">Privacidade</a><br>
+      <a href="termos.html">Termos</a><br>
+      <a href="excluir.html">Excluir Dados</a>
+    </div>
+
   </div>
 
-  <div class="copyright">© 2025 AproveitAI. Todos os direitos reservados.</div>
+  <div class="footer-bottom">
+    © 2025 AproveitAI. Todos os direitos reservados.
+  </div>
 </footer>
-
 <script>
 const sheetURL = "https://script.google.com/macros/s/AKfycbzhwXhtWdsDSuABRneoz6QAD1SxpnMq3vc8e1FhtknlB7_1j6qLjYIbPA0qPJS7ck7y/exec";
 const parceirosDiv = document.getElementById("parceiros");
@@ -409,11 +475,17 @@ carregarParceiros();
 <script>
 function aceitarLGPD(){
   localStorage.setItem("lgpd-ok","sim");
-  document.getElementById("lgpd-barra").style.display="none";
+  const lgpd = document.getElementById("lgpd-barra");
+if (lgpd) lgpd.style.display = "none";
+
 }
-if(localStorage.getItem("lgpd-ok")==="sim"){
-  document.getElementById("lgpd-barra").style.display="none";
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const lgpd = document.getElementById("lgpd-barra");
+  if(lgpd && localStorage.getItem("lgpd-ok")==="sim"){
+    lgpd.style.display="none";
+  }
+});
+
 </script>
 <script>
 let deferredPrompt;

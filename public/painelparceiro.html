@@ -58,7 +58,7 @@ button{margin-top:16px;padding:12px 18px;font-weight:800;color:#fff;border:none;
 }
 
 </style>
-<link rel="stylesheet" href="style.css">
+
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0a7f2e">
 
@@ -75,6 +75,7 @@ button{margin-top:16px;padding:12px 18px;font-weight:800;color:#fff;border:none;
 
   <!-- LOGIN -->
   <div class="card" id="loginBox">
+
     <h2 style="margin:0;color:#0a4c1a;text-align:center">Acesso do Parceiro</h2>
     <div class="small"><b>Parceiro</b> use seu CNPJ e token cadastrado.</div>
 
@@ -83,17 +84,25 @@ button{margin-top:16px;padding:12px 18px;font-weight:800;color:#fff;border:none;
     <label>Token</label>
     <input id="token" type="password" placeholder="Digite seu token">
 
-    <button class="verde" onclick="login()">Entrar</button>
+    <button class="verde" onclick="entrarParceiro()">Entrar</button>
+<div id="resultado"></div>
+
     <div id="erroLogin" style="color:#d10000;font-weight:800;margin-top:10px;text-align:center"></div>
-    <div style="text-align:center"><a class="voltar" href="index.html">← Voltar ao site</a></div>
+    <div style="text-align:center"><a class="voltar" <a href="index.html" class="btn-aproveitai">← Voltar ao site</a>
+
   </div>
 
   <!-- PAINEL -->
+
+
   <div class="card" id="painelBox" style="display:none">
     <h2 style="margin:0;color:#0a4c1a;text-align:center">Bem-vindo, <span id="nomeParceiro"></span></h2>
     <label>CPF ou ID Público do Cliente</label>
-    <input id="chaveCliente" placeholder="Digite o CPF (11 dígitos) ou APV-XXXXX">
-    <button class="verde" onclick="validar()">Validar Cliente</button>
+    <input id="cpfCliente" placeholder="Digite o CPF (11 dígitos) ou APV-XXXXX">
+
+    <button class="verde" onclick="validarCliente()">Validar Cliente</button>
+<div id="resultadoCliente"></div>
+
 <div id="boxResultado" style="
   display:none;
   margin-top:25px;
@@ -107,253 +116,124 @@ button{margin-top:16px;padding:12px 18px;font-weight:800;color:#fff;border:none;
 "></div>
 
 
-<button class="btn-relatorio" onclick="abrirRelatorio()">
+<button class="btn-relatorio"
+onclick="window.open(sheetURL + '?relatorio=1','_blank')">
 📊 Ver relatório de consultas
 </button>
+
 <!-- BOTÃO SAIR / VOLTAR -->
 <div style="margin-top:15px;text-align:center;">
-  <button onclick="logout()" class="vermelho" style="
-    background:#dc3545;
-    color:#fff;
-    border:none;
-    padding:12px 20px;
-    font-weight:700;
-    border-radius:8px;
-    width:100%;
-    cursor:pointer;
-  ">
-    ⬅️ Sair / Voltar
-  </button>
+  <button onclick="location.reload()" class="vermelho">
+⬅️ Sair / Voltar
+</button>
 </div>
 
 <script>
-// ==================== CONFIGURAÇÃO GERAL ====================
-const API_URL = "https://script.google.com/macros/s/AKfycbzhwXhtWdsDSuABRneoz6QAD1SxpnMq3vc8e1FhtknlB7_1j6qLjYIbPA0qPJS7ck7y/exec";
+/* ======================================================
+   PAINEL DO PARCEIRO – CARTÃO APROVEITAI
+   Script único, limpo e estável
+   ====================================================== */
 
-// ==================== LOGIN ====================
-async function login() {
+const sheetURL = "https://script.google.com/macros/s/AKfycbzhwXhtWdsDSuABRneoz6QAD1SxpnMq3vc8e1FhtknlB7_1j6qLjYIbPA0qPJS7ck7y/exec";
+
+/* ===============================
+   LOGIN DO PARCEIRO
+   =============================== */
+async function entrarParceiro() {
   const cnpj = document.getElementById("cnpj").value.trim();
   const token = document.getElementById("token").value.trim();
-  const erro = document.getElementById("erroLogin");
-  erro.innerText = "";
+  const box = document.getElementById("resultado");
+
+  box.innerHTML = "Validando...";
 
   if (!cnpj || !token) {
-    erro.innerText = "Informe CNPJ e token.";
+    box.innerHTML = "❌ Informe CNPJ e token.";
     return;
   }
 
   try {
-    const r = await fetch(API_URL + "?aba=parceiros");
-    const parceiros = await r.json();
+    const url = `${sheetURL}?parceiroCNPJ=${encodeURIComponent(
+      cnpj
+    )}&token=${encodeURIComponent(token)}`;
 
-    const parceiro = parceiros.find(p =>
-      String(p.cnpj).replace(/\D/g, "") === cnpj.replace(/\D/g, "") &&
-      String(p.token).trim() === token &&
-      String(p.ativo).toUpperCase() === "SIM"
-    );
+    const res = await fetch(url);
+    const data = await res.json();
 
-    if (!parceiro) {
-      erro.innerText = "CNPJ ou token inválido.";
+    if (!data || data.erro) {
+      box.innerHTML = "❌ Acesso negado.";
       return;
     }
 
-    localStorage.setItem("parceiro_sess", JSON.stringify({
-      nome: parceiro.nomeFantasia || parceiro.parceiro
-    }));
+    box.innerHTML = `
+      <div class="status-box">
+        <h3>${data.parceiro}</h3>
+        <p><b>Status:</b> ATIVO</p>
+      </div>
+    `;
 
-    document.getElementById("nomeParceiro").innerText =
-      parceiro.nomeFantasia || parceiro.parceiro;
-
-    document.getElementById("loginBox").style.display = "none";
     document.getElementById("painelBox").style.display = "block";
-  } catch (err) {
-    erro.innerText = "Erro ao conectar ao servidor.";
-    console.error(err);
+document.getElementById("loginBox").style.display = "none";
+
+  } catch (e) {
+    console.error(e);
+    box.innerHTML = "❌ Erro ao validar parceiro.";
   }
 }
 
-// ==================== VALIDAR CLIENTE ====================
+/* ===============================
+   VALIDAR CLIENTE
+   =============================== */
+async function validarCliente() {
+  const cpf = document.getElementById("cpfCliente").value.trim();
+  const box = document.getElementById("resultadoCliente");
 
-async function validar() {
-  const campoChave = document.getElementById("chaveCliente");
-  const chave = campoChave.value.trim();
-  const box = document.getElementById("boxResultado");
+  box.innerHTML = "Consultando...";
 
-  if (!chave) {
-    alert("Digite o CPF ou ID Público (ex: APV-XXXX).");
+  if (!cpf) {
+    box.innerHTML = "❌ Informe o CPF.";
     return;
   }
 
-  box.innerHTML = "⌛ Consultando cliente...";
-  box.style.display = "block";
-
   try {
-    const response = await fetch(API_URL + "?aba=clientes");
-    const clientes = await response.json();
+    const url = `${sheetURL}?validarCPF=${encodeURIComponent(
+      cpf.replace(/\D/g, "")
+    )}`;
 
-    // 🔍 Busca por CPF ou ID público (idPublico)
-    const cliente = clientes.find(c =>
-      String(c.cpf || "").replace(/\D/g, "") === chave.replace(/\D/g, "") ||
-      String(c.idPublico || "").trim().toUpperCase() === chave.trim().toUpperCase()
-    );
+    const res = await fetch(url);
+    const data = await res.json();
 
-    // ======= CLIENTE NÃO ENCONTRADO =======
-    if (!cliente) {
-      box.style.background = "#f8f9fa";
-      box.style.borderColor = "#6c757d";
-      box.innerHTML = `
-        <span style="font-size:1.6em;color:#6c757d;">⚠️</span><br>
-        <b style="color:#6c757d;">Cliente não encontrado.</b><br>
-        <small>Registro ausente na base de dados.</small>
-      `;
-
-      // Salva log sem código ERO
-      const sess = JSON.parse(localStorage.getItem("parceiro_sess"));
-      const parceiroNome = (sess?.nome || "total").trim();
-
-      await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          acao: "salvar_log",
-          cpf: chave,
-          cliente: "NÃO ENCONTRADO",
-          parceiro: parceiroNome,
-          grupo: "-",
-          codigo_ero: "-",
-          status: "NAO ENCONTRADO"
-        }).toString()
-      });
-
-      console.log("📝 Log salvo (não encontrado)");
+    if (!data || !data.nome) {
+      box.innerHTML = "❌ Cliente não encontrado.";
       return;
     }
 
-    const statusCliente = cliente.ativo?.toString().trim().toUpperCase() === "SIM" ? "ATIVO" : "INATIVO";
+    const dataAceite = data.dataAceite
+      ? formatarData(data.dataAceite)
+      : "-";
 
-    // ========== CLIENTE ATIVO ==========
-    if (statusCliente === "ATIVO") {
-      // Gera código ERO
-      const agora = new Date();
-      const dia = String(agora.getDate()).padStart(2, "0");
-      const mes = String(agora.getMonth() + 1).padStart(2, "0");
-      const hora = String(agora.getHours()).padStart(2, "0");
-      const minuto = String(agora.getMinutes()).padStart(2, "0");
-      const codigoAutorizacao = `ERO-${dia}${mes}-${hora}${minuto}`;
-
-      box.style.background = "#e8fbe8";
-      box.style.borderColor = "#28a745";
-      box.innerHTML = `
-        <div style="font-size:2em;color:#198754;">✅</div>
-        <b>Nome:</b> ${cliente.nome}<br>
-        <b>Status:</b> <span style="color:green;font-weight:bold;">${statusCliente}</span><br>
-        <b>CPF:</b> ${cliente.cpfMascarado || cliente.cpf.replace(/(\d{3})\d{5}(\d{2})/, "$1*****$2")}<br>
-        <b>Nº do Cartão:</b> ${cliente.idPublico || "-"}<br>
-        <b>Data de Cadastro:</b> ${cliente.dataCadastro || "-"}<br>
-        <b>Grupo:</b> ${cliente.grupo || "-"}<br>
-        <b style="color:green;">✔ Código de Autorização:</b> <b>${codigoAutorizacao}</b>
-      `;
-
-      // Salva log
-      const sess = JSON.parse(localStorage.getItem("parceiro_sess"));
-      const parceiroNome = (sess?.nome || "total").trim();
-
-      await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          acao: "salvar_log",
-          cpf: cliente.cpf || "",
-          cliente: cliente.nome || "",
-          parceiro: parceiroNome,
-          grupo: cliente.grupo || "",
-          codigo_ero: codigoAutorizacao,
-          status: statusCliente
-        }).toString()
-      });
-
-      console.log("✅ Log salvo (ATIVO):", codigoAutorizacao);
-    }
-
-// ========== CLIENTE INATIVO ==========
-else {
-  box.style.background = "#fdeaea";
-  box.style.borderColor = "#d93025";
-  box.innerHTML = `
-    <div style="font-size:2em;color:#d93025;">⛔</div>
-    <b>Nome:</b> ${cliente.nome}<br>
-    <b>Status:</b> <span style="color:red;font-weight:bold;">${statusCliente}</span><br>
-    <b>CPF:</b> ${cliente.cpf}<br>
-    <b>Nº do Cartão:</b> ${cliente.idPublico || "-"}<br>
-    <b>Data de Cadastro:</b> ${cliente.dataCadastro || "-"}<br>
-    <b>Grupo:</b> ${cliente.grupo || "-"}<br>
-    <b style="color:red;">⛔ Cliente inativo – autorização bloqueada.</b>
-  `;
-
-  const sess = JSON.parse(localStorage.getItem("parceiro_sess"));
-  const parceiroNome = (sess?.nome || "total").trim();
-
-await fetch(API_URL, {
-  method: "POST",
-  headers: { "Content-Type": "application/x-www-form-urlencoded" },
-  body: new URLSearchParams({
-    acao: "salvar_log",
-    cpf: cliente.cpf || "",
-    cliente: cliente.nome || "",
-    parceiro: parceiroNome,
-    grupo: cliente.grupo || "",
-    codigo_ero: "-",      // ✔️ CORRETO
-    status: "INATIVO"     // ✔️ CORRETO
-  }).toString()
-});
-    } // ← FECHA if (statusCliente === "ATIVO")
-  } catch (err) {
-    console.error("Erro na validação:", err);
-    box.style.background = "#f8d7da";
-    box.style.borderColor = "#842029";
+    box.innerHTML = `
+      <div class="status-box ativo">
+        <p><b>Nome:</b> ${data.nome}</p>
+        <p><b>Status:</b> ATIVO</p>
+        <p><b>Data de Aceite:</b> ${dataAceite}</p>
+        <p class="codigo">✔ Código: ${data.codigoERO}</p>
+      </div>
+    `;
+  } catch (e) {
+    console.error(e);
     box.innerHTML = "❌ Erro ao validar cliente.";
   }
-} // ← FECHA function validar()
-
-
-// ==================== UTILITÁRIOS ====================
-function mascararCPF(cpf) {
-  return cpf ? cpf.replace(/^(\d{3})\d{3}\d{3}(\d{2})$/, "$1***.***-$2") : "-";
 }
 
-// Código ERO antifraude (único)
-function gerarCodigoERO() {
-  const d = new Date();
-  const dd = String(d.getDate()).padStart(2, "0");
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const hh = String(d.getHours()).padStart(2, "0");
-  const min = String(d.getMinutes()).padStart(2, "0");
-  return `ERO-${dd}${mm}-${hh}${min}`;
-}
-
-// ==================== RELATÓRIO ====================
-function abrirRelatorio() {
-  const sess = JSON.parse(localStorage.getItem("parceiro_sess"));
-  if (!sess || !sess.nome) {
-    alert("Sessão do parceiro inválida.");
-    return;
-  }
-
-  const url = API_URL + "?relatorio=1&parceiro=" + encodeURIComponent(sess.nome);
-  window.open(url, "_blank");
-}
-
-// ==================== SAIR ====================
-function logout() {
-  localStorage.clear();
-  location.reload();
+/* ===============================
+   UTILIDADE
+   =============================== */
+function formatarData(valor) {
+  const d = new Date(valor);
+  if (isNaN(d)) return valor;
+  return d.toLocaleDateString("pt-BR") + " " +
+         d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 }
 </script>
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js");
-}
-</script>
-
 </body>
 </html>

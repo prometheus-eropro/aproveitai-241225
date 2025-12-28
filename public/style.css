@@ -1,255 +1,244 @@
-/* ================= RESET GLOBAL ================= */
-* {
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
+/* =========================
+   ESTILO GERAL DO SITE
+========================= */
 body {
   margin: 0;
-  background: #eefdf2;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #b3eaff; /* azul claro */
   color: #222;
 }
 
-/* ================= BOTÕES ================= */
-.btn,
-.btn-aproveitai,
-button {
-  background: #0a7a2a;
-  color: #fff;
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
+a {
   text-decoration: none;
+  color: #0066cc;
 }
 
-.btn:hover,
-.btn-aproveitai:hover,
-button:hover {
-  background: #095f21;
+h1, h2, h3 {
+  margin: 5px 0;
+  padding: 0;
 }
 
-/* ================= HEADER / BRANDLINE ================= */
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 30px;
-  background: #fff;
-  border-bottom: 1px solid #ddd;
+/* =========================
+   CABEÇALHO
+========================= */
+.site-header {
+  background: white;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .brandline {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding: 25px 10px;
+  justify-content: space-between;
+  gap: 15px;
   flex-wrap: wrap;
 }
 
-.brandline img {
-  max-height: 70px;
+.logo {
+  max-height: 180px;
+  height: auto;
   width: auto;
   object-fit: contain;
 }
 
-.brandline .pill,
-.brandline h1 {
-  background: #e0f9e0;
-  color: #0a7a2a;
-  padding: 10px 26px;
-  border-radius: 999px;
-  font-size: 24px;
-  font-weight: 600;
-}
-
-.slogan {
-  margin-top: 8px;
-  font-size: 15px;
-  color: #0a7a2a;
-  font-weight: bold;
+.brand-center {
+  flex: 1;
   text-align: center;
 }
 
-/* ================= FILTROS ================= */
+.site-title {
+  font-size: 36px;
+  color: #0a7a2a;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+  font-weight: bold;
+}
+
+.slogan {
+  font-size: 16px;
+  font-style: italic;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.boas-vindas {
+  background: #dfffe0;
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 18px; /* AUMENTADO */
+  line-height: 1.5;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   BOTÕES CENTRAIS
+========================= */
+.botoes-centrais {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+.btn-aproveitai {
+  background: #3cc062;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.btn-aproveitai:hover {
+  background: #2da350;
+}
+
+/* =========================
+   FILTROS
+========================= */
 .filtros {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  padding: 14px;
-  background: #cfefff;
-  flex-wrap: wrap;
+  padding: 15px;
+  font-size: 14px;
 }
 
 .filtros input,
 .filtros select,
 .filtros button {
-  padding: 8px;
+  padding: 10px;
   font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  min-width: 180px;
 }
 
-/* ================= CARDS (PARCEIROS / BENEFÍCIOS) ================= */
-.cards-wrapper {
-  background: #eefaf3;
-  padding: 30px 10px;
+.filtros button {
+  background: #3cc062;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
 }
 
+.filtros button:hover {
+  background: #2da350;
+}
+
+/* =========================
+   CARDS DE PARCEIROS
+========================= */
 .container-parceiros {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 18px;
+  gap: 20px;
+  padding: 20px;
 }
 
 .card {
-  width: 220px;
-  min-height: 320px;
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 18px 15px;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   text-align: center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
+  max-width: 260px;
+  width: 100%;
+  min-height: 420px; /* aumentada */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  word-break: break-word;
 }
 
 .card img {
-  max-width: 90px;
-  margin: 0 auto 12px;
-  display: block;
-}
-
-.card h3 {
-  font-size: 15px;
-  margin: 6px 0;
-}
-
-.card p,
-.card a {
-  font-size: 13px;
-  margin: 3px 0;
-}
-
-/* ================= PAINÉIS (CLIENTE / PARCEIRO) ================= */
-.painel-box {
-  max-width: 420px;
-  margin: 40px auto;
-  background: #ffffff;
-  padding: 28px;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-}
-
-input,
-select {
-  width: 100%;
-  padding: 9px;
+  max-height: 100px;
   margin-bottom: 10px;
+  width: auto;
+  object-fit: contain;
 }
 
-/* ================= FORMULÁRIO DE CADASTRO ================= */
-.wrap {
-  display: flex;
-  justify-content: center;
-  padding: 40px 10px;
-}
-
-.form-card {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 28px;
-  max-width: 420px;
-  width: 100%;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-}
-
-/* ================= CHECKBOX ================= */
-input[type="checkbox"] {
-  accent-color: #0a7a2a;
-}
-
-/* ================= RODAPÉ ================= */
-footer {
-  background: linear-gradient(180deg, #1f7a4a 0%, #145a32 100%);
-  color: #e9f5ec;
-  padding: 22px 8% 14px;
-  font-size: 14px;
+/* =========================
+   RODAPÉ
+========================= */
+.footer {
+  background: #dfffe0;
+  color: #222;
+  padding: 10px 10px;
+  font-size: 13px;
+  border-top: 3px solid white;
 }
 
 .footer-container {
-  max-width: 1100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 1000px;
   margin: auto;
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 35px;
+  padding: 5px 0;
 }
 
-.footer-container h3 {
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #ffffff;
-}
-
-.footer-container p,
-.footer-container a {
-  font-size: 14.5px;
-  line-height: 1.6;
-  color: #e6f3ea;
-  text-decoration: none;
-}
-
-.footer-container a:hover {
-  text-decoration: underline;
-}
-
-.footer-links {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(140px, 1fr));
-  gap: 6px 24px;
+.footer a {
+  color: #0066cc;
+  font-size: 13px;
 }
 
 .footer-bottom {
-  margin-top: 14px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(255,255,255,0.25);
   text-align: center;
-  font-size: 13px;
-  color: #d4e8dc;
+  margin-top: 5px;
+  font-size: 11px;
 }
-
-/* ================= RESPONSIVO ================= */
-@media (max-width: 768px) {
-  header {
+/* =========================
+   RESPONSIVIDADE
+========================= */
+@media (max-width: 600px) {
+  .brandline {
     flex-direction: column;
-    gap: 12px;
-  }
-
-  .brandline img {
-    max-height: 55px;
-  }
-
-  .brandline .pill,
-  .brandline h1 {
-    font-size: 20px;
-    padding: 8px 18px;
+    align-items: center;
   }
 
   .card {
-    width: 90%;
+    height: auto;
   }
 
   .footer-container {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
   }
+}
+input#cpf {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 16px;
+}
 
-  .footer-links {
-    grid-template-columns: 1fr 1fr;
-  }
+.card .small {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 15px;
+}
+.status-box {
+  background: #f3fff3;
+  border: 1px solid #cceccc;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 8px;
+}
+.codigo {
+  font-weight: bold;
+  color: #0a7a2a;
+  margin-top: 10px;
 }

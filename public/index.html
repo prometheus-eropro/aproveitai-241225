@@ -10,228 +10,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f2fff2;
-    }
-
-    /* ===== CABEÇALHO ===== */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background: #ffffff;
-      border-bottom: 1px solid #ccc;
-    }
-
-    header img {
-  height: 180px;
-  max-width: 220px;
-  object-fit: contain;
-}
-
-    .titulo-centro {
-      text-align: center;
-      max-width: 600px;
-    }
-
-    .titulo-centro h1 {
-      margin: 0;
-      padding: 12px 30px;
-      background: #e0f9e0;
-      border-radius: 12px;
-      color: #0a7a2a;
-      font-size: 36px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
-
-    .slogan {
-      margin-top: 15px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #0a7a2a;
-    }
-
-    .boas-vindas {
-      margin-top: 10px;
-      font-size: 16px;
-    }
-
-    /* ===== FILTROS ===== */
-    .filtros {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      padding: 15px;
-      background: #cfefff;
-      flex-wrap: wrap;
-    }
-
-    .filtros input,
-    .filtros select,
-    .filtros button {
-      padding: 8px;
-      font-size: 14px;
-    }
-
-    /* ===== PARCEIROS ===== */
-    .container-parceiros {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 30px;
-      flex-wrap: wrap;
-    }
-
-    .card {
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  min-height: 220px;
-}
-
-    .card img {
-  max-height: 65px;
-  margin-bottom: 6px;
-}
-
-
-    /* ===== RODAPÉ ===== */
-    
-.copyright {
-  width: 100%;
-  text-align: center;
-  margin-top: 15px;
-  border-top: 1px solid #0a7a2a;
-  padding-top: 10px;
-  font-size: 13px;
-}
-.botoes-centrais {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  padding: 20px;
-}
-
-.btn-aproveitai {
-  background: #0a7a2a;
-  color: #fff;
-  padding: 10px 16px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 14px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-.btn-aproveitai:hover {
-  background: #095f21;
-}
-.titulo-site {
-  font-size: 34px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: #0a7a2a;
-  margin-bottom: 6px;
-}
-
-.subtitulo-site {
-  font-size: 14px;
-  color: #4b4b4b;
-  letter-spacing: 0.5px;
-}
-.card {
-  padding: 12px;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-}
-
-.card h3 {
-  font-size: 15px;
-  margin: 6px 0 4px;
-}
-
-.card p {
-  font-size: 13px;
-  margin: 2px 0;
-}
-
-.card img {
-  max-height: 55px;
-  object-fit: contain;
-}
-footer {
-  background: #0b2e13; /* verde escuro elegante */
-  color: #dfe9df;
-  padding: 25px 15px;
-  font-size: 13px;
-}
-
-footer a {
-  color: #9be0a5;
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
-}
-
-footer .linha {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: space-between;
-}
-.separador-footer {
-  height: 1px;
-  background: linear-gradient(to right, transparent, #0a7a2a, transparent);
-  margin-top: 40px;
-}
-footer {
-  background: linear-gradient(180deg, #0b3d1a, #06240f);
-  color: #e6f2ea;
-  padding: 18px 20px;
-  font-size: 13px;
-}
-
-footer .col {
-  flex: 1 1 260px;
-  margin: 6px;
-}
-
-footer h4 {
-  color: #9dffb3;
-  margin-bottom: 6px;
-  font-size: 14px;
-}
-
-footer a {
-  color: #bdf8c9;
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
-}
-
-footer .copyright {
-  width: 100%;
-  text-align: center;
-  border-top: 1px solid #0a7a2a;
-  padding-top: 6px;
-  font-size: 12px;
-  margin-top: 8px;
-}
-
-  </style>
-
-<link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="manifest.json">
 
 <meta name="theme-color" content="#0a7a2a">
 
@@ -240,20 +19,19 @@ footer .copyright {
 
 <body>
 
-<header>
-  <img src="logo-prometheus.png" alt="ConsciêncIAs">
-
-  <div class="titulo-centro">
-    <h1 class="site-title">Cartão AproveitAI</h1>
-
-    <div class="slogan">Tecnologia com ConsciêncIA gera Resultado.</div>
-    <div class="boas-vindas">
-      <strong>Bem-vindo à PROMETHEUS EROPRO Soluções Inteligentes!</strong><br>
-      Assine e experimente o <strong>Cartão AproveitAI</strong> e comece a economizar de verdade.
+<header class="site-header">
+  <div class="brandline">
+    <img src="logo-prometheus.png" class="logo logo-prometheus">
+    <div class="brand-center">
+      <h1 class="site-title">Cartão AproveitAI</h1>
+      <p class="slogan">Tecnologia com ConsciêncIA gera Resultado.</p>
+      <p class="boas-vindas">
+        Bem-vindo à <strong>PROMETHEUS EROPRO Soluções Inteligentes</strong><br>
+        Assine e comece a economizar de verdade.
+      </p>
     </div>
+    <img src="logo-aproveitai.png" class="logo logo-aproveitai">
   </div>
-
-  <img src="logo-aproveitai.png" alt="AproveitAI">
 </header>
 <!-- BOTÕES PRINCIPAIS -->
 <div class="botoes-centrais">
@@ -262,23 +40,11 @@ footer .copyright {
   <a href="painelcliente.html" class="btn-aproveitai">👤 Área do Cliente</a>
   <a href="painelparceiro.html" class="btn-aproveitai">🏪 Área do Parceiro</a>
   <a href="https://wa.me/5528999692303?text=Olá!%20Quero%20ser%20parceiro%20do%20Cartão%20AproveitAI" target="_blank" class="btn-aproveitai">🤝 Quero ser Parceiro</a>
-  <button id="btnCliente" class="btn-aproveitai">🧾 Quero ser Cliente</button>
+  <a href="cadastro.html" class="btn-aproveitai">📝 Quero ser Cliente</a>
+
 </div>
 
-<!-- BLOCO EXPLICATIVO (inicialmente oculto) -->
-<section id="explicacaoCliente" class="explicacao" style="display:none;">
-  <h2>Como funciona o Cartão AproveitAI</h2>
-  <p>O <strong>Cartão AproveitAI</strong> conecta você a comércios e serviços parceiros, oferecendo descontos reais e vantagens exclusivas.</p>
-  <ol>
-    <li>Preencha o cadastro e aceite os Termos de Adesão.</li>
-    <li>Nossa equipe entrará em contato para confirmar o pagamento.</li>
-    <li>Após a confirmação, você receberá seu <strong>Cartão Digital AproveitAI</strong> com QR Code.</li>
-    <li>Apresente o QR Code aos parceiros para obter descontos.</li>
-  </ol>
-  <p>💡 <strong>Valor individual:</strong> R$ 20,00/mês.<br>
-  <strong>Grupos</strong> (empresas, associações, sindicatos, condomínios etc.) têm condições especiais.</p>
-  <a href="cadastro.html" class="btn-aproveitai">➡️ Ir para Cadastro</a>
-</section>
+
 
 <script>
   document.getElementById("btnCliente").addEventListener("click", function () {
@@ -302,9 +68,9 @@ footer .copyright {
 
 <div class="separador-footer"></div>
 
+<!-- ✅ RODAPÉ PADRÃO -->
 <footer class="footer">
   <div class="footer-container">
-    
     <div>
       <h3>Cartão AproveitAI</h3>
       PROMETHEUS EROPRO Soluções Inteligentes LTDA<br>
@@ -313,22 +79,21 @@ footer .copyright {
       📞 (28) 99969-2303<br>
       📸 @cartao.aproveitai
     </div>
-
     <div>
       <h3>Links Rápidos</h3>
-      <a href="depoimentos.html">Depoimentos</a><br>
-      <a href="faq.html">Dúvidas</a><br>
-      <a href="privacidade.html">Privacidade</a><br>
-      <a href="termos.html">Termos</a><br>
-      <a href="excluir.html">Excluir Dados</a>
+      <a href="faq.html">Dúvidas Frequentes</a><br>
+      <a href="privacidade.html">Política de Privacidade</a><br>
+      <a href="cookies.html">Política de Cookies</a><br>
+      <a href="consentimento.html">Termo de Consentimento</a><br>
+      <a href="termos.html">Termos de Uso</a><br>
+      <a href="excluir.html">Excluir meus dados</a>
     </div>
-
   </div>
-
   <div class="footer-bottom">
     © 2025 AproveitAI. Todos os direitos reservados.
   </div>
 </footer>
+
 <script>
 const sheetURL = "https://script.google.com/macros/s/AKfycbzhwXhtWdsDSuABRneoz6QAD1SxpnMq3vc8e1FhtknlB7_1j6qLjYIbPA0qPJS7ck7y/exec";
 const parceirosDiv = document.getElementById("parceiros");
@@ -520,6 +285,5 @@ if ('serviceWorker' in navigator) {
     .catch(err => console.error("Erro SW:", err));
 }
 </script>
-
 </body>
 </html>

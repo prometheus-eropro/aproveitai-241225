@@ -2,121 +2,143 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <title>Cadastro | Cartão AproveitAI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- TÍTULO DO SITE (ABA DO NAVEGADOR) -->
-  <title>Cartão AproveitAI</title>
-
-  <!-- FAVICON -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-
-  <!-- ÍCONE PARA CELULAR / APP -->
-  <link rel="apple-touch-icon" href="logo-aproveitai.png">
-
-  <!-- PWA / TEMA -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0a7a2a">
-
-  <!-- SEO BÁSICO -->
-  <meta name="description" content="Cartão AproveitAI — descontos reais em comércios parceiros. Tecnologia com ConsciêncIA gera Resultado.">
-  <meta name="robots" content="index, follow">
-
-  <!-- ESTILO -->
   <link rel="stylesheet" href="style.css">
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0a7f2e">
-
+  <style>
+    .card-info {
+      background: #f1fbff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      box-shadow: 0 0 8px rgba(0,0,0,0.08);
+    }
+    .form-wrap {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    form label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    form input[type="text"],
+    form input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 4px;
+    }
+    form button {
+      margin-top: 20px;
+      display: block;
+      width: 100%;
+    }
+    .checkbox-termo {
+      margin-top: 20px;
+    }
+    .checkbox-termo label {
+      display: inline;
+      font-weight: normal;
+    }
+  </style>
 </head>
-
 <body>
-  <div class="page-container">
 
-
+<!-- ✅ CABEÇALHO PADRÃO -->
+<header class="site-header">
   <div class="brandline">
-    <img src="logo-prometheus.png" alt="Logo Prometheus">
-    <div class="pill">Cartão AproveitAI</div>
-    <img src="logo-aproveitai.png" alt="Logo AproveitAI">
+    <img src="logo-prometheus.png" class="logo logo-prometheus">
+    <div class="brand-center">
+      <h1 class="site-title">Cartão AproveitAI</h1>
+      <p class="slogan">Tecnologia com ConsciêncIA gera Resultado.</p>
+      <p class="boas-vindas">
+        📝 <strong>Quero ser Cliente</strong><br>
+        Preencha o formulário para solicitar seu cartão.
+      </p>
+    </div>
+    <img src="logo-aproveitai.png" class="logo logo-aproveitai">
   </div>
+</header>
 
-  <div class="wrap">
-    <div class="card">
-      <h2>Quero ser Cliente</h2>
-      <form id="formCliente">
-        <label>Nome completo:</label>
-        <input name="nome" required>
-
-        <label>CPF:</label>
-        <input name="cpf" required>
-
-        <label>Celular (WhatsApp):</label>
-        <input name="celular" required>
-
-        <label>Cidade:</label>
-        <input name="cidade" required>
-
-        <label>Grupo (empresa, sindicato ou particular):</label>
-        <input name="grupo" placeholder="(opcional — empresa, sindicato ou particular)">
-<!-- Data de nascimento -->
-<div class="form-group">
-  <label for="nascimento">Data de nascimento:</label>
-  <input type="date" id="nascimento" name="nascimento" required />
+<!-- ✅ BLOCO EXPLICAÇÃO -->
+<div class="card-info">
+  <h2 style="color:#007f30; text-align:center;">📋 Como funciona o Cartão AproveitAI</h2>
+  <p>O <strong>Cartão AproveitAI</strong> conecta você a comércios e serviços parceiros, oferecendo descontos reais e vantagens exclusivas.</p>
+  <ol style="margin-top:10px;">
+    <li>Preencha o cadastro e aceite os Termos de Adesão.</li>
+    <li>Nossa equipe entrará em contato para confirmar o pagamento.</li>
+    <li>Após a confirmação, você receberá seu <strong>Cartão Digital AproveitAI</strong> com QR Code.</li>
+    <li>Apresente o QR Code aos parceiros para obter descontos.</li>
+  </ol>
+  <p style="margin-top:10px;">📙 <strong>Valor individual:</strong> R$ 20,00/mês.</p>
+  <p>👥 <strong>Grupos</strong> (empresas, associações, sindicatos, condomínios) têm condições especiais.</p>
 </div>
 
-        <div class="checkline">
-          <input type="checkbox" name="aceite" required>
-          <label>Li e aceito os <a href="termos.html" target="_blank">Termos de Adesão e Política de Privacidade</a>.</label>
-        </div>
+<!-- ✅ FORMULÁRIO -->
+<div class="form-wrap">
+  <form>
+    <label>Nome completo:</label>
+    <input type="text" required>
 
-        <p style="font-size:14px;text-align:center;background:#f9f9f9;padding:10px;border-radius:6px;margin-top:10px;">
-          💳 <b>Valor individual:</b> R$ 20,00/mês.<br>
-          👥 <b>Grupos</b> (empresas, associações, sindicatos, condomínios) têm condições especiais.
-        </p>
+    <label>CPF:</label>
+    <input type="text" required>
 
-        <button type="submit">Enviar cadastro</button>
-      </form>
+    <label>Celular (WhatsApp):</label>
+    <input type="text" required>
 
-      <div id="mensagem" class="mensagem"></div>
-      <a href="index.html" class="voltar">← Voltar ao site</a>
+    <label>Cidade:</label>
+    <input type="text" required>
+
+    <label>Grupo (empresa, sindicato ou particular):</label>
+    <input type="text" placeholder="(opcional — empresa, sindicato etc)">
+
+    <label>Data de nascimento:</label>
+    <input type="date">
+
+    <div class="checkbox-termo">
+      <input type="checkbox" id="aceite" required>
+      <label for="aceite">
+        Li e aceito os <a href="termos.html" target="_blank">Termos de Adesão</a> e <a href="privacidade.html" target="_blank">Política de Privacidade</a>
+      </label>
+    </div>
+
+    <button type="submit" class="btn-aproveitai">✅ Enviar cadastro</button>
+  </form>
+
+  <div style="text-align:center; margin-top: 20px;">
+    <a href="index.html" class="btn-aproveitai">← Voltar ao site</a>
+  </div>
+</div>
+
+<!-- ✅ RODAPÉ PADRÃO -->
+<footer class="footer">
+  <div class="footer-container">
+    <div>
+      <h3>Cartão AproveitAI</h3>
+      PROMETHEUS EROPRO Soluções Inteligentes LTDA<br>
+      CNPJ: 58.584.332/0001-40<br>
+      📧 cartao.aproveitai@gmail.com<br>
+      📞 (28) 99969-2303<br>
+      📸 @cartao.aproveitai
+    </div>
+    <div>
+      <h3>Links Rápidos</h3>
+      <a href="faq.html">Dúvidas Frequentes</a><br>
+      <a href="privacidade.html">Política de Privacidade</a><br>
+      <a href="cookies.html">Política de Cookies</a><br>
+      <a href="consentimento.html">Termo de Consentimento</a><br>
+      <a href="termos.html">Termos de Uso</a><br>
+      <a href="excluir.html">Excluir meus dados</a>
     </div>
   </div>
-
-<script>
-  const form = document.querySelector("form");
-  const scriptURL = "https://script.google.com/macros/s/AKfycbzhwXhtWdsDSuABRneoz6QAD1SxpnMq3vc8e1FhtknlB7_1j6qLjYIbPA0qPJS7ck7y/exec";
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const formData = new FormData(form);
-    formData.append("tipo", "cliente"); // necessário para a API saber que é cadastro
-
-    fetch(scriptURL, {
-      method: "POST",
-      body: formData
-    })
-    .then(response => response.text())
-    .then(result => {
-      console.log("Resposta:", result);
-      if (result.includes("CADASTRO_OK")) {
-        alert("✅ Cliente cadastrado com sucesso!");
-        form.reset();
-      } else {
-        alert("❌ Erro: " + result);
-      }
-    })
-    .catch(error => {
-      console.error("Erro:", error);
-      alert("Erro de conexão com servidor.");
-    });
-  });
-</script>
-<script>
-if ("serviceWorker" in navigator && location.protocol !== "file:") {
-  navigator.serviceWorker.register("/sw.js");
-}
-</script>
-
+  <div class="footer-bottom">
+    © 2025 AproveitAI. Todos os direitos reservados.
   </div>
-</body>
+</footer>
 
+
+</body>
 </html>

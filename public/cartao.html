@@ -27,6 +27,8 @@ h2{margin:0 0 8px;color:#0a4c1a}
 @media(max-width:820px){ .box{grid-template-columns:1fr} }
 </style>
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0a7f2e">
 
 </head>
 
@@ -129,7 +131,8 @@ function qs(name){
     document.getElementById("idPublico").textContent = c.idPublico || id;
     document.getElementById("grupo").textContent = c.grupo || "-";
     document.getElementById("cidade").textContent = c.cidade || "-";
-    document.getElementById("dataCadastro").textContent = c.dataCadastro || "-";
+    document.getElementById("dataCadastro").textContent =
+  c.dataAceite || c.dataCadastro || "-";
     document.getElementById("statusCliente").textContent = ativo ? "ATIVO" : "INATIVO";
 
     // QR aponta para validar (se você tiver validar.html). Se não tiver, ele abre o próprio cartão.
@@ -162,5 +165,11 @@ function salvarComoImagem(){
   });
 }
 </script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
+</script>
+
 </body>
 </html>

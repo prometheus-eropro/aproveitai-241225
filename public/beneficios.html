@@ -34,6 +34,8 @@ h1{text-align:center;color:#0a7b34}
 }
 </style>
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0a7f2e">
 
 </head>
 
@@ -99,5 +101,11 @@ fetch(ENDPOINT + "?aba=beneficios")
     console.error(err);
   });
 </script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
+</script>
+
 </body>
 </html>

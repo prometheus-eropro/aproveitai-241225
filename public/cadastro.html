@@ -24,6 +24,9 @@
 
   <!-- ESTILO -->
   <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0a7f2e">
+
 </head>
 
 <body>
@@ -105,5 +108,11 @@
     });
   });
 </script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
+</script>
+
 </body>
 </html>

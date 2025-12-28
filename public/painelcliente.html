@@ -22,7 +22,8 @@ button{margin-top:16px;padding:12px 18px;font-weight:700;color:#fff;border:none;
 .small{font-size:.9rem;color:#444;text-align:center;margin-top:6px}
 </style>
 <link rel="stylesheet" href="style.css">
-
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0a7f2e">
 
 </head>
 
@@ -279,6 +280,11 @@ const filtradosBenef = beneficios.filter(b => {
     boxBenef.innerHTML = "Erro ao carregar benefícios.";
     boxPromo.innerHTML = "Erro ao carregar promoções.";
   }
+}
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
 }
 </script>
 

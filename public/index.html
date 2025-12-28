@@ -166,6 +166,9 @@ footer a:hover {
 
   </style>
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0a7f2e">
+
 </head>
 
 <body>
@@ -174,7 +177,8 @@ footer a:hover {
   <img src="logo-prometheus.png" alt="ConsciêncIAs">
 
   <div class="titulo-centro">
-    <h1>Cartão AproveitAI</h1>
+    <h1 class="site-title">Cartão AproveitAI</h1>
+
     <div class="slogan">Tecnologia com ConsciêncIA gera Resultado.</div>
     <div class="boas-vindas">
       <strong>Bem-vindo à PROMETHEUS EROPRO Soluções Inteligentes!</strong><br>
@@ -412,11 +416,38 @@ if(localStorage.getItem("lgpd-ok")==="sim"){
 }
 </script>
 <script>
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const btn = document.createElement("button");
+  btn.textContent = "📲 Adicionar à tela inicial";
+  btn.className = "btn";
+  btn.style.position = "fixed";
+  btn.style.bottom = "20px";
+  btn.style.right = "20px";
+  btn.style.zIndex = "9999";
+
+  btn.onclick = async () => {
+    btn.remove();
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+  };
+
+  document.body.appendChild(btn);
+});
+</script>
+
+<script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js')
     .then(() => console.log("✅ Service Worker registrado"))
     .catch(err => console.error("Erro SW:", err));
 }
 </script>
+
 </body>
 </html>

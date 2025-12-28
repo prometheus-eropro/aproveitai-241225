@@ -1,408 +1,217 @@
-/* ======================================================
-   TEMA PADRÃO – CARTÃO APROVEITAI (INDEX + CADASTRO)
-   ====================================================== */
-
-/* ===== PALETA ===== */
-:root {
-  --verde-principal: #015c2c;
-  --verde-hover: #04a14b;
-  --fundo-claro: #e6fff0;
-  --texto-principal: #222;
-  --branco: #ffffff;
+/* =======================
+   RESET BÁSICO
+======================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
-
-/* ===== RESET ===== */
-* { box-sizing: border-box; }
 
 body {
-  margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background-color: var(--fundo-claro);
-  color: var(--texto-principal);
+  background: #e9fff1;
+  color: #222;
+  overflow-x: hidden;
 }
 
-/* ======================================================
-   HEADER (usado no index)
-   ====================================================== */
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 30px;
-  background: var(--branco);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-header img {
-  height: 120px;
-  max-width: 220px;
-  object-fit: contain;
-}
-
-.titulo-centro { text-align: center; }
-
-.titulo-centro h1 {
-  margin: 0;
-  font-size: 2.2rem;
-  color: var(--verde-principal);
-}
-
-.slogan {
-  margin-top: 6px;
-  font-size: 1rem;
-  color: #444;
-}
-
-.boas-vindas {
-  margin-top: 6px;
-  font-size: 0.95rem;
-}
-
-/* ======================================================
-   BRANDLINE (usado no cadastro.html)
-   ====================================================== */
+/* =======================
+   TOPO / BRANDLINE
+======================= */
 .brandline {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
-  padding: 18px 16px;
-  background: var(--branco);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  gap: 30px;
+  padding: 25px 15px;
+  background: #fff;
+  flex-wrap: wrap;
 }
 
 .brandline img {
   height: 90px;
-  max-width: 200px;
+  max-width: 180px;
   object-fit: contain;
 }
 
-.pill {
-  padding: 12px 22px;
-  border-radius: 999px;
-  background: #dff7e7;
-  color: var(--verde-principal);
+/* Título central */
+.site-title {
+  background: #d9f7df;
+  color: #0a7a2a;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 26px;
   font-weight: 800;
-  font-size: 1.6rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.10);
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* ======================================================
-   BOTÕES PADRÃO
-   ====================================================== */
-button,
-.btn-aproveitai {
-  background: var(--verde-principal);
-  color: #fff;
-  font-weight: 600;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 10px;
-  text-decoration: none;
-  box-shadow: 0 3px 5px rgba(0,0,0,0.2);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-width: 160px;
-  height: 48px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-button:hover,
-.btn-aproveitai:hover {
-  background: var(--verde-hover);
-  transform: translateY(-2px);
-}
-
-/* ======================================================
-   CONTAINER DE BOTÕES (index)
-   ====================================================== */
-.botoes-centrais {
+/* =======================
+   ÁREA CENTRAL / CARDS
+======================= */
+.wrap {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
-  margin: 25px 0 35px;
-}
-
-/* ======================================================
-   BLOCO EXPLICATIVO (index)
-   ====================================================== */
-.explicacao {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 25px;
-  background: #f8fff9;
-  border-radius: 12px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-}
-
-.explicacao h2 {
-  text-align: center;
-  color: var(--verde-principal);
-  margin-top: 0;
-}
-
-/* ======================================================
-   FILTROS (index)
-   ====================================================== */
-.filtros {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin: 20px;
-}
-
-.filtros input,
-.filtros select {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 0.9rem;
-}
-
-/* ======================================================
-   GRID DE PARCEIROS (index)
-   ====================================================== */
-.container-parceiros {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-  padding: 30px;
+  padding: 40px 15px;
 }
 
 .card {
-  background: var(--branco);
-  border-radius: 14px;
-  padding: 20px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  background: #fff;
+  width: 100%;
+  max-width: 650px;
+  padding: 22px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.card h2 {
   text-align: center;
+  margin-bottom: 20px;
+  color: #0a7a2a;
 }
 
+/* Cards de parceiros (index) */
 .card img {
-  max-width: 160px;
-  max-height: 110px;
-  margin-bottom: 12px;
-  object-fit: contain;
-}
-
-.card h3 {
-  margin: 10px 0 6px;
-  font-size: 1.1rem;
-  color: #111;
+  height: 55px;
+  margin-bottom: 8px;
 }
 
 .card p {
   margin: 4px 0;
-  font-size: 0.9rem;
+  font-size: 14px;
 }
 
-.card a {
+/* =======================
+   FORMULÁRIO
+======================= */
+form label {
   display: block;
-  margin-top: 8px;
-  font-size: 0.9rem;
-  color: #0a7a2a;
+  margin-top: 15px;
+  margin-bottom: 6px;
+  font-weight: bold;
 }
 
-/* ======================================================
-   CADASTRO – LAYOUT (cadastro.html)
-   ====================================================== */
-.wrap {
-  max-width: 980px;
-  margin: 26px auto 60px;
-  padding: 0 16px;
-}
-
-.wrap .card {
-  max-width: 760px;
-  margin: 0 auto;
-  text-align: left;
-}
-
-.wrap .card h2 {
-  text-align: center;
-  margin: 6px 0 18px;
-  color: #111;
-}
-
-#formCliente {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px 14px;
-}
-
-#formCliente label {
-  grid-column: span 1;
-  font-weight: 600;
-  margin-top: 2px;
-}
-
-#formCliente input {
+form input,
+form select {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border-radius: 8px;
-  border: 1px solid #cfcfcf;
-  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  font-size: 15px;
 }
 
-.form-group {
-  grid-column: span 2;
-}
-
+/* =======================
+   CHECKBOX TERMOS
+======================= */
 .checkline {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 0.9rem;
-  margin: 15px 0;
+  margin-top: 18px;
+  font-size: 14px;
 }
 
-.checkline input[type="checkbox"] {
+.checkline input {
   width: 18px;
   height: 18px;
   cursor: pointer;
 }
 
-#formCliente button[type="submit"] {
-  grid-column: span 2;
-  width: 260px;
-  margin: 14px auto 0;
+.checkline a {
+  color: #0a7a2a;
+  font-weight: bold;
+  text-decoration: none;
 }
 
-.mensagem {
-  text-align: center;
-  margin-top: 14px;
-  font-weight: 600;
+.checkline a:hover {
+  text-decoration: underline;
 }
 
+/* =======================
+   BOTÕES
+======================= */
+button[type="submit"] {
+  width: 100%;
+  margin-top: 22px;
+  padding: 14px;
+  background: #0a7a2a;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button[type="submit"]:hover {
+  background: #066322;
+}
+
+/* Botão voltar */
 .voltar {
   display: block;
   text-align: center;
-  margin-top: 12px;
-  color: #0a7a2a;
-  text-decoration: none;
-}
-.voltar:hover { text-decoration: underline; }
-
-/* ======================================================
-   FOOTER (index)
-   ====================================================== */
-footer {
-  background: #014a24;
-  color: #fff;
-  padding: 25px;
-  margin-top: 40px;
-}
-
-footer .footer-conteudo {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-footer a {
-  color: #c6ffd8;
-  text-decoration: none;
-}
-
-footer a:hover { text-decoration: underline; }
-
-/* ======================================================
-   MOBILE
-   ====================================================== */
-@media (max-width: 768px) {
-
-  header {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-  }
-
-  header img {
-    height: 95px;
-    max-width: 220px;
-  }
-
-  .titulo-centro h1 { font-size: 1.6rem; }
-
-  .botoes-centrais {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  button,
-  .btn-aproveitai {
-    min-width: 90%;
-    height: 46px;
-    font-size: 0.9rem;
-  }
-
-  .container-parceiros { padding: 15px; }
-
-  /* brandline do cadastro */
-  .brandline {
-    flex-direction: column;
-    gap: 10px;
-    padding: 14px 12px;
-    text-align: center;
-  }
-
-  .brandline img {
-    height: 86px;
-  }
-
-  .pill {
-    font-size: 1.35rem;
-    padding: 10px 18px;
-  }
-
-  /* cadastro */
-  #formCliente {
-    grid-template-columns: 1fr;
-  }
-
-  .form-group,
-  .checkline,
-  #formCliente button[type="submit"] {
-    grid-column: span 1;
-  }
-
-  #formCliente button[type="submit"] {
-    width: 92%;
-  }
-
-  footer .footer-conteudo {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-/* Botão Voltar */
-.voltar {
-  display: inline-block;
   margin-top: 18px;
-  padding: 10px 18px;
-  background: #e9fff1;
-  color: #015c2c;
-  border: 2px solid #015c2c;
-  border-radius: 8px;
-  font-weight: 700;
+  padding: 12px;
+  border-radius: 10px;
+  background: #0a7a2a;
+  color: #fff;
+  font-weight: bold;
   text-decoration: none;
-  transition: all 0.25s ease;
 }
 
 .voltar:hover {
-  background: #015c2c;
-  color: #ffffff;
+  background: #066322;
 }
-input[type="date"] {
-  height: 42px;
-  padding-right: 12px;
+
+/* =======================
+   RODAPÉ (AJUSTE 2 e 3)
+======================= */
+footer {
+  background: linear-gradient(180deg, #0f6a38, #0b4f2a);
+  color: #e9f7ef;
+  padding: 28px 20px;
+  font-size: 14px;
 }
-.checkline span {
-  line-height: 1.4;
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 25px;
+}
+
+footer hr {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  margin: 15px 0;
+}
+
+/* =======================
+   RESPONSIVO
+======================= */
+@media (max-width: 768px) {
+
+  .brandline {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .brandline img {
+    height: 70px;
+  }
+
+  .site-title {
+    font-size: 22px;
+    text-align: center;
+    padding: 12px 22px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 18px;
+  }
+
+  .card {
+    padding: 18px;
+  }
 }

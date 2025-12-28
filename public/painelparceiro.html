@@ -59,6 +59,8 @@ button{margin-top:16px;padding:12px 18px;font-weight:800;color:#fff;border:none;
 
 </style>
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0a7f2e">
 
 </head>
 
@@ -345,6 +347,11 @@ function abrirRelatorio() {
 function logout() {
   localStorage.clear();
   location.reload();
+}
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
 }
 </script>
 

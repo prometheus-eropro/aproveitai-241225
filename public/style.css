@@ -1,4 +1,4 @@
-/* ================= RESET ================= */
+/* ================= RESET GLOBAL ================= */
 * {
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
@@ -6,15 +6,17 @@
 
 body {
   margin: 0;
-  background: #f2fff2;
+  background: #eefdf2;
   color: #222;
 }
 
 /* ================= BOTÕES ================= */
-.btn, .btn-aproveitai {
+.btn,
+.btn-aproveitai,
+button {
   background: #0a7a2a;
   color: #fff;
-  padding: 10px 16px;
+  padding: 10px 18px;
   border-radius: 8px;
   border: none;
   font-weight: bold;
@@ -22,40 +24,53 @@ body {
   text-decoration: none;
 }
 
-.btn:hover {
+.btn:hover,
+.btn-aproveitai:hover,
+button:hover {
   background: #095f21;
 }
 
-/* ================= HEADER ================= */
+/* ================= HEADER / BRANDLINE ================= */
 header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 30px;
+  padding: 20px 30px;
   background: #fff;
   border-bottom: 1px solid #ddd;
 }
 
-header img {
-  height: 160px;
-  max-width: 220px;
+.brandline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 25px 10px;
+  flex-wrap: wrap;
+}
+
+.brandline img {
+  max-height: 70px;
+  width: auto;
   object-fit: contain;
 }
 
-.titulo-centro h1 {
-  margin: 0;
-  padding: 10px 28px;
+.brandline .pill,
+.brandline h1 {
   background: #e0f9e0;
-  border-radius: 12px;
   color: #0a7a2a;
-  font-size: 34px;
+  padding: 10px 26px;
+  border-radius: 999px;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 .slogan {
   margin-top: 8px;
-  font-size: 16px;
+  font-size: 15px;
   color: #0a7a2a;
   font-weight: bold;
+  text-align: center;
 }
 
 /* ================= FILTROS ================= */
@@ -75,7 +90,7 @@ header img {
   font-size: 14px;
 }
 
-/* ================= CARDS ================= */
+/* ================= CARDS (PARCEIROS / BENEFÍCIOS) ================= */
 .cards-wrapper {
   background: #eefaf3;
   padding: 30px 10px;
@@ -114,19 +129,43 @@ header img {
   margin: 6px 0;
 }
 
-.card p {
+.card p,
+.card a {
   font-size: 13px;
   margin: 3px 0;
 }
 
-/* ================= PAINÉIS ================= */
+/* ================= PAINÉIS (CLIENTE / PARCEIRO) ================= */
 .painel-box {
   max-width: 420px;
-  margin: 30px auto;
-  background: #fff;
-  padding: 25px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 28px;
   border-radius: 14px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+input,
+select {
+  width: 100%;
+  padding: 9px;
+  margin-bottom: 10px;
+}
+
+/* ================= FORMULÁRIO DE CADASTRO ================= */
+.wrap {
+  display: flex;
+  justify-content: center;
+  padding: 40px 10px;
+}
+
+.form-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 28px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 /* ================= CHECKBOX ================= */
@@ -135,136 +174,32 @@ input[type="checkbox"] {
 }
 
 /* ================= RODAPÉ ================= */
-.footer {
-  background: linear-gradient(180deg, #0f5f32, #0b3f22);
-  color: #e8f5ee;
-  padding: 24px 20px 14px;
-  font-size: 13px;
-}
-
-.footer-container {
-  max-width: 1100px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 30px;
-}
-
-.footer h3 {
-  color: #a8f0c6;
-  font-size: 15px;
-  margin-bottom: 8px;
-}
-
-.footer a {
-  color: #c9f5d8;
-  text-decoration: none;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-
-.footer-bottom {
-  margin-top: 14px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(255,255,255,0.2);
-  text-align: center;
-  font-size: 12px;
-}
-
-/* ================= MOBILE ================= */
-@media (max-width: 768px) {
-  header {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .footer-container {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
-  .card {
-    width: 90%;
-  }
-}
-.site-footer {
-  background: #0f3d1f;
-  color: #e6f5ec;
-  padding: 25px 20px 10px;
-  margin-top: 40px;
-}
-
-.footer-container {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.footer-col h4 {
-  margin-bottom: 8px;
-  font-size: 16px;
-  color: #a7f3c5;
-}
-
-.footer-col p,
-.footer-col a {
-  font-size: 13px;
-  margin: 3px 0;
-  color: #e6f5ec;
-  text-decoration: none;
-}
-
-.footer-col a:hover {
-  text-decoration: underline;
-}
-
-.footer-copy {
-  text-align: center;
-  margin-top: 15px;
-  font-size: 12px;
-  opacity: 0.85;
-}
-/* ================================
-   RODAPÉ – AJUSTE VISUAL FINAL
-================================ */
-
-/* Fundo mais claro e moderno */
 footer {
-  background: linear-gradient(180deg, #0f5f2f 0%, #0a4a24 100%);
+  background: linear-gradient(180deg, #1f7a4a 0%, #145a32 100%);
   color: #e9f5ec;
-  padding: 25px 8% 15px;
-  font-size: 15px;
+  padding: 22px 8% 14px;
+  font-size: 14px;
 }
 
-/* Layout em colunas mais compactas */
 .footer-container {
+  max-width: 1100px;
+  margin: auto;
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 40px;
-  align-items: start;
+  gap: 35px;
 }
 
-/* Dados da empresa */
 .footer-container h3 {
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 10px;
   color: #ffffff;
 }
 
 .footer-container p,
 .footer-container a {
-  font-size: 15px;
+  font-size: 14.5px;
   line-height: 1.6;
   color: #e6f3ea;
-}
-
-/* Ícones / contatos */
-.footer-container a {
   text-decoration: none;
 }
 
@@ -272,83 +207,49 @@ footer {
   text-decoration: underline;
 }
 
-/* Links rápidos mais distribuídos */
 .footer-links {
   display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 8px 25px;
+  grid-template-columns: repeat(2, minmax(140px, 1fr));
+  gap: 6px 24px;
 }
 
-.footer-links a {
-  font-size: 14.5px;
-}
-
-/* Linha final mais discreta */
 .footer-bottom {
-  margin-top: 18px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255,255,255,0.2);
+  margin-top: 14px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.25);
   text-align: center;
   font-size: 13px;
   color: #d4e8dc;
 }
 
-/* ===== AJUSTE DE LOGOS – CADASTRO / PAINÉIS ===== */
-
-.brandline {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  padding: 20px 10px;
-  flex-wrap: wrap;
-}
-
-.brandline img {
-  max-height: 90px;   /* controla o tamanho */
-  width: auto;
-  object-fit: contain;
-}
-
-/* Texto central */
-.brandline .pill {
-  font-size: 22px;
-  padding: 10px 22px;
-  border-radius: 999px;
-  font-weight: 600;
-}
-
-/* ===== MOBILE ===== */
-@media (max-width: 600px) {
-  .brandline {
+/* ================= RESPONSIVO ================= */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
     gap: 12px;
   }
 
   .brandline img {
-    max-height: 60px; /* MUITO IMPORTANTE */
+    max-height: 55px;
   }
 
-  .brandline .pill {
-    font-size: 18px;
+  .brandline .pill,
+  .brandline h1 {
+    font-size: 20px;
     padding: 8px 18px;
   }
-}
-/* Mobile – ainda mais compacto */
-@media (max-width: 768px) {
-  footer {
-    padding: 20px 6% 12px;
+
+  .card {
+    width: 90%;
   }
 
   .footer-container {
     grid-template-columns: 1fr;
     gap: 20px;
-  }
-
-  .footer-container h3 {
-    font-size: 18px;
+    text-align: center;
   }
 
   .footer-links {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
   }
 }

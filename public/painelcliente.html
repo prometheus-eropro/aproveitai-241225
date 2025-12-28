@@ -70,6 +70,27 @@ function isAtivo(v){
   const s = norm(v);
   return ["sim","true","1","ativo","yes"].includes(s);
 }
+<script>
+function formatarDataBR(valor) {
+  if (!valor) return "-";
+
+  // Caso venha como número ddmmaaaa (ex: 23031979)
+  if (/^\d{8}$/.test(valor)) {
+    const d = valor.substring(0,2);
+    const m = valor.substring(2,4);
+    const a = valor.substring(4,8);
+    return `${d}/${m}/${a}`;
+  }
+
+  // Caso venha como data do Google (string ou Date)
+  const data = new Date(valor);
+  if (!isNaN(data)) {
+    return data.toLocaleDateString("pt-BR");
+  }
+
+  return valor;
+}
+</script>
 
 // ===============================================
 // 🔍 CONSULTA CLIENTE
@@ -127,8 +148,9 @@ async function consultar(){
       <div><b>Grupo:</b> ${achado.grupo || "-"}</div>
       <div><b>Cidade:</b> ${achado.cidade || "-"}</div>
       <div><b>Celular:</b> ${achado.celular || "-"}</div>
-      <div><b>Data de Nascimento:</b> ${achado.nascimento || "-"}</div>
-      <div><b>Data de Cadastro:</b> ${achado.dataCadastro || "-"}</div>
+      <div><b>Data de Nascimento:</b> ${formatarDataBR(achado.nascimento)}</div>
+      <div><b>Data de Cadastro:</b> ${formatarDataBR(achado.dataCadastro)}</div>
+
       <div><b>Status:</b> <b>${ativo ? "ATIVO" : "INATIVO"}</b></div>
     `;
 

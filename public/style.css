@@ -1,99 +1,87 @@
-/* ======== TEMA PADRÃO APROVEITAI ======== */
+/* ======================================================
+   TEMA PADRÃO – CARTÃO APROVEITAI
+   ====================================================== */
 
-/* Paleta */
+/* ===== PALETA ===== */
 :root {
   --verde-principal: #015c2c;
   --verde-hover: #04a14b;
-  --fundo-azul-claro: #e6fff0;
+  --fundo-claro: #e6fff0;
   --texto-principal: #222;
+  --branco: #ffffff;
 }
 
-/* ======== BASE ======== */
+/* ===== RESET BÁSICO ===== */
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: var(--fundo-azul-claro);
-  color: var(--texto-principal);
   margin: 0;
-  padding: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: var(--fundo-claro);
+  color: var(--texto-principal);
 }
 
-/* ======== BOTÕES PADRÃO ======== */
-button,
-.btn-aproveitai {
-  background: var(--verde-principal);
-  color: #fff;
-  font-weight: 600;
-  padding: 12px 22px;   /* 🔹 Diminuído (antes 16px 28px) */
-  border: none;
-  border-radius: 10px;
-  text-decoration: none;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-width: 180px;     /* 🔹 Diminuído (antes 220px) */
-  height: 55px;         /* 🔹 Diminuído (antes 65px) */
-  font-size: 1rem;      /* 🔹 Levemente menor (antes 1.1rem) */
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-button:hover,
-.btn-aproveitai:hover {
-  background: var(--verde-hover);
-  transform: translateY(-1px);
-}
-
-/* ======== LAYOUT DE BOTÕES ======== */
-.botoes-centrais {
+/* ======================================================
+   HEADER
+   ====================================================== */
+header {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px; /* 🔹 Menor espaçamento */
-  margin: 20px 0 30px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 30px;
+  background: var(--branco);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* ======== BLOCO DE EXPLICAÇÃO ======== */
-.explicacao {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 25px;
-  background: #f8fff9;
-  border-radius: 10px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-  animation: fadeIn 0.6s ease-in-out;
+header img {
+  height: 90px;
 }
 
-.explicacao h2 {
-  color: var(--verde-principal);
+.titulo-centro {
   text-align: center;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+.titulo-centro h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  color: var(--verde-principal);
 }
-/* ======== BOTÕES PADRÃO APROVEITAI ======== */
+
+.slogan {
+  margin-top: 6px;
+  font-size: 1rem;
+  color: #444;
+}
+
+.boas-vindas {
+  margin-top: 6px;
+  font-size: 0.95rem;
+}
+
+/* ======================================================
+   BOTÕES PADRÃO
+   ====================================================== */
 button,
 .btn-aproveitai {
   background: var(--verde-principal);
   color: #fff;
   font-weight: 600;
-  padding: 12px 22px;     /* 🔹 Compacto */
+  padding: 10px 18px;
   border: none;
   border-radius: 10px;
   text-decoration: none;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 5px rgba(0,0,0,0.2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-width: 180px;       /* 🔹 Largura reduzida */
-  height: 55px;           /* 🔹 Altura reduzida */
-  font-size: 1rem;
+  gap: 6px;
+  min-width: 160px;
+  height: 48px;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 button:hover,
@@ -102,18 +90,149 @@ button:hover,
   transform: translateY(-2px);
 }
 
-/* ======== CONTAINER DE BOTÕES ======== */
+/* ======================================================
+   CONTAINER DE BOTÕES
+   ====================================================== */
 .botoes-centrais {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
   gap: 15px;
-  margin: 20px 0 30px;
+  margin: 25px 0 35px;
 }
 
-/* ======== VERSÃO MOBILE ======== */
+/* ======================================================
+   BLOCO EXPLICATIVO
+   ====================================================== */
+.explicacao {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #f8fff9;
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.explicacao h2 {
+  text-align: center;
+  color: var(--verde-principal);
+  margin-top: 0;
+}
+
+/* ======================================================
+   FILTROS
+   ====================================================== */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px;
+}
+
+.filtros input,
+.filtros select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+}
+
+/* ======================================================
+   GRID DE PARCEIROS
+   ====================================================== */
+.container-parceiros {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 30px;
+}
+
+.card {
+  background: var(--branco);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  text-align: center;
+}
+
+.card img {
+  max-width: 120px;
+  max-height: 80px;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  margin: 10px 0 6px;
+  font-size: 1.1rem;
+  color: #111;
+}
+
+.card p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+}
+
+.card a {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #0a7a2a;
+}
+
+/* ======================================================
+   FOOTER
+   ====================================================== */
+footer {
+  background: #014a24;
+  color: #fff;
+  padding: 25px;
+  margin-top: 40px;
+}
+
+footer .footer-conteudo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+footer a {
+  color: #c6ffd8;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* ======================================================
+   MOBILE
+   ====================================================== */
 @media (max-width: 768px) {
+
+  header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  header img {
+    height: 70px;
+  }
+
+  .titulo-centro h1 {
+    font-size: 1.6rem;
+  }
+
+  .slogan {
+    font-size: 0.95rem;
+  }
+
+  .boas-vindas {
+    font-size: 0.85rem;
+  }
+
   .botoes-centrais {
     flex-direction: column;
     gap: 12px;
@@ -121,16 +240,17 @@ button:hover,
 
   button,
   .btn-aproveitai {
-    min-width: 90%;       /* 🔹 Preenche quase toda a tela */
-    height: 50px;
-    font-size: 0.95rem;
+    min-width: 90%;
+    height: 46px;
+    font-size: 0.9rem;
   }
-}
 
-/* ======== EFEITO DE TRANSIÇÃO SUAVE ======== */
-@media (prefers-reduced-motion: no-preference) {
-  button,
-  .btn-aproveitai {
-    transition: background 0.3s ease, transform 0.2s ease;
+  .container-parceiros {
+    padding: 15px;
+  }
+
+  footer .footer-conteudo {
+    flex-direction: column;
+    text-align: center;
   }
 }
